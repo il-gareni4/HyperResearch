@@ -1,0 +1,24 @@
+Messages.Researched: Изучено
+
+Configs: {
+	BRConfig: {
+		DisplayName: Конфиг клиента
+
+		ResearchPickup: {
+			Label: "[i:{0}] Изучать подобранные предметы"
+			Tooltip: Автоматически изучать подобранные предметы, если общее количество некоторого предмета равно или больше требуемого для изучения количества
+		}
+
+		AutoTrashResearched: {
+			// Label: "[i:{0}] Auto trash picked up researched items"
+			// Tooltip: All picked up items that have already been researched will no longer be added to the inventory
+		}
+
+		AutoResearchCraftable: {
+			// Label: Auto Research Craftable
+			// Tooltip: After learning a new item, all new items from already researched items will be researched. Requires researched crafting stations and compliance with custom conditions
+		}
+	}
+}
+
+// "Keybinds.Forget All Researches.DisplayName": Forget  All  Researches

@@ -1,0 +1,24 @@
+Messages.Researched: Researched
+
+Configs: {
+	BRConfig: {
+		DisplayName: Client config
+
+		ResearchPickup: {
+			Label: "[i:{0}] Research picked up items"
+			Tooltip: Automatically research picked up items if the total amount is equal to or more than required for research
+		}
+
+		AutoTrashResearched: {
+			Label: "[i:{0}] Auto trash picked up researched items"
+			Tooltip: All picked up items that have already been researched will no longer be added to the inventory
+		}
+
+		AutoResearchCraftable: {
+			Label: Auto Research Craftable
+			Tooltip: After learning a new item, all new items from already researched items will be researched. Requires researched crafting stations and compliance with custom conditions
+		}
+	}
+}
+
+"Keybinds.Forget All Researches.DisplayName": Forget  All  Researches

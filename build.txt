@@ -1,0 +1,3 @@
+displayName = Better Research
+author = Non Ame
+version = 0.1
