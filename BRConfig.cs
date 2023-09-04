@@ -8,9 +8,9 @@ namespace BetterResearch
     {
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
-        [LabelArgs(ItemID.HandOfCreation)]
+        [LabelArgs(ItemID.YoyoBag)]
         [DefaultValue(true)]
-        public bool ResearchPickup;
+        public bool ResearchInventory;
 
         [LabelArgs(ItemID.TrashCan)]
         [DefaultValue(false)]
@@ -20,6 +20,8 @@ namespace BetterResearch
         [DefaultValue(true)]
         public bool AutoResearchCraftable;
 
-
+        [LabelArgs(ItemID.BottledWater)]
+        [DefaultValue(true)]
+        public bool IgnoreCraftingConditions;
     }
 }

@@ -1,5 +1,3 @@
-using Terraria;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader;
 
 namespace BetterResearch
@@ -10,7 +8,7 @@ namespace BetterResearch
 
         public override void Load()
         {
-            ForgetBind = KeybindLoader.RegisterKeybind(this, "Forget All Researches", "P");    
+            ForgetBind = KeybindLoader.RegisterKeybind(this, "Forget All Researches", "P");
         }
 
         public override void Unload()

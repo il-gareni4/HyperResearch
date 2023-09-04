@@ -4,9 +4,9 @@ Configs: {
 	BRConfig: {
 		DisplayName: Конфиг клиента
 
-		ResearchPickup: {
-			Label: "[i:{0}] Изучать подобранные предметы"
-			Tooltip: Автоматически изучать подобранные предметы, если общее количество некоторого предмета равно или больше требуемого для изучения количества
+		ResearchInventory: {
+			// Label: "[i:{0}] Research items in the inventory"
+			// Tooltip: Automatically research items in the inventory if the total amount is equal to or more than required for research
 		}
 
 		AutoTrashResearched: {
@@ -15,8 +15,18 @@ Configs: {
 		}
 
 		AutoResearchCraftable: {
-			// Label: Auto Research Craftable
+			// Label: "[i:{0}] Auto research craftable"
 			// Tooltip: After learning a new item, all new items from already researched items will be researched. Requires researched crafting stations and compliance with custom conditions
+		}
+
+		IgnoreCraftingConditions: {
+			// Label: "[i:{0}] Ignore crafting conditions"
+			// Tooltip: Ignore crafting conditions such as being near water, Ecto Mist, etc.
+		}
+
+		ResearchItemsOnWorldEnter: {
+			// Label: "[i:{0}] Research start items on player creation"
+			// Tooltip: ""
 		}
 	}
 }
