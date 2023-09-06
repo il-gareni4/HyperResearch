@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BetterResearch.Common.GlobalItems
 {
-    class BagGlobalItem : GlobalItem
+    class LootGlobalItem : GlobalItem
     {
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {

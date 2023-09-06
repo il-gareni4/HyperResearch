@@ -14,12 +14,12 @@ namespace BetterResearch
 
         public override void Load()
         {
-            ForgetBind = KeybindLoader.RegisterKeybind(this, "Forget All Researches", "P");
+            ForgetBind = KeybindLoader.RegisterKeybind(this, "Forget All Researches", Keys.P);
             SacrificeInventoryBind = KeybindLoader.RegisterKeybind(this, "Research Inventory Items", Keys.OemComma);
             ClearResearchedBind = KeybindLoader.RegisterKeybind(this, "Clear Researched Items", Keys.OemPeriod);
             ResearchCraftableBind = KeybindLoader.RegisterKeybind(this, "Research Craftable Items", Keys.OemQuestion);
-            MaxStackBind = KeybindLoader.RegisterKeybind(this, "Max Stack Researched Item", Keys.OemComma);
-            ResearchLootBind = KeybindLoader.RegisterKeybind(this, "Research Bag/Crate Contents", Keys.OemPeriod);
+            MaxStackBind = KeybindLoader.RegisterKeybind(this, "Max Stack Researched Item", Keys.OemSemicolon);
+            ResearchLootBind = KeybindLoader.RegisterKeybind(this, "Research Bag/Crate Contents", Keys.OemQuotes);
         }
 
         public override void Unload()

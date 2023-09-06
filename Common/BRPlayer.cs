@@ -24,22 +24,20 @@ namespace BetterResearch.Common
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
             if (BetterResearch.ForgetBind.JustPressed) Player.creativeTracker.Reset();
-            if (BetterResearch.MaxStackBind.JustPressed && !Main.HoverItem.IsAir)
-            {
-                if ((Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryItem ||
-                    Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryCoin ||
-                    Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryAmmo) &&
-                    ResearchUtils.IsResearched(Main.HoverItem.type))
-                {
-                    _hoverItem.stack = Main.HoverItem.maxStack;
-                }
-            }
-            else if (BetterResearch.SacrificeInventoryBind.JustPressed) SacrificeInventory();
-            if (BetterResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir) {
-                if (ResearchUtils.IsResearched(Main.HoverItem.type)) ResearchLoot(Main.HoverItem.type);
-            }
-            else if (BetterResearch.ClearResearchedBind.JustPressed) ClearResearched();
+            if (BetterResearch.SacrificeInventoryBind.JustPressed) SacrificeInventory();
+            if (BetterResearch.ClearResearchedBind.JustPressed) ClearResearched();
             if (BetterResearch.ResearchCraftableBind.JustPressed) ResearchCraftable();
+            if (BetterResearch.MaxStackBind.JustPressed && !Main.HoverItem.IsAir &&
+                (Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryItem ||
+                Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryCoin ||
+                Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryAmmo) &&
+                ResearchUtils.IsResearched(Main.HoverItem.type))
+            {
+                _hoverItem.stack = Main.HoverItem.maxStack;
+                SoundEngine.PlaySound(SoundID.Grab);
+            }
+            if (BetterResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
+                ResearchUtils.IsResearched(Main.HoverItem.type)) ResearchLoot(Main.HoverItem.type);
 
         }
 

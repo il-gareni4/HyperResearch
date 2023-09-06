@@ -28,6 +28,7 @@ Configs: {
 		Headers: {
 			ClearSettingsHeader: Clear Settings
 			MessagesSettingsHeader: Messages Settings Header Header
+			ConsumptionSettingsHeader: Consumption Settings Header Header
 		}
 
 		ClearCoins: {
@@ -48,6 +49,41 @@ Configs: {
 		ShowResearchedCraftableItems: {
 			Label: Show Researched Craftable Items
 			Tooltip: ""
+		}
+
+		ConsumeResearchedAmmo: {
+			Label: "[i:{0}] Consume researched ammo"
+			Tooltip: ""
+		}
+
+		ConsumeResearchedBaits: {
+			Label: "[i:{0}] Consume researched baits"
+			Tooltip: ""
+		}
+
+		ConsumeResearchedBlocks: {
+			Label: "[i:{0}] Consume researched blocks"
+			Tooltip: Blocks also include walls and furniture
+		}
+
+		ConsumeResearchedThrowingWeapons: {
+			Label: "[i:{0}] Consume researched throwing weapons"
+			Tooltip: ""
+		}
+
+		ConsumeResearchedPotions: {
+			Label: "[i:{0}] Consume researched potions"
+			Tooltip: Only [i:{0}]buff, [i:{1}]heal, and [i:{2}]mana potions are included in this category. Potions like [i:{3}]Recall Potion will not be infinite
+		}
+
+		ConsumeResearchedLootItems: {
+			Label: "[i:{0}] Consume researched loot items (like bags, crates)"
+			Tooltip: ""
+		}
+
+		ConsumeOtherResearchedItems: {
+			Label: "[i:{0}] Consume other researched items"
+			Tooltip: Other items that do not fit into any of the categories above but are consumable will not be consumed once researched
 		}
 	}
 }
