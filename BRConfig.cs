@@ -24,6 +24,11 @@ namespace BetterResearch
         [DefaultValue(true)]
         public bool IgnoreCraftingConditions;
 
+        [LabelArgs(ItemID.PlatinumCoin)]
+        [TooltipArgs(ItemID.DefenderMedal)]
+        [DefaultValue(false)]
+        public bool AutoResearchShop;
+
         [Header("ClearSettingsHeader")]
 
         [LabelArgs(ItemID.GoldCoin)]

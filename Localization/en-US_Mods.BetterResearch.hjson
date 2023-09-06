@@ -23,12 +23,26 @@ Configs: {
 
 		AutoResearchCraftable: {
 			Label: "[i:{0}] Auto research craftable"
-			Tooltip: After learning a new item, all new items from already researched items will be researched. Requires researched crafting stations and compliance with custom conditions
+			Tooltip:
+				'''
+				After learning a new item, all new items from already researched items will be researched. 
+				Requires researched crafting stations and compliance with custom conditions.
+				'''
 		}
 
 		IgnoreCraftingConditions: {
 			Label: "[i:{0}] Ignore crafting conditions"
 			Tooltip: Ignore crafting conditions such as being near water, Ecto Mist, etc.
+		}
+
+		AutoResearchShop: {
+			Label: "[i:{0}] Auto research the content of NPCs shops"
+			Tooltip:
+				'''
+				When opening a shop, reseaches everything that the NPC is currently selling.
+				To research some items, you need to research the corresponding currency (for example, [i:{0}]Defender Medals).
+				By default, the shop is reseached by pressing the key specified in the control settings
+				'''
 		}
 
 		ClearCoins: {

@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
+using Terraria.GameContent.UI;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -18,9 +20,9 @@ namespace BetterResearch.Common
         /// Same as <see cref="Main.HoverItem"/> but not cloned
         /// </summary>
         private Item _hoverItem = new();
+        public readonly Dictionary<int, int> ResearchedTiles = new();
 
         public Item[] CurrentShopItems { get; set; } = Array.Empty<Item>();
-        public readonly Dictionary<int, int> ResearchedTiles = new();
 
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
@@ -44,8 +46,7 @@ namespace BetterResearch.Common
             if (BetterResearch.ResearchShopBind.JustPressed && Player.TalkNPC is not null &&
                 Main.npcShop > 0 && CurrentShopItems.Length > 0)
             {
-                if (TryResearchAndMessage(CurrentShopItems.Select(item => item.type)))
-                    SoundEngine.PlaySound(SoundID.ResearchComplete);
+                ResearchShop(CurrentShopItems);
             }
         }
 
@@ -155,6 +156,32 @@ namespace BetterResearch.Common
 
             return true;
         }
+        public void ResearchShop(Item[] shop)
+        {
+            List<int> toResearch = new();
+            foreach (Item item in shop)
+            {
+                if (item == null || item.IsAir) continue;
+                if (item.shopSpecialCurrency != -1 && item.shopCustomPrice is not null &&
+                    CustomCurrencyManager.TryGetCurrencySystem(item.shopSpecialCurrency, out CustomCurrencySystem system))
+                {
+                    // Use reflection to get a protected field that stores the item's ID and its local cost
+                    FieldInfo info = system.GetType().GetField("_valuePerUnit", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (info is null) continue;
+
+                    Dictionary<int, int> currencyItems = (Dictionary<int, int>)info.GetValue(system);
+                    if (currencyItems.Any(itemWorth => ResearchUtils.IsResearched(itemWorth.Key)))
+                        toResearch.Add(item.type);
+                }
+                else
+                {
+                    bool anyCoinReseached = (new List<int>() { ItemID.CopperCoin, ItemID.SilverCoin, ItemID.GoldCoin, ItemID.PlatinumCoin }).Any(ResearchUtils.IsResearched);
+                    if (anyCoinReseached) toResearch.Add(item.type);
+                }
+            }
+
+            if (TryResearchAndMessage(toResearch)) SoundEngine.PlaySound(SoundID.ResearchComplete);
+        }
 
         private void AddToResearchedTiles(int tileID)
         {
@@ -184,5 +211,6 @@ namespace BetterResearch.Common
             TextUtils.MessageResearchedCraftable(craftable);
             return researched.Count > 0;
         }
+
     }
 }
