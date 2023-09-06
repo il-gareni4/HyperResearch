@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using BetterResearch.Utils;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
 
@@ -23,5 +24,23 @@ namespace BetterResearch
         [LabelArgs(ItemID.BottledWater)]
         [DefaultValue(true)]
         public bool IgnoreCraftingConditions;
+
+        [Header("ClearSettingsHeader")]
+
+        [LabelArgs(ItemID.GoldCoin)]
+        [DefaultValue(false)]
+        public bool ClearCoins;
+
+        [LabelArgs(ItemID.WoodenArrow)]
+        [DefaultValue(true)]
+        public bool ClearAmmo;
+
+        [Header("MessagesSettingsHeader")]
+
+        [DefaultValue(true)]
+        public bool ShowNewlyResearchedItems;
+
+        [DefaultValue(true)]
+        public bool ShowResearchedCraftableItems;
     }
 }

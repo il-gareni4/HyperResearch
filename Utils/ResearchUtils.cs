@@ -5,14 +5,37 @@ using System.Linq;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace BetterResearch.Utils
 {
     public static class ResearchUtils
     {
-        public static bool TryResearchItem(int itemId, int itemCount, out List<int> researchedCraftable) {
+
+        /// <param name="researchedCraftable">Auto-researched crafting items</param>
+        public static CreativeUI.ItemSacrificeResult SacrificeItem(Item item, out List<int> researchedCraftable)
+        {
             researchedCraftable = new();
-            if (!CanBeResearched(itemId) || IsResearched(itemId)) return false;
+            CreativeUI.ItemSacrificeResult result = CreativeUI.SacrificeItem(item, out int _);
+            if (
+                ModContent.GetInstance<BRConfig>().AutoResearchCraftable &&
+                result == CreativeUI.ItemSacrificeResult.SacrificedAndDone
+            ) researchedCraftable = ResearchCraftable();
+            return result;
+        }
+
+        /// <summary>
+        /// Tries to learn an item with an ID (<paramref name="itemId"/>) and a count (<paramref name="itemCount"/>). 
+        /// If the number of items is not enough to research, then it does nothing, otherwise it researches the item 
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="itemCount"></param>
+        /// <param name="researchedCraftable">Auto-researched crafting items</param>
+        /// <returns>Whether an item has been researched</returns>
+        public static bool TryResearchItem(int itemId, int itemCount, out List<int> researchedCraftable)
+        {
+            researchedCraftable = new();
+            if (!IsResearchable(itemId) || IsResearched(itemId)) return false;
 
             int remaining = (int)CreativeUI.GetSacrificesRemaining(itemId);
             if (remaining <= itemCount) researchedCraftable = ResearchItem(itemId);
@@ -34,7 +57,7 @@ namespace BetterResearch.Utils
             return remaining.HasValue && remaining.Value == 0;
         }
 
-        public static bool CanBeResearched(int itemId)
+        public static bool IsResearchable(int itemId)
         {
             int? remaining = CreativeUI.GetSacrificesRemaining(itemId);
             return remaining.HasValue;
@@ -55,7 +78,7 @@ namespace BetterResearch.Utils
                 newItemResearched = false;
                 foreach (Recipe recipe in Main.recipe)
                 {
-                    if (!CanBeResearched(recipe.createItem.type) || IsResearched(recipe.createItem.type)) continue;
+                    if (!IsResearchable(recipe.createItem.type) || IsResearched(recipe.createItem.type)) continue;
 
                     bool allRecipeGroupsResearched = recipe.acceptedGroups.All((recipeGroupId) =>
                         RecipeGroup.recipeGroups[recipeGroupId].ValidItems.Any(IsResearched)
@@ -71,7 +94,7 @@ namespace BetterResearch.Utils
                     bool allConidtionsAreMet = config.IgnoreCraftingConditions || recipe.Conditions.All(condition => condition.IsMet());
                     if (!allConidtionsAreMet) continue;
 
-                    newItemResearched = newItemResearched || recipe.createItem.material || recipe.createItem.createTile >= 0;
+                    newItemResearched = newItemResearched || recipe.createItem.material || recipe.createItem.createTile >= TileID.Dirt;
                     ResearchItem(recipe.createItem.type, false);
                     itemsResearched.Add(recipe.createItem.type);
                 }

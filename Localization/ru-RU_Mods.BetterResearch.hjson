@@ -24,11 +24,38 @@ Configs: {
 			// Tooltip: Ignore crafting conditions such as being near water, Ecto Mist, etc.
 		}
 
-		ResearchItemsOnWorldEnter: {
-			// Label: "[i:{0}] Research start items on player creation"
+		Headers: {
+			// ClearSettingsHeader: Clear Settings
+			// MessagesSettingsHeader: Messages Settings Header Header
+		}
+
+		ClearCoins: {
+			// Label: "[i:{0}] Clear coins slots on Clear Researched key"
+			// Tooltip: ""
+		}
+
+		ClearAmmo: {
+			// Label: "[i:{0}] Clear ammo slots on Clear Researched key"
+			// Tooltip: ""
+		}
+
+		ShowNewlyResearchedItems: {
+			// Label: Show Newly Researched Items
+			// Tooltip: ""
+		}
+
+		ShowResearchedCraftableItems: {
+			// Label: Show Researched Craftable Items
 			// Tooltip: ""
 		}
 	}
 }
 
-// "Keybinds.Forget All Researches.DisplayName": Forget  All  Researches
+Keybinds: {
+	// "Forget All Researches.DisplayName": Forget  All  Researches
+	// "Research Inventory Items.DisplayName": Research  Inventory  Items
+	// "Clear Researched Item.DisplayName": Clear  Researched  Item
+	// "Research Craftable Items.DisplayName": Research  Craftable  Items
+	// "Clear Researched Items.DisplayName": Clear  Researched  Items
+	// "Max Stack Researched Item.DisplayName": Max  Stack  Researched  Item
+}
