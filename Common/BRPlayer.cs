@@ -35,7 +35,10 @@ namespace BetterResearch.Common
                 }
             }
             else if (BetterResearch.SacrificeInventoryBind.JustPressed) SacrificeInventory();
-            if (BetterResearch.ClearResearchedBind.JustPressed) ClearResearched();
+            if (BetterResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir) {
+                if (ResearchUtils.IsResearched(Main.HoverItem.type)) ResearchLoot(Main.HoverItem.type);
+            }
+            else if (BetterResearch.ClearResearchedBind.JustPressed) ClearResearched();
             if (BetterResearch.ResearchCraftableBind.JustPressed) ResearchCraftable();
 
         }
@@ -137,6 +140,15 @@ namespace BetterResearch.Common
             List<int> researchedItems = ResearchUtils.ResearchCraftable();
             TextUtils.MessageResearchedCraftable(researchedItems);
             if (researchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
+        }
+
+        public void ResearchLoot(int itemId) {
+            if (!ItemsUtils.IsLootItem(itemId)) return;
+            IEnumerable<int> items = ItemsUtils.GetItemLoot(itemId);
+            List<int> researched = ResearchUtils.ResearchItems(items, out List<int> craftable);
+            TextUtils.MessageResearched(researched);
+            TextUtils.MessageResearchedCraftable(craftable);
+            if (researched.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
         public bool TryAddToResearchedTiles(int itemId)

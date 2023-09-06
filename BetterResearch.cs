@@ -10,6 +10,7 @@ namespace BetterResearch
         public static ModKeybind ClearResearchedBind { get; set; }
         public static ModKeybind ResearchCraftableBind { get; set; }
         public static ModKeybind MaxStackBind { get; set; }
+        public static ModKeybind ResearchLootBind { get; set; }
 
         public override void Load()
         {
@@ -18,6 +19,7 @@ namespace BetterResearch
             ClearResearchedBind = KeybindLoader.RegisterKeybind(this, "Clear Researched Items", Keys.OemPeriod);
             ResearchCraftableBind = KeybindLoader.RegisterKeybind(this, "Research Craftable Items", Keys.OemQuestion);
             MaxStackBind = KeybindLoader.RegisterKeybind(this, "Max Stack Researched Item", Keys.OemComma);
+            ResearchLootBind = KeybindLoader.RegisterKeybind(this, "Research Bag/Crate Contents", Keys.OemPeriod);
         }
 
         public override void Unload()
@@ -27,6 +29,7 @@ namespace BetterResearch
             ClearResearchedBind = null;
             ResearchCraftableBind = null;
             MaxStackBind = null;
+            ResearchLootBind = null;
         }
     }
 }

@@ -51,6 +51,20 @@ namespace BetterResearch.Utils
             else return new List<int>();
         }
 
+        /// <param name="items">Items to research</param>
+        /// <param name="researchedCraftable">Auto-researched crafting items</param>
+        /// <returns>List of researched items (not include already researched items)</returns>
+        public static List<int> ResearchItems(IEnumerable<int> items, out List<int> researchedCraftable) {
+            List<int> researched = new(); 
+            researchedCraftable = new();
+            foreach (int itemId in items) {
+                if (IsResearched(itemId)) continue;
+                researched.Add(itemId);
+                researchedCraftable.AddRange(ResearchItem(itemId));
+            }
+            return researched;
+        }
+
         public static bool IsResearched(int itemId)
         {
             int? remaining = CreativeUI.GetSacrificesRemaining(itemId);

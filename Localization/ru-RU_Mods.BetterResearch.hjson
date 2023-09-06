@@ -1,4 +1,5 @@
 Messages.Researched: Изучено
+// Tooltips.ResearchLoot: Research all loot (excluding global) with {0} key
 
 Configs: {
 	BRConfig: {
@@ -58,4 +59,5 @@ Keybinds: {
 	// "Research Craftable Items.DisplayName": Research  Craftable  Items
 	// "Clear Researched Items.DisplayName": Clear  Researched  Items
 	// "Max Stack Researched Item.DisplayName": Max  Stack  Researched  Item
+	// "Research Bag/Crate Contents.DisplayName": Research  Bag/Crate  Contents
 }
