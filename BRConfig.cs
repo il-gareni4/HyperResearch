@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using BetterResearch.Utils;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
 
@@ -47,11 +46,11 @@ namespace BetterResearch
 
         [LabelArgs(ItemID.EndlessMusketPouch)]
         [DefaultValue(false)]
-        public bool ConsumeResearchedAmmo;  
+        public bool ConsumeResearchedAmmo;
 
         [LabelArgs(ItemID.GoldWorm)]
         [DefaultValue(false)]
-        public bool ConsumeResearchedBaits;  
+        public bool ConsumeResearchedBaits;
 
         [LabelArgs(ItemID.StoneSlab)]
         [DefaultValue(false)]

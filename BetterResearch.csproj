@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
-    <AssemblyName>BetterResearch</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
+	<AssemblyName>BetterResearch</AssemblyName>
+	<TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

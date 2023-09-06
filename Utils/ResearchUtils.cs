@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.GameContent.Creative;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BetterResearch.Utils
 {
@@ -25,7 +25,21 @@ namespace BetterResearch.Utils
         }
 
         /// <summary>
-        /// Tries to learn an item with an ID (<paramref name="itemId"/>) and a count (<paramref name="itemCount"/>). 
+        /// Tries to research an item with an ID (<paramref name="itemId"/>).
+        /// If the item has already been reseached (or it's unresearchable), then the function returns false
+        /// </summary>
+        /// <param name="researchedCraftable">Auto-researched crafting items</param>
+        /// <returns>Whether the item has been researched</returns>
+        public static bool TryResearchItem(int itemId, out List<int> researchedCraftable)
+        {
+            researchedCraftable = new();
+            if (!IsResearchable(itemId) || IsResearched(itemId)) return false;
+            else researchedCraftable = ResearchItem(itemId);
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to research an item with an ID (<paramref name="itemId"/>) and a count (<paramref name="itemCount"/>). 
         /// If the number of items is not enough to research, then it does nothing, otherwise it researches the item 
         /// </summary>
         /// <param name="itemId"></param>
@@ -54,13 +68,17 @@ namespace BetterResearch.Utils
         /// <param name="items">Items to research</param>
         /// <param name="researchedCraftable">Auto-researched crafting items</param>
         /// <returns>List of researched items (not include already researched items)</returns>
-        public static List<int> ResearchItems(IEnumerable<int> items, out List<int> researchedCraftable) {
-            List<int> researched = new(); 
+        public static List<int> ResearchItems(IEnumerable<int> items, out List<int> researchedCraftable)
+        {
+            List<int> researched = new();
             researchedCraftable = new();
-            foreach (int itemId in items) {
-                if (IsResearched(itemId)) continue;
-                researched.Add(itemId);
-                researchedCraftable.AddRange(ResearchItem(itemId));
+            foreach (int itemId in items)
+            {
+                if (TryResearchItem(itemId, out List<int> craftable))
+                {
+                    researched.Add(itemId);
+                    researchedCraftable.AddRange(craftable);
+                }
             }
             return researched;
         }

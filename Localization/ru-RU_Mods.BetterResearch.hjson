@@ -5,6 +5,12 @@ Configs: {
 	BRConfig: {
 		DisplayName: Конфиг клиента
 
+		Headers: {
+			// ClearSettingsHeader: Clear Settings
+			// MessagesSettingsHeader: Messages Settings
+			// ConsumptionSettingsHeader: Consumption Settings
+		}
+
 		ResearchInventory: {
 			// Label: "[i:{0}] Research items in the inventory"
 			// Tooltip: Automatically research items in the inventory if the total amount is equal to or more than required for research
@@ -23,12 +29,6 @@ Configs: {
 		IgnoreCraftingConditions: {
 			// Label: "[i:{0}] Ignore crafting conditions"
 			// Tooltip: Ignore crafting conditions such as being near water, Ecto Mist, etc.
-		}
-
-		Headers: {
-			// ClearSettingsHeader: Clear Settings
-			// MessagesSettingsHeader: Messages Settings Header Header
-			// ConsumptionSettingsHeader: Consumption Settings Header Header
 		}
 
 		ClearCoins: {
@@ -96,4 +96,5 @@ Keybinds: {
 	// "Clear Researched Items.DisplayName": Clear  Researched  Items
 	// "Max Stack Researched Item.DisplayName": Max  Stack  Researched  Item
 	// "Research Bag/Crate Contents.DisplayName": Research  Bag/Crate  Contents
+	// "Research Shop.DisplayName": Research  Shop
 }

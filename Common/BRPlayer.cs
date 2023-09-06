@@ -1,15 +1,14 @@
 ﻿using BetterResearch.Utils;
-using FullSerializer;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.UI;
-using tModPorter;
 
 namespace BetterResearch.Common
 {
@@ -19,11 +18,15 @@ namespace BetterResearch.Common
         /// Same as <see cref="Main.HoverItem"/> but not cloned
         /// </summary>
         private Item _hoverItem = new();
+
+        public Item[] CurrentShopItems { get; set; } = Array.Empty<Item>();
         public readonly Dictionary<int, int> ResearchedTiles = new();
 
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
+#if DEBUG
             if (BetterResearch.ForgetBind.JustPressed) Player.creativeTracker.Reset();
+#endif
             if (BetterResearch.SacrificeInventoryBind.JustPressed) SacrificeInventory();
             if (BetterResearch.ClearResearchedBind.JustPressed) ClearResearched();
             if (BetterResearch.ResearchCraftableBind.JustPressed) ResearchCraftable();
@@ -38,7 +41,12 @@ namespace BetterResearch.Common
             }
             if (BetterResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
                 ResearchUtils.IsResearched(Main.HoverItem.type)) ResearchLoot(Main.HoverItem.type);
-
+            if (BetterResearch.ResearchShopBind.JustPressed && Player.TalkNPC is not null &&
+                Main.npcShop > 0 && CurrentShopItems.Length > 0)
+            {
+                if (TryResearchAndMessage(CurrentShopItems.Select(item => item.type)))
+                    SoundEngine.PlaySound(SoundID.ResearchComplete);
+            }
         }
 
         public override void OnEnterWorld()
@@ -133,22 +141,6 @@ namespace BetterResearch.Common
             if (anyItemCleaned) SoundEngine.PlaySound(SoundID.Grab);
         }
 
-        public void ResearchCraftable()
-        {
-            List<int> researchedItems = ResearchUtils.ResearchCraftable();
-            TextUtils.MessageResearchedCraftable(researchedItems);
-            if (researchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
-        }
-
-        public void ResearchLoot(int itemId) {
-            if (!ItemsUtils.IsLootItem(itemId)) return;
-            IEnumerable<int> items = ItemsUtils.GetItemLoot(itemId);
-            List<int> researched = ResearchUtils.ResearchItems(items, out List<int> craftable);
-            TextUtils.MessageResearched(researched);
-            TextUtils.MessageResearchedCraftable(craftable);
-            if (researched.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
-        }
-
         public bool TryAddToResearchedTiles(int itemId)
         {
             if (!ContentSamples.ItemsByType.ContainsKey(itemId)) return false;
@@ -156,11 +148,10 @@ namespace BetterResearch.Common
             Item item = ContentSamples.ItemsByType[itemId];
             if (item.createTile < TileID.Dirt || !ResearchUtils.IsResearched(itemId)) return false;
 
+            AddToResearchedTiles(item.createTile);
             ModTile t = TileLoader.GetTile(item.createTile);
             if (t != null)
                 foreach (int adj in t.AdjTiles) AddToResearchedTiles(adj);
-            else
-                AddToResearchedTiles(item.createTile);
 
             return true;
         }
@@ -171,5 +162,27 @@ namespace BetterResearch.Common
             ResearchedTiles[tileID] = count + 1;
         }
 
+        public static void ResearchCraftable()
+        {
+            List<int> researchedItems = ResearchUtils.ResearchCraftable();
+            TextUtils.MessageResearchedCraftable(researchedItems);
+            if (researchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
+        }
+
+        public static void ResearchLoot(int itemId)
+        {
+            if (!ItemsUtils.IsLootItem(itemId)) return;
+
+            IEnumerable<int> items = ItemsUtils.GetItemLoot(itemId);
+            if (TryResearchAndMessage(items)) SoundEngine.PlaySound(SoundID.ResearchComplete);
+        }
+
+        private static bool TryResearchAndMessage(IEnumerable<int> items)
+        {
+            List<int> researched = ResearchUtils.ResearchItems(items, out List<int> craftable);
+            TextUtils.MessageResearched(researched);
+            TextUtils.MessageResearchedCraftable(craftable);
+            return researched.Count > 0;
+        }
     }
 }
