@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Terraria.ModLoader;
 
-namespace BetterResearch.Utils
+namespace HyperResearch.Utils
 {
     public static class InputUtils
     {

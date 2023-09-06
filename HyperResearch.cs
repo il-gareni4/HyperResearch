@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework.Input;
 using Terraria.ModLoader;
 
-namespace BetterResearch
+namespace HyperResearch
 {
-    public class BetterResearch : Mod
+    public class HyperResearch : Mod
     {
 #if DEBUG
         public static ModKeybind ForgetBind { get; set; }

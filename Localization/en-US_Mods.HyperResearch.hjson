@@ -2,7 +2,7 @@ Messages.Researched: Researched
 Tooltips.ResearchLoot: Press {0} to research all loot (excluding global)
 
 Configs: {
-	BRConfig: {
+	HyperConfig: {
 		DisplayName: Client config
 
 		Headers: {

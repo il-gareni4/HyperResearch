@@ -1,5 +1,5 @@
 ﻿
-using BetterResearch.Common;
+using HyperResearch.Common;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -7,7 +7,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BetterResearch.Utils
+namespace HyperResearch.Utils
 {
     public static class ResearchUtils
     {
@@ -18,7 +18,7 @@ namespace BetterResearch.Utils
             researchedCraftable = new();
             CreativeUI.ItemSacrificeResult result = CreativeUI.SacrificeItem(item, out int _);
             if (
-                ModContent.GetInstance<BRConfig>().AutoResearchCraftable &&
+                ModContent.GetInstance<HyperConfig>().AutoResearchCraftable &&
                 result == CreativeUI.ItemSacrificeResult.SacrificedAndDone
             ) researchedCraftable = ResearchCraftable();
             return result;
@@ -60,8 +60,8 @@ namespace BetterResearch.Utils
         public static List<int> ResearchItem(int itemId, bool researchCraftable = true)
         {
             CreativeUI.ResearchItem(itemId);
-            Main.LocalPlayer.GetModPlayer<BRPlayer>().TryAddToResearchedTiles(itemId);
-            if (researchCraftable && ModContent.GetInstance<BRConfig>().AutoResearchCraftable) return ResearchCraftable();
+            Main.LocalPlayer.GetModPlayer<HyperPlayer>().TryAddToResearchedTiles(itemId);
+            if (researchCraftable && ModContent.GetInstance<HyperConfig>().AutoResearchCraftable) return ResearchCraftable();
             else return new List<int>();
         }
 
@@ -97,12 +97,12 @@ namespace BetterResearch.Utils
 
         public static bool IsTileResearched(int tileId)
         {
-            return Main.LocalPlayer.GetModPlayer<BRPlayer>().ResearchedTiles.ContainsKey(tileId);
+            return Main.LocalPlayer.GetModPlayer<HyperPlayer>().ResearchedTiles.ContainsKey(tileId);
         }
 
         public static List<int> ResearchCraftable()
         {
-            BRConfig config = ModContent.GetInstance<BRConfig>();
+            HyperConfig config = ModContent.GetInstance<HyperConfig>();
             List<int> itemsResearched = new();
             bool newItemResearched = true;
             while (newItemResearched)

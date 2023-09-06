@@ -1,4 +1,4 @@
-﻿using BetterResearch.Utils;
+﻿using HyperResearch.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace BetterResearch.Common
+namespace HyperResearch.Common
 {
-    public class BRPlayer : ModPlayer
+    public class HyperPlayer : ModPlayer
     {
         /// <summary>
         /// Same as <see cref="Main.HoverItem"/> but not cloned
@@ -27,12 +27,12 @@ namespace BetterResearch.Common
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
 #if DEBUG
-            if (BetterResearch.ForgetBind.JustPressed) Player.creativeTracker.Reset();
+            if (HyperResearch.ForgetBind.JustPressed) Player.creativeTracker.Reset();
 #endif
-            if (BetterResearch.SacrificeInventoryBind.JustPressed) SacrificeInventory();
-            if (BetterResearch.ClearResearchedBind.JustPressed) ClearResearched();
-            if (BetterResearch.ResearchCraftableBind.JustPressed) ResearchCraftable();
-            if (BetterResearch.MaxStackBind.JustPressed && !Main.HoverItem.IsAir &&
+            if (HyperResearch.SacrificeInventoryBind.JustPressed) SacrificeInventory();
+            if (HyperResearch.ClearResearchedBind.JustPressed) ClearResearched();
+            if (HyperResearch.ResearchCraftableBind.JustPressed) ResearchCraftable();
+            if (HyperResearch.MaxStackBind.JustPressed && !Main.HoverItem.IsAir &&
                 (Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryItem ||
                 Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryCoin ||
                 Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryAmmo) &&
@@ -41,9 +41,9 @@ namespace BetterResearch.Common
                 _hoverItem.stack = Main.HoverItem.maxStack;
                 SoundEngine.PlaySound(SoundID.Grab);
             }
-            if (BetterResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
+            if (HyperResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
                 ResearchUtils.IsResearched(Main.HoverItem.type)) ResearchLoot(Main.HoverItem.type);
-            if (BetterResearch.ResearchShopBind.JustPressed && Player.TalkNPC is not null &&
+            if (HyperResearch.ResearchShopBind.JustPressed && Player.TalkNPC is not null &&
                 Main.npcShop > 0 && CurrentShopItems.Length > 0)
             {
                 ResearchShop(CurrentShopItems);
@@ -60,7 +60,7 @@ namespace BetterResearch.Common
 
         public override void PostUpdate()
         {
-            if (ModContent.GetInstance<BRConfig>().ResearchInventory) ResearchInventory();
+            if (ModContent.GetInstance<HyperConfig>().ResearchInventory) ResearchInventory();
         }
 
         public override bool HoverSlot(Item[] inventory, int context, int slot)
@@ -97,7 +97,7 @@ namespace BetterResearch.Common
 
         public void SacrificeInventory()
         {
-            BRConfig config = ModContent.GetInstance<BRConfig>();
+            HyperConfig config = ModContent.GetInstance<HyperConfig>();
 
             bool anyItemSacrificed = false;
             List<int> researchedItems = new();
@@ -125,7 +125,7 @@ namespace BetterResearch.Common
 
         public void ClearResearched()
         {
-            BRConfig config = ModContent.GetInstance<BRConfig>();
+            HyperConfig config = ModContent.GetInstance<HyperConfig>();
 
             bool anyItemCleaned = false;
             for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)

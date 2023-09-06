@@ -3,7 +3,7 @@ using System.Linq;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 
-namespace BetterResearch.Utils
+namespace HyperResearch.Utils
 {
     public static class ItemsUtils
     {

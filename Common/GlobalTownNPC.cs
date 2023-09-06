@@ -1,15 +1,15 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace BetterResearch.Common
+namespace HyperResearch.Common
 {
     public class GlobalTownNPC : GlobalNPC
     {
         public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
         {
-            BRPlayer modPlayer = Main.LocalPlayer.GetModPlayer<BRPlayer>();
+            HyperPlayer modPlayer = Main.LocalPlayer.GetModPlayer<HyperPlayer>();
             modPlayer.CurrentShopItems = items;
-            if (ModContent.GetInstance<BRConfig>().AutoResearchShop) modPlayer.ResearchShop(items);
+            if (ModContent.GetInstance<HyperConfig>().AutoResearchShop) modPlayer.ResearchShop(items);
             base.ModifyActiveShop(npc, shopName, items);
         }
     }

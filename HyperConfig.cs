@@ -2,9 +2,9 @@
 using Terraria.ID;
 using Terraria.ModLoader.Config;
 
-namespace BetterResearch
+namespace HyperResearch
 {
-    public class BRConfig : ModConfig
+    public class HyperConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
@@ -26,7 +26,7 @@ namespace BetterResearch
 
         [LabelArgs(ItemID.PlatinumCoin)]
         [TooltipArgs(ItemID.DefenderMedal)]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         public bool AutoResearchShop;
 
         [Header("ClearSettingsHeader")]

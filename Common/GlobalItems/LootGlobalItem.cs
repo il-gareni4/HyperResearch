@@ -1,10 +1,10 @@
-using BetterResearch.Utils;
+using HyperResearch.Utils;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace BetterResearch.Common.GlobalItems
+namespace HyperResearch.Common.GlobalItems
 {
     class LootGlobalItem : GlobalItem
     {
@@ -14,8 +14,8 @@ namespace BetterResearch.Common.GlobalItems
                 !ItemLoader.CanRightClick(item) ||
                 Main.ItemDropsDB.GetRulesForItemID(item.type).Count == 0) return;
 
-            string keybindStr = InputUtils.GetKeybindString(BetterResearch.ResearchLootBind);
-            TooltipLine tooltipLine = new(Mod, "ResearchLoot", Language.GetText("Mods.BetterResearch.Tooltips.ResearchLoot").Format(keybindStr))
+            string keybindStr = InputUtils.GetKeybindString(HyperResearch.ResearchLootBind);
+            TooltipLine tooltipLine = new(Mod, "ResearchLoot", Language.GetText("Mods.HyperResearch.Tooltips.ResearchLoot").Format(keybindStr))
             {
                 OverrideColor = Terraria.ID.Colors.JourneyMode
             };
