@@ -20,8 +20,13 @@ namespace HyperResearch.Common
         /// Same as <see cref="Main.HoverItem"/> but not cloned
         /// </summary>
         private Item _hoverItem = new();
+
+        /// <summary>Dictionary of researched tiles (contains <c>TileId</c> as Keys). 
+        /// If Value > 0 then tile is researched </summary> 
+        /// <seealso cref="ResearchUtils.IsTileResearched(int)"/>
         public readonly Dictionary<int, int> ResearchedTiles = new();
 
+        /// <summary>Array of items in current shop. Used for <see cref="HyperResearch.ResearchShopBind"/></summary>
         public Item[] CurrentShopItems { get; set; } = Array.Empty<Item>();
 
         public override void ProcessTriggers(TriggersSet triggersSet)
@@ -32,7 +37,7 @@ namespace HyperResearch.Common
 #endif
             if (HyperResearch.SacrificeInventoryBind.JustPressed) SacrificeInventory();
             if (HyperResearch.ClearResearchedBind.JustPressed) ClearResearched();
-            if (HyperResearch.ResearchCraftableBind.JustPressed) ResearchCraftable();
+            if (HyperResearch.ResearchCraftableBind.JustPressed) ResearchAndMessageCraftable();
             if (HyperResearch.MaxStackBind.JustPressed && !Main.HoverItem.IsAir &&
                 (Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryItem ||
                 Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryCoin ||
@@ -43,7 +48,7 @@ namespace HyperResearch.Common
                 SoundEngine.PlaySound(SoundID.Grab);
             }
             if (HyperResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
-                ResearchUtils.IsResearched(Main.HoverItem.type)) ResearchLoot(Main.HoverItem.type);
+                ResearchUtils.IsResearched(Main.HoverItem.type)) ResearchAndMessageLoot(Main.HoverItem.type);
             if (HyperResearch.ResearchShopBind.JustPressed && Player.TalkNPC is not null &&
                 Main.npcShop > 0 && CurrentShopItems.Length > 0)
             {
@@ -73,8 +78,14 @@ namespace HyperResearch.Common
             return base.HoverSlot(inventory, context, slot);
         }
 
+        /// <summary>
+        /// Automatically research items in the inventory if the total amount is equal to or more than required for research
+        /// If number of items is not enough then it does nothing
+        /// </summary>
         public void ResearchInventory()
         {
+            // Counting every item into a single dictionary
+            // Used so that items of the same type and different slots are counted together
             Dictionary<int, int> items = new();
             for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
             {
@@ -99,6 +110,9 @@ namespace HyperResearch.Common
             if (researchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
+        /// <summary>
+        /// Sacrifices every unresearched item in the inventory  
+        /// </summary>
         public void SacrificeInventory()
         {
             HyperConfig config = ModContent.GetInstance<HyperConfig>();
@@ -146,6 +160,10 @@ namespace HyperResearch.Common
             if (anyItemCleaned) SoundEngine.PlaySound(SoundID.Grab);
         }
 
+        /// <summary>
+        /// Tries to add to the <see cref="ResearchedTiles"/> the <see cref="Tile.TileType"/> that this item with <paramref name="itemId"/> places
+        /// </summary>
+        /// <returns>Has any tile been added to the <see cref="ResearchedTiles"/></returns>
         public bool TryAddToResearchedTiles(int itemId)
         {
             if (!ContentSamples.ItemsByType.ContainsKey(itemId)) return false;
@@ -160,6 +178,12 @@ namespace HyperResearch.Common
 
             return true;
         }
+
+        /// <summary>
+        /// Researches the <paramref name="shop"/>. 
+        /// If the currency for which the item is being sold has not been researched then the item is skipped
+        /// </summary>
+        /// <param name="shop">Array of shop items</param>
         public void ResearchShop(Item[] shop)
         {
             List<int> toResearch = new();
@@ -179,7 +203,7 @@ namespace HyperResearch.Common
                 }
                 else
                 {
-                    bool anyCoinReseached = (new List<int>() { ItemID.CopperCoin, ItemID.SilverCoin, ItemID.GoldCoin, ItemID.PlatinumCoin }).Any(ResearchUtils.IsResearched);
+                    bool anyCoinReseached = new List<int>() { ItemID.CopperCoin, ItemID.SilverCoin, ItemID.GoldCoin, ItemID.PlatinumCoin }.Any(ResearchUtils.IsResearched);
                     if (anyCoinReseached) toResearch.Add(item.type);
                 }
             }
@@ -193,14 +217,14 @@ namespace HyperResearch.Common
             ResearchedTiles[tileID] = count + 1;
         }
 
-        public static void ResearchCraftable()
+        public static void ResearchAndMessageCraftable()
         {
             List<int> researchedItems = ResearchUtils.ResearchCraftable();
             TextUtils.MessageResearchedCraftable(researchedItems);
             if (researchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
-        public static void ResearchLoot(int itemId)
+        public static void ResearchAndMessageLoot(int itemId)
         {
             if (!ItemsUtils.IsLootItem(itemId)) return;
 
@@ -208,6 +232,7 @@ namespace HyperResearch.Common
             if (TryResearchAndMessage(items)) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
+        /// <returns>Has any items been researched</returns>
         private static bool TryResearchAndMessage(IEnumerable<int> items)
         {
             List<int> researched = ResearchUtils.ResearchItems(items, out List<int> craftable);

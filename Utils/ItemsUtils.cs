@@ -5,6 +5,9 @@ using Terraria.GameContent.ItemDropRules;
 
 namespace HyperResearch.Utils
 {
+
+    /// <summary>A utility class whose functions are directly related to items in the game</summary>
+    /// <seealso cref="Item"/>
     public static class ItemsUtils
     {
         /// <summary>

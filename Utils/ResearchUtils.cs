@@ -3,12 +3,14 @@ using HyperResearch.Common;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace HyperResearch.Utils
 {
+    /// <summary>Utility class that contains all the methods related to the research and sacrification of items</summary>
     public static class ResearchUtils
     {
 
@@ -26,7 +28,7 @@ namespace HyperResearch.Utils
 
         /// <summary>
         /// Tries to research an item with an ID (<paramref name="itemId"/>).
-        /// If the item has already been reseached (or it's unresearchable), then the function returns false
+        /// If the item has already been researched (or it's unresearchable), then the function returns false
         /// </summary>
         /// <param name="researchedCraftable">Auto-researched crafting items</param>
         /// <returns>Whether the item has been researched</returns>
@@ -57,6 +59,10 @@ namespace HyperResearch.Utils
             return true;
         }
 
+        /// <summary>
+        /// Researches the item without preliminary checks
+        /// </summary>
+        /// <returns>Researched crafting items</returns>
         public static List<int> ResearchItem(int itemId, bool researchCraftable = true)
         {
             CreativeUI.ResearchItem(itemId);
