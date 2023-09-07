@@ -45,6 +45,11 @@ Configs: {
 				'''
 		}
 
+		UseCustomResearchTooltip: {
+			Label: "[i:{0}] Use custom research tooltip"
+			Tooltip: Unlike the vanilla tooltip, the custom tooltip will show up everywhere when hovering over an item (include other mods)
+		}
+
 		ClearCoins: {
 			Label: "[i:{0}] Clear coins slots on Clear Researched key"
 			Tooltip: ""

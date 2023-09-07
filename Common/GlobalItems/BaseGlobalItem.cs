@@ -1,5 +1,7 @@
 ﻿using HyperResearch.Utils;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -40,6 +42,21 @@ namespace HyperResearch.Common
                     return false;
             }
             return base.ConsumeItem(item, player);
+        }
+
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            if (Main.GameMode != 3 || !ModContent.GetInstance<HyperConfig>().UseCustomResearchTooltip) return;
+            if (ResearchUtils.IsResearched(item.type) || !ResearchUtils.IsResearchable(item.type)) return;
+
+            int remaining = (int)CreativeUI.GetSacrificesRemaining(item.type);
+            TooltipLine hyperResearch = new(Mod, "HyperResearch", $"Research {remaining} more to unlock duplication")
+            {
+                OverrideColor = Colors.JourneyMode
+            };
+            int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
+            if (vanillaTooltipIndex >= 0) tooltips[vanillaTooltipIndex] = hyperResearch;
+            else tooltips.Add(hyperResearch);
         }
     }
 }

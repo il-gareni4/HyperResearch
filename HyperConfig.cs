@@ -29,6 +29,10 @@ namespace HyperResearch
         [DefaultValue(true)]
         public bool AutoResearchShop;
 
+        [LabelArgs(ItemID.HandOfCreation)]
+        [DefaultValue(true)]
+        public bool UseCustomResearchTooltip;
+
         [Header("ClearSettingsHeader")]
 
         [LabelArgs(ItemID.GoldCoin)]
