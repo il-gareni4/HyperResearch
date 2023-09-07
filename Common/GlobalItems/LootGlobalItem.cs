@@ -13,7 +13,7 @@ namespace HyperResearch.Common.GlobalItems
             if (Main.GameMode != 3) return;
             if (!ResearchUtils.IsResearched(item.type) ||
                 !ItemLoader.CanRightClick(item) ||
-                Main.ItemDropsDB.GetRulesForItemID(item.type).Count == 0) return;
+                !ItemsUtils.IsLootItem(item.type)) return;
 
             string keybindStr = InputUtils.GetKeybindString(HyperResearch.ResearchLootBind);
             TooltipLine tooltipLine = new(Mod, "ResearchLoot", Language.GetText("Mods.HyperResearch.Tooltips.ResearchLoot").Format(keybindStr))

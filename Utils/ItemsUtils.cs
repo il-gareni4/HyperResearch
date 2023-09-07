@@ -16,7 +16,7 @@ namespace HyperResearch.Utils
         public static bool IsLootItem(int itemId)
         {
             List<IItemDropRule> rules = Main.ItemDropsDB.GetRulesForItemID(itemId);
-            return rules.Count >= 0;
+            return rules.Count > 0;
         }
 
         public static IEnumerable<int> GetItemLoot(int itemId)
