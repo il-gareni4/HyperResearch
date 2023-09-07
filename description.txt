@@ -11,8 +11,6 @@ Features:
 - Infinite researched consumable items (divided into categories: potions, blocks, thorwing weapons, etc.)
 - Messages notifying about researching new items and crafting items
 - Max stack reseached items
-
-Will be added:
-- Custom unresearched items tooltip so that the tooltip will always be visible when hovering item
+- Custom research tooltip which will be visible even in mods
 
 !The mod has not been tested in multiplayer so bugs are possible. Full-fledged multiplayer support is not planned yet!
