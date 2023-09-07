@@ -26,7 +26,7 @@ Configs: {
 			Tooltip:
 				'''
 				After learning a new item, all new items from already researched items will be researched. 
-				Requires researched crafting stations and compliance with custom conditions.
+				Requires researched crafting stations and compliance with custom conditions (only if "Ignore crafting conditions" is disabled).
 				'''
 		}
 

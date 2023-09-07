@@ -1,1 +1,18 @@
-Hyper Research is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+Hyper Research is quality of life mod that adds a lot of useful features to the Journey mode
+
+Features:
+- Auto-researching of all items in the inventory without having to open the Research Menu every time
+- Partial researching of unresearched items using the keybind
+- Cleaning of all researched items in the inventory using the keybind (excluding favorites)
+- Auto-researching of items that can be crafted (you need to research the necessary materials and crafting stations)
+- Auto-trash items that have already been researched
+- Researching the contents of bags, crates and other loot items in one tap
+- Researching the contents of NPC shops in one tap
+- Infinite researched consumable items (divided into categories: potions, blocks, thorwing weapons, etc.)
+- Messages notifying about researching new items and crafting items
+- Max stack reseached items
+
+Will be added:
+- Custom unresearched items tooltip so that the tooltip will always be visible when hovering item
+
+!The mod has not been tested in multiplayer so bugs are possible. Full-fledged multiplayer support is not planned yet!
