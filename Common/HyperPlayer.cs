@@ -33,7 +33,11 @@ namespace HyperResearch.Common
         {
             if (Main.GameMode != 3) return;
 #if DEBUG
-            if (HyperResearch.ForgetBind.JustPressed) Player.creativeTracker.Reset();
+            if (HyperResearch.ForgetBind.JustPressed)
+            {
+                Player.creativeTracker.Reset();
+                ResearchedTiles.Clear();
+            }
 #endif
             if (HyperResearch.SacrificeInventoryBind.JustPressed) SacrificeInventory();
             if (HyperResearch.ClearResearchedBind.JustPressed) ClearResearched();

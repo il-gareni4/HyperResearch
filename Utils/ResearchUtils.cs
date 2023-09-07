@@ -126,7 +126,9 @@ namespace HyperResearch.Utils
                     bool allItemsResearched = recipe.requiredItem.All(item => IsResearched(item.type));
                     if (!allItemsResearched) continue;
 
-                    bool allTilesResearched = recipe.requiredTile.All(IsTileResearched);
+                    bool allTilesResearched = recipe.requiredTile.All(tileId => {
+                        return IsTileResearched(tileId) || Main.LocalPlayer.IsTileTypeInInteractionRange(tileId, TileReachCheckSettings.Simple);
+                    });
                     if (!allTilesResearched) continue;
 
                     bool allConidtionsAreMet = config.IgnoreCraftingConditions || recipe.Conditions.All(condition => condition.IsMet());
