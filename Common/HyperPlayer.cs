@@ -26,6 +26,7 @@ namespace HyperResearch.Common
 
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
+            if (Main.GameMode != 3) return;
 #if DEBUG
             if (HyperResearch.ForgetBind.JustPressed) Player.creativeTracker.Reset();
 #endif
@@ -52,6 +53,7 @@ namespace HyperResearch.Common
 
         public override void OnEnterWorld()
         {
+            if (Main.GameMode != 3) return;
             foreach (int itemId in CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId.Keys)
             {
                 TryAddToResearchedTiles(itemId);
@@ -60,11 +62,13 @@ namespace HyperResearch.Common
 
         public override void PostUpdate()
         {
+            if (Main.GameMode != 3) return;
             if (ModContent.GetInstance<HyperConfig>().ResearchInventory) ResearchInventory();
         }
 
         public override bool HoverSlot(Item[] inventory, int context, int slot)
         {
+            if (Main.GameMode != 3) return base.HoverSlot(inventory, context, slot);
             _hoverItem = inventory[slot];
             return base.HoverSlot(inventory, context, slot);
         }

@@ -10,6 +10,7 @@ namespace HyperResearch.Common.GlobalItems
     {
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            if (Main.GameMode != 3) return;
             if (!ResearchUtils.IsResearched(item.type) ||
                 !ItemLoader.CanRightClick(item) ||
                 Main.ItemDropsDB.GetRulesForItemID(item.type).Count == 0) return;

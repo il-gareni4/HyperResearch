@@ -9,7 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="en-US.hjson" />
-    <None Remove="Localization\ru-RU_Mods.HyperResearch.hjson" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
