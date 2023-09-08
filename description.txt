@@ -5,6 +5,7 @@ Features:
 - Partial researching of unresearched items using the keybind
 - Cleaning of all researched items in the inventory using the keybind (excluding favorites)
 - Auto-researching of items that can be crafted (you need to research the necessary materials and crafting stations (or stand next to them))
+- Auto researching of items that are obtained after shimmer transmutation
 - Auto-trash items that have already been researched
 - Researching the contents of bags, crates and other loot items in one tap
 - Researching the contents of NPC shops in one tap
