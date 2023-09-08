@@ -23,8 +23,8 @@ namespace HyperResearch.Common
 
         /// <summary>Dictionary of researched tiles (contains <c>TileId</c> as Keys). 
         /// If Value > 0 then tile is researched </summary> 
-        /// <seealso cref="ResearchUtils.IsTileResearched(int)"/>
-        public readonly Dictionary<int, int> ResearchedTiles = new();
+        /// <seealso cref="Researcher.IsTileResearched(int)"/>
+        public readonly Dictionary<int, bool> ResearchedTiles = new();
 
         /// <summary>Array of items in current shop. Used for <see cref="HyperResearch.ResearchShopBind"/></summary>
         public Item[] CurrentShopItems { get; set; } = Array.Empty<Item>();
@@ -46,13 +46,13 @@ namespace HyperResearch.Common
                 (Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryItem ||
                 Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryCoin ||
                 Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryAmmo) &&
-                ResearchUtils.IsResearched(Main.HoverItem.type))
+                Researcher.IsResearched(Main.HoverItem.type))
             {
                 _hoverItem.stack = Main.HoverItem.maxStack;
                 SoundEngine.PlaySound(SoundID.Grab);
             }
             if (HyperResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
-                ResearchUtils.IsResearched(Main.HoverItem.type)) ResearchAndMessageLoot(Main.HoverItem.type);
+                Researcher.IsResearched(Main.HoverItem.type)) ResearchAndMessageLoot(Main.HoverItem.type);
             if (HyperResearch.ResearchShopBind.JustPressed && Player.TalkNPC is not null &&
                 Main.npcShop > 0 && CurrentShopItems.Length > 0)
             {
@@ -72,7 +72,9 @@ namespace HyperResearch.Common
         public override void PostUpdate()
         {
             if (Main.GameMode != 3) return;
-            if (ModContent.GetInstance<HyperConfig>().ResearchInventory) ResearchInventory();
+            HyperConfig config = ModContent.GetInstance<HyperConfig>();
+
+            if (config.ResearchInventory) ResearchInventory();
         }
 
         public override bool HoverSlot(Item[] inventory, int context, int slot)
@@ -98,20 +100,12 @@ namespace HyperResearch.Common
                 items[item.type] = items.GetValueOrDefault(item.type, 0) + item.stack;
             }
 
-            List<int> researchedItems = new();
-            List<int> researchedCraftableItems = new();
+            Researcher researcher = new();
             foreach ((int itemId, int itemCount) in items)
-            {
-                if (ResearchUtils.TryResearchItem(itemId, itemCount, out List<int> researchedCraftable))
-                {
-                    researchedItems.Add(itemId);
-                    researchedCraftableItems.AddRange(researchedCraftable);
-                }
-            }
+                researcher.TryResearchItem(itemId, itemCount);
 
-            TextUtils.MessageResearched(researchedItems);
-            TextUtils.MessageResearchedCraftable(researchedCraftableItems);
-            if (researchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
+            TextUtils.MessageResearcherResults(researcher);
+            if (researcher.ResearchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
         /// <summary>
@@ -122,26 +116,24 @@ namespace HyperResearch.Common
             HyperConfig config = ModContent.GetInstance<HyperConfig>();
 
             bool anyItemSacrificed = false;
-            List<int> researchedItems = new();
-            List<int> researchedCraftableItems = new();
+            Researcher researcher = new();
             for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
             {
                 Item item = Player.inventory[slot];
-                int itemId = item.type;
-                if (item.favorited || item.IsAir || ResearchUtils.IsResearched(item.type)) continue;
+                if (item.favorited || item.IsAir || Researcher.IsResearched(item.type)) continue;
+                if (!config.SacrificeHotbarSlots && slot >= 0 && slot <= 9) continue;
+                if (!config.SacrificeCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
+                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount) continue;
+                if (!config.SacrificeAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
+                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount) continue;
 
                 anyItemSacrificed = true;
-                if (ResearchUtils.SacrificeItem(item, out List<int> craftable) == CreativeUI.ItemSacrificeResult.SacrificedAndDone)
-                {
-                    researchedItems.Add(itemId);
-                    researchedCraftableItems.AddRange(craftable);
-                }
+                researcher.SacrificeItem(item);
             }
 
-            TextUtils.MessageResearched(researchedItems);
-            TextUtils.MessageResearchedCraftable(researchedCraftableItems);
+            TextUtils.MessageResearcherResults(researcher);
 
-            if (researchedItems.Count > 0 || researchedCraftableItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
+            if (researcher.ResearchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
             else if (anyItemSacrificed) SoundEngine.PlaySound(SoundID.Research);
         }
 
@@ -153,10 +145,11 @@ namespace HyperResearch.Common
             for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
             {
                 Item item = Player.inventory[slot];
-                if (item.favorited || item.IsAir || !ResearchUtils.IsResearched(item.type)) continue;
-                if (!config.ClearCoins && slot >= Main.InventoryCoinSlotsStart &&
+                if (item.favorited || item.IsAir || !Researcher.IsResearched(item.type)) continue;
+                if (!config.ClearHotbarSlots && slot >= 0 && slot <= 9) continue;
+                if (!config.ClearCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
                     slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount) continue;
-                if (!config.ClearAmmo && slot >= Main.InventoryAmmoSlotsStart &&
+                if (!config.ClearAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
                     slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount) continue;
                 item.TurnToAir();
                 anyItemCleaned = true;
@@ -173,12 +166,12 @@ namespace HyperResearch.Common
             if (!ContentSamples.ItemsByType.ContainsKey(itemId)) return false;
 
             Item item = ContentSamples.ItemsByType[itemId];
-            if (item.createTile < TileID.Dirt || !ResearchUtils.IsResearched(itemId)) return false;
+            if (item.createTile < TileID.Dirt || !Researcher.IsResearched(itemId)) return false;
 
-            AddToResearchedTiles(item.createTile);
+            ResearchedTiles[item.createTile] = true;
             ModTile t = TileLoader.GetTile(item.createTile);
             if (t != null)
-                foreach (int adj in t.AdjTiles) AddToResearchedTiles(adj);
+                foreach (int adj in t.AdjTiles) ResearchedTiles[adj] = true;
 
             return true;
         }
@@ -202,12 +195,12 @@ namespace HyperResearch.Common
                     if (info is null) continue;
 
                     Dictionary<int, int> currencyItems = (Dictionary<int, int>)info.GetValue(system);
-                    if (currencyItems.Any(itemWorth => ResearchUtils.IsResearched(itemWorth.Key)))
+                    if (currencyItems.Any(itemWorth => Researcher.IsResearched(itemWorth.Key)))
                         toResearch.Add(item.type);
                 }
                 else
                 {
-                    bool anyCoinReseached = new List<int>() { ItemID.CopperCoin, ItemID.SilverCoin, ItemID.GoldCoin, ItemID.PlatinumCoin }.Any(ResearchUtils.IsResearched);
+                    bool anyCoinReseached = new List<int>() { ItemID.CopperCoin, ItemID.SilverCoin, ItemID.GoldCoin, ItemID.PlatinumCoin }.Any(Researcher.IsResearched);
                     if (anyCoinReseached) toResearch.Add(item.type);
                 }
             }
@@ -215,17 +208,12 @@ namespace HyperResearch.Common
             if (TryResearchAndMessage(toResearch)) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
-        private void AddToResearchedTiles(int tileID)
-        {
-            ResearchedTiles.TryGetValue(tileID, out int count);
-            ResearchedTiles[tileID] = count + 1;
-        }
-
         public static void ResearchAndMessageCraftable()
         {
-            List<int> researchedItems = ResearchUtils.ResearchCraftable();
-            TextUtils.MessageResearchedCraftable(researchedItems);
-            if (researchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
+            Researcher researcher = new();
+            researcher.ResearchCraftable();
+            TextUtils.MessageResearcherResults(researcher);
+            if (researcher.ResearchedCraftableItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
         public static void ResearchAndMessageLoot(int itemId)
@@ -239,10 +227,10 @@ namespace HyperResearch.Common
         /// <returns>Has any items been researched</returns>
         private static bool TryResearchAndMessage(IEnumerable<int> items)
         {
-            List<int> researched = ResearchUtils.ResearchItems(items, out List<int> craftable);
-            TextUtils.MessageResearched(researched);
-            TextUtils.MessageResearchedCraftable(craftable);
-            return researched.Count > 0;
+            Researcher researcher = new();
+            researcher.ResearchItems(items);
+            TextUtils.MessageResearcherResults(researcher);
+            return researcher.ResearchedItems.Count > 0;
         }
 
     }

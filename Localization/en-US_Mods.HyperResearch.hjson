@@ -6,9 +6,11 @@ Configs: {
 		DisplayName: Client config
 
 		Headers: {
+			ResearchSettingsHeader: Item Research Settings
 			ClearSettingsHeader: Clear Settings
 			MessagesSettingsHeader: Messages Settings
 			ConsumptionSettingsHeader: Consumption Settings
+			SacrificeSettingsHeader: Research Settings
 		}
 
 		ResearchInventory: {
@@ -39,9 +41,9 @@ Configs: {
 			Label: "[i:{0}] Auto research the content of NPCs shops"
 			Tooltip:
 				'''
-				When opening a shop, reseaches everything that the NPC is currently selling.
+				When opening a shop, researches everything that the NPC is currently selling.
 				To research some items, you need to research the corresponding currency (for example, [i:{0}]Defender Medals).
-				By default, the shop is reseached by pressing the key specified in the control settings
+				By default, the shop is researched by pressing the key specified in the control settings
 				'''
 		}
 
@@ -50,24 +52,54 @@ Configs: {
 			Tooltip: Unlike the vanilla tooltip, the custom tooltip will show up everywhere when hovering over an item (include other mods)
 		}
 
-		ClearCoins: {
-			Label: "[i:{0}] Clear coins slots on Clear Researched key"
+		AutoResearchShimmeredItems: {
+			Label: "[i:{0}] Auto research items that are obtained after shimmer transmutation"
+			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
+		}
+
+		SacrificeHotbarSlots: {
+			Label: "[i:{0}] Research hotbar slots on Research Inventory Items key"
 			Tooltip: ""
 		}
 
-		ClearAmmo: {
-			Label: "[i:{0}] Clear ammo slots on Clear Researched key"
+		SacrificeCoinsSlots: {
+			Label: "[i:{0}] Research coins slots on Research Inventory Items key"
+			Tooltip: ""
+		}
+
+		SacrificeAmmoSlots: {
+			Label: "[i:{0}] Research ammo slots on Research Inventory Items key"
+			Tooltip: ""
+		}
+
+		ClearHotbarSlots: {
+			Label: "[i:{0}] Clear hotbar slots on Clear Researched Items Items key"
+			Tooltip: ""
+		}
+
+		ClearCoinsSlots: {
+			Label: "[i:{0}] Clear coins slots on Clear Researched Items key"
+			Tooltip: ""
+		}
+
+		ClearAmmoSlots: {
+			Label: "[i:{0}] Clear ammo slots on Clear Researched Items key"
 			Tooltip: ""
 		}
 
 		ShowNewlyResearchedItems: {
-			Label: Show Newly Researched Items
+			Label: Show newly researched items
 			Tooltip: ""
 		}
 
 		ShowResearchedCraftableItems: {
-			Label: Show Researched Craftable Items
+			Label: Show researched craftable items
 			Tooltip: ""
+		}
+
+		ShowResearchedShimmeredItems: {
+			Label: Show researched shimmered items
+			Tooltip: This type of messages can be seen if "Auto research items that are obtained after shimmer transmutation" is enabled
 		}
 
 		ConsumeResearchedAmmo: {
@@ -110,7 +142,7 @@ Configs: {
 Keybinds: {
 	"Forget All Researches.DisplayName": Forget  All  Researches
 	"Research Inventory Items.DisplayName": Research  Inventory  Items
-	"Clear Researched Item.DisplayName": Clear  Researched  Item
+	"Clear Researched Item.DisplayName": Clear  Researched  Items
 	"Research Craftable Items.DisplayName": Research  Craftable  Items
 	"Clear Researched Items.DisplayName": Clear  Researched  Items
 	"Max Stack Researched Item.DisplayName": Max  Stack  Researched  Item

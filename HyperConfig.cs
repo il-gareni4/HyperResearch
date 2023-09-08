@@ -33,15 +33,37 @@ namespace HyperResearch
         [DefaultValue(true)]
         public bool UseCustomResearchTooltip;
 
-        [Header("ClearSettingsHeader")]
+        [LabelArgs(ItemID.BottomlessShimmerBucket)]
+        [DefaultValue(true)]
+        public bool AutoResearchShimmeredItems;
+
+        [Header("SacrificeSettingsHeader")]
+
+        [LabelArgs(ItemID.LockBox)]
+        [DefaultValue(false)]
+        public bool SacrificeHotbarSlots;
 
         [LabelArgs(ItemID.GoldCoin)]
-        [DefaultValue(false)]
-        public bool ClearCoins;
+        [DefaultValue(true)]
+        public bool SacrificeCoinsSlots;
 
         [LabelArgs(ItemID.WoodenArrow)]
         [DefaultValue(true)]
-        public bool ClearAmmo;
+        public bool SacrificeAmmoSlots;
+
+        [Header("ClearSettingsHeader")]
+
+        [LabelArgs(ItemID.LockBox)]
+        [DefaultValue(false)]
+        public bool ClearHotbarSlots;
+
+        [LabelArgs(ItemID.GoldCoin)]
+        [DefaultValue(false)]
+        public bool ClearCoinsSlots;
+
+        [LabelArgs(ItemID.WoodenArrow)]
+        [DefaultValue(true)]
+        public bool ClearAmmoSlots;
 
         [Header("MessagesSettingsHeader")]
 
@@ -50,6 +72,10 @@ namespace HyperResearch
 
         [DefaultValue(true)]
         public bool ShowResearchedCraftableItems;
+
+        [DefaultValue(true)]
+        public bool ShowResearchedShimmeredItems;
+
 
         [Header("ConsumptionSettingsHeader")]
 
