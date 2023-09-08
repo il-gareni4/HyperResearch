@@ -67,6 +67,12 @@ namespace HyperResearch.Common
             {
                 TryAddToResearchedTiles(itemId);
             }
+
+            if (!ModContent.GetInstance<HyperConfig>().AutoResearchShimmeredItems) return;
+            Researcher researcher = new();
+            for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++) 
+                researcher.TryResearchShimmeredItem(itemId);
+            TextUtils.MessageResearcherResults(researcher);
         }
 
         public override void PostUpdate()
