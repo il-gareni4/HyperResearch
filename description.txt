@@ -9,9 +9,9 @@ Features:
 - Auto-trash items that have already been researched
 - Researching the contents of bags, crates and other loot items in one tap
 - Researching the contents of NPC shops in one tap
-- Infinite researched consumable items (divided into categories: potions, blocks, thorwing weapons, etc.)
+- Infinite researched consumable items (divided into categories: potions, blocks, throwing weapons, etc.)
 - Messages notifying about researching new items and crafting items
-- Max stack reseached items
+- Max stack researched items
 - Custom research tooltip which will be visible even in mods
 
 !The mod has not been tested in multiplayer so bugs are possible. Full-fledged multiplayer support is not planned yet!
