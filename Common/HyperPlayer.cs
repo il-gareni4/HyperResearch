@@ -238,6 +238,5 @@ namespace HyperResearch.Common
             TextUtils.MessageResearcherResults(researcher);
             return researcher.ResearchedItems.Count > 0;
         }
-
     }
 }

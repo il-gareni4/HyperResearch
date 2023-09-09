@@ -32,8 +32,10 @@ namespace HyperResearch.Utils
 
         public static bool IsResearched(int itemId)
         {
-            int? remaining = CreativeUI.GetSacrificesRemaining(itemId);
-            return remaining.HasValue && remaining.Value == 0;
+            if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out int amountNeeded)) {
+                int researched = Main.LocalPlayerCreativeTracker.ItemSacrifices.GetSacrificeCount(itemId);
+                return amountNeeded - researched == 0;
+            } else return false;
         }
 
         public static bool IsResearchable(int itemId)
@@ -147,9 +149,10 @@ namespace HyperResearch.Utils
         
         private void AfterResearch(int itemId, ResearchSource source, bool researchCraftable) {
             HyperConfig config = ModContent.GetInstance<HyperConfig>();
+            
 
             Main.LocalPlayer.GetModPlayer<HyperPlayer>().TryAddToResearchedTiles(itemId);
-            if (source != ResearchSource.Shimmer && config.AutoResearchShimmeredItems) TryResearchShimmeredItem(itemId);
+            if (config.AutoResearchShimmeredItems) TryResearchShimmeredItem(itemId);
             if (researchCraftable && config.AutoResearchCraftable) ResearchCraftable();
             
             switch (source)
