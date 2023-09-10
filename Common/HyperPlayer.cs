@@ -28,6 +28,7 @@ namespace HyperResearch.Common
 
         /// <summary>Array of items in current shop. Used for <see cref="HyperResearch.ResearchShopBind"/></summary>
         public Item[] CurrentShopItems { get; set; } = Array.Empty<Item>();
+        public int ItemsResearchedCount { get; set; }
 
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
@@ -37,7 +38,9 @@ namespace HyperResearch.Common
             {
                 Player.creativeTracker.Reset();
                 ResearchedTiles.Clear();
+                ItemsResearchedCount = 0;
             }
+
 #endif
             if (HyperResearch.SacrificeInventoryBind.JustPressed) SacrificeInventory();
             if (HyperResearch.ClearResearchedBind.JustPressed) ClearResearched();
@@ -52,7 +55,11 @@ namespace HyperResearch.Common
                 SoundEngine.PlaySound(SoundID.Grab);
             }
             if (HyperResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
-                Researcher.IsResearched(Main.HoverItem.type)) ResearchAndMessageLoot(Main.HoverItem.type);
+                Researcher.IsResearched(Main.HoverItem.type))
+            {
+                ResearchAndMessageLoot(Main.HoverItem.type);
+            }
+
             if (HyperResearch.ResearchShopBind.JustPressed && Player.TalkNPC is not null &&
                 Main.npcShop > 0 && CurrentShopItems.Length > 0)
             {
@@ -68,10 +75,15 @@ namespace HyperResearch.Common
                 TryAddToResearchedTiles(itemId);
             }
 
-            if (!ModContent.GetInstance<HyperConfig>().AutoResearchShimmeredItems) return;
+            ItemsResearchedCount = 0;
             Researcher researcher = new();
-            for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++) 
-                researcher.TryResearchShimmeredItem(itemId);
+            for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++)
+            {
+                if (ModContent.GetInstance<HyperConfig>().AutoResearchShimmeredItems)
+                    researcher.TryResearchShimmeredItem(itemId);
+                if (Researcher.ItemSharedValue(itemId) == -1 && Researcher.IsResearched(itemId))
+                    ItemsResearchedCount++;
+            }
             TextUtils.MessageResearcherResults(researcher);
         }
 
@@ -129,9 +141,16 @@ namespace HyperResearch.Common
                 if (item.favorited || item.IsAir || Researcher.IsResearched(item.type)) continue;
                 if (!config.SacrificeHotbarSlots && slot >= 0 && slot <= 9) continue;
                 if (!config.SacrificeCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
-                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount) continue;
+                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount)
+                {
+                    continue;
+                }
+
                 if (!config.SacrificeAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
-                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount) continue;
+                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount)
+                {
+                    continue;
+                }
 
                 anyItemSacrificed = true;
                 researcher.SacrificeItem(item);
@@ -154,9 +173,17 @@ namespace HyperResearch.Common
                 if (item.favorited || item.IsAir || !Researcher.IsResearched(item.type)) continue;
                 if (!config.ClearHotbarSlots && slot >= 0 && slot <= 9) continue;
                 if (!config.ClearCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
-                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount) continue;
+                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount)
+                {
+                    continue;
+                }
+
                 if (!config.ClearAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
-                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount) continue;
+                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount)
+                {
+                    continue;
+                }
+
                 item.TurnToAir();
                 anyItemCleaned = true;
             }

@@ -76,7 +76,6 @@ namespace HyperResearch
         [DefaultValue(true)]
         public bool ShowResearchedShimmeredItems;
 
-
         [Header("ConsumptionSettingsHeader")]
 
         [LabelArgs(ItemID.EndlessMusketPouch)]

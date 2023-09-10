@@ -1,21 +1,20 @@
 ﻿
 using HyperResearch.Common;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace HyperResearch.Utils
 {
-    public enum ResearchSource {
+    public enum ResearchSource
+    {
         Default,
         Craft,
         Shimmer
-    }    
+    }
 
     /// <summary>Utility class that contains all the methods related to the research and sacrification of items</summary>
     public class Researcher
@@ -24,18 +23,40 @@ namespace HyperResearch.Utils
         public List<int> ResearchedCraftableItems;
         public List<int> ResearchedShimmeredItems;
 
-        public Researcher() {
+        public Researcher()
+        {
             ResearchedItems = new();
             ResearchedCraftableItems = new();
             ResearchedShimmeredItems = new();
         }
 
+        public static int ItemSharedValue(int itemId)
+        {
+            if (ContentSamples.CreativeResearchItemPersistentIdOverride.TryGetValue(itemId, out int value))
+                return value;
+            else return -1;
+        }
+
+        public static int ItemTotalResearchCount(int itemId)
+        {
+            if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out int amountNeeded))
+                return amountNeeded;
+            return 0;
+        }
+
+        public static int ItemResearchedCount(int itemId)
+        {
+            return Main.LocalPlayerCreativeTracker.ItemSacrifices.GetSacrificeCount(itemId);
+        }
+
         public static bool IsResearched(int itemId)
         {
-            if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out int amountNeeded)) {
+            if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out int amountNeeded))
+            {
                 int researched = Main.LocalPlayerCreativeTracker.ItemSacrifices.GetSacrificeCount(itemId);
                 return amountNeeded - researched == 0;
-            } else return false;
+            }
+            else return false;
         }
 
         public static bool IsResearchable(int itemId)
@@ -49,7 +70,7 @@ namespace HyperResearch.Utils
         {
             int itemId = item.type;
             CreativeUI.ItemSacrificeResult result = CreativeUI.SacrificeItem(item, out int _);
-            if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone) 
+            if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone)
                 AfterResearch(itemId, source, researchCraftable);
             return result;
         }
@@ -140,21 +161,22 @@ namespace HyperResearch.Utils
             }
         }
 
-        public bool TryResearchShimmeredItem(int itemId) {
+        public bool TryResearchShimmeredItem(int itemId)
+        {
             int shimmerItemId = ItemsUtils.GetShimmeredItemId(itemId);
             if (!IsResearched(itemId) || shimmerItemId <= 0) return false;
-            
+
             return TryResearchItem(shimmerItemId, ResearchSource.Shimmer);
         }
-        
-        private void AfterResearch(int itemId, ResearchSource source, bool researchCraftable) {
+
+        private void AfterResearch(int itemId, ResearchSource source, bool researchCraftable)
+        {
             HyperConfig config = ModContent.GetInstance<HyperConfig>();
-            
 
             Main.LocalPlayer.GetModPlayer<HyperPlayer>().TryAddToResearchedTiles(itemId);
             if (config.AutoResearchShimmeredItems) TryResearchShimmeredItem(itemId);
             if (researchCraftable && config.AutoResearchCraftable) ResearchCraftable();
-            
+
             switch (source)
             {
                 case ResearchSource.Craft:

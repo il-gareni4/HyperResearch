@@ -15,8 +15,7 @@ namespace HyperResearch.Utils
         {
             if (keybind is null) return "<NULL>";
             List<string> keys = keybind.GetAssignedKeys();
-            if (keys.Count == 0) return "<Not assigned>";
-            else return keys[0];
+            return keys.Count == 0 ? "<Not assigned>" : keys[0];
         }
     }
 }

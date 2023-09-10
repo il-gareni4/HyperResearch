@@ -5,7 +5,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace HyperResearch.Common
+namespace HyperResearch.Common.GlobalItems
 {
     public class BaseGlobalItem : GlobalItem
     {
@@ -57,6 +57,12 @@ namespace HyperResearch.Common
             int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
             if (vanillaTooltipIndex >= 0) tooltips[vanillaTooltipIndex] = hyperResearch;
             else tooltips.Add(hyperResearch);
+        }
+
+        public override void OnResearched(Item item, bool fullyResearched)
+        {
+            if (!fullyResearched) return;
+            Main.LocalPlayer.GetModPlayer<HyperPlayer>().ItemsResearchedCount++;
         }
     }
 }

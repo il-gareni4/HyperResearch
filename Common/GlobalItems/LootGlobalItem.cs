@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace HyperResearch.Common.GlobalItems
 {
-    class LootGlobalItem : GlobalItem
+    public class LootGlobalItem : GlobalItem
     {
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
@@ -15,6 +15,7 @@ namespace HyperResearch.Common.GlobalItems
             if (!Researcher.IsResearched(item.type) ||
                 !ItemLoader.CanRightClick(item) ||
                 !ItemsUtils.IsLootItem(item.type)) return;
+
             if (ItemsUtils.GetItemLoot(item.type).All(Researcher.IsResearched)) return;
 
             string keybindStr = InputUtils.GetKeybindString(HyperResearch.ResearchLootBind);

@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.Enums;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 
@@ -30,7 +28,8 @@ namespace HyperResearch.Utils
             return dropRateInfos.Select(info => info.itemId);
         }
 
-        public static int GetShimmeredItemId(int itemId) {
+        public static int GetShimmeredItemId(int itemId)
+        {
             if (ItemID.Sets.ShimmerCountsAsItem[itemId] != -1)
                 itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];
             return ItemID.Sets.ShimmerTransformToItem[itemId];

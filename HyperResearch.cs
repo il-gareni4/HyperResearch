@@ -1,10 +1,15 @@
+using HyperResearch.Utils;
 using Microsoft.Xna.Framework.Input;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace HyperResearch
 {
     public class HyperResearch : Mod
     {
+        public static int ResearchableItemsCount { get; set; }
+
 #if DEBUG
         public static ModKeybind ForgetBind { get; set; }
 #endif
@@ -26,6 +31,18 @@ namespace HyperResearch
             MaxStackBind = KeybindLoader.RegisterKeybind(this, "Max Stack Researched Item", Keys.OemSemicolon);
             ResearchLootBind = KeybindLoader.RegisterKeybind(this, "Research Bag/Crate Contents", Keys.OemQuotes);
             ResearchShopBind = KeybindLoader.RegisterKeybind(this, "Research Shop", Keys.OemSemicolon);
+        }
+
+        public override void PostSetupContent()
+        {
+            int totalResearchable = 0;
+            for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++)
+            {
+                if (!Researcher.IsResearchable(itemId)) continue;
+                if (Researcher.ItemSharedValue(itemId) != -1) continue;
+                totalResearchable++;
+            }
+            ResearchableItemsCount = totalResearchable;
         }
 
         public override void Unload()
