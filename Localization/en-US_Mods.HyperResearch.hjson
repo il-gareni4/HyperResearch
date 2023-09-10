@@ -1,5 +1,11 @@
 Messages.Researched: Researched
-Tooltips.ResearchLoot: Press {0} to research all loot (excluding global)
+
+Tooltips: {
+	NeededToResearch: Research {0} more to unlock duplication ({1}/{2})
+	ResearchLoot: Press {0} to research all loot (excluding global)
+}
+
+UI.DuplicationMenu.TotalResearched: "{0}% researched ({1}/{2} items)"
 
 Configs: {
 	HyperConfig: {
@@ -11,6 +17,7 @@ Configs: {
 			MessagesSettingsHeader: Messages Settings
 			ConsumptionSettingsHeader: Consumption Settings
 			SacrificeSettingsHeader: Research Settings
+			UISettingsHeader: U I Settings Header Header
 		}
 
 		ResearchInventory: {
@@ -87,21 +94,6 @@ Configs: {
 			Tooltip: ""
 		}
 
-		ShowNewlyResearchedItems: {
-			Label: Show newly researched items
-			Tooltip: ""
-		}
-
-		ShowResearchedCraftableItems: {
-			Label: Show researched craftable items
-			Tooltip: ""
-		}
-
-		ShowResearchedShimmeredItems: {
-			Label: Show researched shimmered items
-			Tooltip: This type of messages can be seen if "Auto research items that are obtained after shimmer transmutation" is enabled
-		}
-
 		ConsumeResearchedAmmo: {
 			Label: "[i:{0}] Consume researched ammo"
 			Tooltip: ""
@@ -135,6 +127,26 @@ Configs: {
 		ConsumeOtherResearchedItems: {
 			Label: "[i:{0}] Consume other researched items"
 			Tooltip: Other items that do not fit into any of the categories above but are consumable will not be consumed once researched
+		}
+
+		ShowNewlyResearchedItems: {
+			Label: Show newly researched items
+			Tooltip: ""
+		}
+
+		ShowResearchedCraftableItems: {
+			Label: Show researched craftable items
+			Tooltip: ""
+		}
+
+		ShowResearchedShimmeredItems: {
+			Label: Show researched shimmered items
+			Tooltip: This type of messages can be seen if "Auto research items that are obtained after shimmer transmutation" is enabled
+		}
+
+		ShowTotalResearchedItemsCount: {
+			Label: Show the total number of items researched
+			Tooltip: In the item duplication menu it shows the number of items researched and the percentage of the total number of items that can be researched
 		}
 	}
 }

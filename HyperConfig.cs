@@ -65,17 +65,6 @@ namespace HyperResearch
         [DefaultValue(true)]
         public bool ClearAmmoSlots;
 
-        [Header("MessagesSettingsHeader")]
-
-        [DefaultValue(true)]
-        public bool ShowNewlyResearchedItems;
-
-        [DefaultValue(true)]
-        public bool ShowResearchedCraftableItems;
-
-        [DefaultValue(true)]
-        public bool ShowResearchedShimmeredItems;
-
         [Header("ConsumptionSettingsHeader")]
 
         [LabelArgs(ItemID.EndlessMusketPouch)]
@@ -106,5 +95,21 @@ namespace HyperResearch
         [LabelArgs(ItemID.SuspiciousLookingEye)]
         [DefaultValue(true)]
         public bool ConsumeOtherResearchedItems;
+
+        [Header("MessagesSettingsHeader")]
+
+        [DefaultValue(true)]
+        public bool ShowNewlyResearchedItems;
+
+        [DefaultValue(true)]
+        public bool ShowResearchedCraftableItems;
+
+        [DefaultValue(true)]
+        public bool ShowResearchedShimmeredItems;
+
+        [Header("UISettingsHeader")]
+
+        [DefaultValue(true)]
+        public bool ShowTotalResearchedItemsCount;
     }
 }

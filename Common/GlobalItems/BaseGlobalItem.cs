@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace HyperResearch.Common.GlobalItems
@@ -52,7 +53,8 @@ namespace HyperResearch.Common.GlobalItems
             int researched = Researcher.ItemResearchedCount(item.type);
             int totalNeeded = Researcher.ItemTotalResearchCount(item.type);
             int remaining = (int)CreativeUI.GetSacrificesRemaining(item.type);
-            TooltipLine hyperResearch = new(Mod, "HyperResearch", $"Research {remaining} more to unlock duplication ({researched}/{totalNeeded})")
+            LocalizedText tooltipText = Language.GetText("Mods.HyperResearch.Tooltips.NeededToResearch");
+            TooltipLine hyperResearch = new(Mod, "HyperResearch", tooltipText.Format(remaining, researched, totalNeeded))
             {
                 OverrideColor = Colors.JourneyMode
             };
@@ -63,6 +65,8 @@ namespace HyperResearch.Common.GlobalItems
 
         public override void OnResearched(Item item, bool fullyResearched)
         {
+            if (Main.GameMode != 3) return;
+
             if (!fullyResearched) return;
             Main.LocalPlayer.GetModPlayer<HyperPlayer>().ItemsResearchedCount++;
         }
