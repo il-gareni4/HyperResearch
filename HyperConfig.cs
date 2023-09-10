@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using HyperResearch.Common;
+using System.ComponentModel;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
 
@@ -6,7 +8,23 @@ namespace HyperResearch
 {
     public class HyperConfig : ModConfig
     {
+        private bool PrevOnlyOneItemNeeded { get; set; }
+
+        public static HyperConfig Instance;
+
         public override ConfigScope Mode => ConfigScope.ClientSide;
+
+        public override void OnLoaded() => Instance = this;
+
+        public override void OnChanged()
+        {
+            if (Main.PlayerLoaded)
+            {
+                if (!PrevOnlyOneItemNeeded && OnlyOneItemNeeded)
+                    Main.LocalPlayer.GetModPlayer<HyperPlayer>().RecheckResearchingItems();
+            }
+            PrevOnlyOneItemNeeded = OnlyOneItemNeeded;
+        }
 
         [LabelArgs(ItemID.YoyoBag)]
         [DefaultValue(true)]
@@ -36,6 +54,16 @@ namespace HyperResearch
         [LabelArgs(ItemID.BottomlessShimmerBucket)]
         [DefaultValue(true)]
         public bool AutoResearchShimmeredItems;
+
+        [Header("OtherSettingsHeader")]
+
+        [LabelArgs(ItemID.AlphabetStatue1)]
+        [DefaultValue(false)]
+        public bool OnlyOneItemNeeded;
+
+        [LabelArgs(ItemID.TrashCan)]
+        [DefaultValue(false)]
+        public bool AutoTrashAfterResearching;
 
         [Header("SacrificeSettingsHeader")]
 

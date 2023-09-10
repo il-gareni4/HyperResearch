@@ -1,5 +1,6 @@
 ﻿using HyperResearch.Utils;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -47,27 +48,32 @@ namespace HyperResearch.Common.GlobalItems
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (Main.GameMode != 3 || !ModContent.GetInstance<HyperConfig>().UseCustomResearchTooltip) return;
+            if (Main.GameMode != 3) return;
             if (Researcher.IsResearched(item.type) || !Researcher.IsResearchable(item.type)) return;
+
+            int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
+            if (!HyperConfig.Instance.UseCustomResearchTooltip && HyperConfig.Instance.OnlyOneItemNeeded && vanillaTooltipIndex >= 0)
+            {
+                tooltips[vanillaTooltipIndex].Text = Regex.Replace(tooltips[vanillaTooltipIndex].Text, @"\d+", "1");
+                return;
+            }
+            else if (!HyperConfig.Instance.UseCustomResearchTooltip) return;
 
             int researched = Researcher.ItemResearchedCount(item.type);
             int totalNeeded = Researcher.ItemTotalResearchCount(item.type);
-            int remaining = (int)CreativeUI.GetSacrificesRemaining(item.type);
+            int remaining = totalNeeded - researched;
             LocalizedText tooltipText = Language.GetText("Mods.HyperResearch.Tooltips.NeededToResearch");
             TooltipLine hyperResearch = new(Mod, "HyperResearch", tooltipText.Format(remaining, researched, totalNeeded))
             {
                 OverrideColor = Colors.JourneyMode
             };
-            int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
             if (vanillaTooltipIndex >= 0) tooltips[vanillaTooltipIndex] = hyperResearch;
             else tooltips.Add(hyperResearch);
         }
 
         public override void OnResearched(Item item, bool fullyResearched)
         {
-            if (Main.GameMode != 3) return;
-
-            if (!fullyResearched) return;
+            if (Main.GameMode != 3 || !fullyResearched) return;
             Main.LocalPlayer.GetModPlayer<HyperPlayer>().ItemsResearchedCount++;
         }
     }

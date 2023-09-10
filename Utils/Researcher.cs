@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
+using tModPorter;
 
 namespace HyperResearch.Utils
 {
@@ -30,6 +31,11 @@ namespace HyperResearch.Utils
             ResearchedShimmeredItems = new();
         }
 
+        public List<int> AllResearchedItems { get {
+                return ResearchedItems.Concat(ResearchedCraftableItems).Concat(ResearchedShimmeredItems).ToList();
+            } 
+        }
+
         public static int ItemSharedValue(int itemId)
         {
             if (ContentSamples.CreativeResearchItemPersistentIdOverride.TryGetValue(itemId, out int value))
@@ -40,7 +46,7 @@ namespace HyperResearch.Utils
         public static int ItemTotalResearchCount(int itemId)
         {
             if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out int amountNeeded))
-                return amountNeeded;
+                return HyperConfig.Instance.OnlyOneItemNeeded ? 1 : amountNeeded;
             return 0;
         }
 
@@ -61,18 +67,27 @@ namespace HyperResearch.Utils
 
         public static bool IsResearchable(int itemId)
         {
-            int? remaining = CreativeUI.GetSacrificesRemaining(itemId);
-            return remaining.HasValue;
+            return CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out _);
         }
 
         /// <param name="researchedCraftable">Auto-researched crafting items</param>
         public CreativeUI.ItemSacrificeResult SacrificeItem(Item item, ResearchSource source = ResearchSource.Default, bool researchCraftable = true)
         {
             int itemId = item.type;
-            CreativeUI.ItemSacrificeResult result = CreativeUI.SacrificeItem(item, out int _);
-            if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone)
-                AfterResearch(itemId, source, researchCraftable);
-            return result;
+            if (HyperConfig.Instance.OnlyOneItemNeeded)
+            {
+                if (!IsResearchable(itemId) || IsResearched(itemId)) return CreativeUI.ItemSacrificeResult.CannotSacrifice;
+                if (--item.stack <= 0) item.TurnToAir();
+                ResearchItem(itemId, source, researchCraftable);
+                return CreativeUI.ItemSacrificeResult.SacrificedAndDone;
+            }
+            else
+            {
+                CreativeUI.ItemSacrificeResult result = CreativeUI.SacrificeItem(item, out int _);
+                if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone)
+                    AfterResearch(itemId, source, researchCraftable);
+                return result;
+            }
         }
 
         /// <summary>
@@ -99,6 +114,7 @@ namespace HyperResearch.Utils
         /// <returns>Whether an item has been researched</returns>
         public bool TryResearchItem(int itemId, int itemCount, ResearchSource source = ResearchSource.Default, bool researchCraftable = true)
         {
+            if (HyperConfig.Instance.OnlyOneItemNeeded && itemCount >= 1) TryResearchItem(itemId, source, researchCraftable);
             if (!IsResearchable(itemId) || IsResearched(itemId)) return false;
 
             int remaining = (int)CreativeUI.GetSacrificesRemaining(itemId);
@@ -177,18 +193,22 @@ namespace HyperResearch.Utils
             if (config.AutoResearchShimmeredItems) TryResearchShimmeredItem(itemId);
             if (researchCraftable && config.AutoResearchCraftable) ResearchCraftable();
 
-            switch (source)
+            GetItemsListBySource(source).Add(itemId);
+        }
+
+        public bool AnyItemResearched()
+        {
+            return ResearchedItems.Count > 0 || ResearchedCraftableItems.Count > 0 || ResearchedShimmeredItems.Count > 0;
+        }
+
+        private List<int> GetItemsListBySource(ResearchSource source)
+        {
+            return source switch
             {
-                case ResearchSource.Craft:
-                    ResearchedCraftableItems.Add(itemId);
-                    break;
-                case ResearchSource.Shimmer:
-                    ResearchedShimmeredItems.Add(itemId);
-                    break;
-                default:
-                    ResearchedItems.Add(itemId);
-                    break;
-            }
+                ResearchSource.Craft => ResearchedCraftableItems,
+                ResearchSource.Shimmer => ResearchedShimmeredItems,
+                _ => ResearchedItems
+            };
         }
     }
 }

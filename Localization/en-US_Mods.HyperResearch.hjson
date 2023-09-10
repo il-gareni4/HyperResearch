@@ -18,6 +18,7 @@ Configs: {
 			ConsumptionSettingsHeader: Consumption Settings
 			SacrificeSettingsHeader: Research Settings
 			UISettingsHeader: UI Settings
+			OtherSettingsHeader: Other Settings
 		}
 
 		ResearchInventory: {
@@ -62,6 +63,20 @@ Configs: {
 		AutoResearchShimmeredItems: {
 			Label: "[i:{0}] Auto research items that are obtained after shimmer transmutation"
 			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
+		}
+
+		OnlyOneItemNeeded: {
+			Label: "[i:{0}] Only one item is required for full research"
+			Tooltip: ""
+		}
+
+		AutoTrashAfterResearching: {
+			Label: "[i:{0}] Auto-trash an item after researching"
+			Tooltip:
+				'''
+				Unlike the setting "Auto trash picked up researched items"
+				removes the item from the inventory after researching the item
+				'''
 		}
 
 		SacrificeHotbarSlots: {

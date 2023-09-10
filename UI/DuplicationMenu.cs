@@ -17,7 +17,7 @@ namespace HyperResearch.UI
     class DuplicationMenu : UIState
     {
         private int _lastItemsResearchedCount;
-        private int _crativePowerSelected;
+        private int _crativePowerSelected = 0;
 
         private HyperPlayer _hyperPlayer;
         private LocalizedText _totalResearchedText;

@@ -79,12 +79,16 @@ namespace HyperResearch.Common
             Researcher researcher = new();
             for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++)
             {
-                if (ModContent.GetInstance<HyperConfig>().AutoResearchShimmeredItems)
+                if (HyperConfig.Instance.AutoResearchShimmeredItems)
                     researcher.TryResearchShimmeredItem(itemId);
                 if (Researcher.ItemSharedValue(itemId) == -1 && Researcher.IsResearched(itemId))
                     ItemsResearchedCount++;
+                if (HyperConfig.Instance.OnlyOneItemNeeded && Researcher.IsResearchable(itemId) &&
+                    !Researcher.IsResearched(itemId) && Researcher.ItemResearchedCount(itemId) >= 1)
+                    researcher.ResearchItem(itemId);
             }
             TextUtils.MessageResearcherResults(researcher);
+            if (researcher.AnyItemResearched()) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
         public override void PostUpdate()
@@ -122,6 +126,10 @@ namespace HyperResearch.Common
             foreach ((int itemId, int itemCount) in items)
                 researcher.TryResearchItem(itemId, itemCount);
 
+            if (ModContent.GetInstance<HyperConfig>().AutoTrashAfterResearching && researcher.AnyItemResearched())
+                TrashInventoryItems(researcher.AllResearchedItems);
+            
+
             TextUtils.MessageResearcherResults(researcher);
             if (researcher.ResearchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
@@ -152,9 +160,12 @@ namespace HyperResearch.Common
                     continue;
                 }
 
-                anyItemSacrificed = true;
-                researcher.SacrificeItem(item);
+                if (researcher.SacrificeItem(item) != CreativeUI.ItemSacrificeResult.CannotSacrifice)
+                    anyItemSacrificed = true;
             }
+
+            if (ModContent.GetInstance<HyperConfig>().AutoTrashAfterResearching && researcher.AnyItemResearched())
+                TrashInventoryItems(researcher.AllResearchedItems);
 
             TextUtils.MessageResearcherResults(researcher);
 
@@ -188,6 +199,16 @@ namespace HyperResearch.Common
                 anyItemCleaned = true;
             }
             if (anyItemCleaned) SoundEngine.PlaySound(SoundID.Grab);
+        }
+
+        public void TrashInventoryItems(IEnumerable<int> items)
+        {
+            for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
+            {
+                Item item = Player.inventory[slot];
+                if (item.IsAir) continue;
+                if (items.Contains(item.type)) item.TurnToAir();
+            }
         }
 
         /// <summary>
@@ -241,6 +262,18 @@ namespace HyperResearch.Common
             if (TryResearchAndMessage(toResearch)) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
+        public void RecheckResearchingItems()
+        {
+            if (!HyperConfig.Instance.OnlyOneItemNeeded) return;
+            Researcher researcher = new();
+            for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++) {
+                if (Researcher.IsResearchable(itemId) && !Researcher.IsResearched(itemId) && Researcher.ItemResearchedCount(itemId) >= 1)
+                    researcher.ResearchItem(itemId);
+            }
+            TextUtils.MessageResearcherResults(researcher);
+            if (researcher.ResearchedCraftableItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
+        }
+
         public static void ResearchAndMessageCraftable()
         {
             Researcher researcher = new();
@@ -256,6 +289,7 @@ namespace HyperResearch.Common
             IEnumerable<int> items = ItemsUtils.GetItemLoot(itemId);
             if (TryResearchAndMessage(items)) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
+
 
         /// <returns>Has any items been researched</returns>
         private static bool TryResearchAndMessage(IEnumerable<int> items)
