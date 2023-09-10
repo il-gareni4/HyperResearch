@@ -17,7 +17,7 @@ Configs: {
 			MessagesSettingsHeader: Messages Settings
 			ConsumptionSettingsHeader: Consumption Settings
 			SacrificeSettingsHeader: Research Settings
-			UISettingsHeader: U I Settings Header Header
+			UISettingsHeader: UI Settings
 		}
 
 		ResearchInventory: {
@@ -146,7 +146,11 @@ Configs: {
 
 		ShowTotalResearchedItemsCount: {
 			Label: Show the total number of items researched
-			Tooltip: In the item duplication menu it shows the number of items researched and the percentage of the total number of items that can be researched
+			Tooltip: 
+				'''
+				In the item duplication menu it shows the number of items researched and
+				the percentage of the total number of items that can be researched
+				'''
 		}
 	}
 }

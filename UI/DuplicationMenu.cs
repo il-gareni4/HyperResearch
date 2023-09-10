@@ -38,7 +38,12 @@ namespace HyperResearch.UI
 
         public override void Update(GameTime gameTime)
         {
-            if (Main.GameMode != 3 || !ModContent.GetInstance<HyperConfig>().ShowTotalResearchedItemsCount) return;
+            if (Main.GameMode != 3) return;
+            if (!ModContent.GetInstance<HyperConfig>().ShowTotalResearchedItemsCount)
+            {
+                if (Children.Count() != 0) RemoveAllChildren();
+                return;
+            }
 
             if (Main.CreativeMenu.Enabled && _crativePowerSelected == 1)
             {
