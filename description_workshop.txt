@@ -14,6 +14,7 @@ Hyper Research is quality of life mod that adds a lot of useful features to the 
 [*]Messages notifying about researching new items and crafting items
 [*]Max stack researched items
 [*]Custom research tooltip which will be visible even in mods
+[*]Shows the number of items researched and the total number of items that can be researched 
 [/list]
 
 [b]!The mod has not been tested in multiplayer so bugs are possible. Full-fledged multiplayer support is not planned yet![/b]
