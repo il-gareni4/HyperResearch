@@ -49,8 +49,10 @@ namespace HyperResearch.Common.GlobalItems
             if (Main.GameMode != 3 || !ModContent.GetInstance<HyperConfig>().UseCustomResearchTooltip) return;
             if (Researcher.IsResearched(item.type) || !Researcher.IsResearchable(item.type)) return;
 
+            int researched = Researcher.ItemResearchedCount(item.type);
+            int totalNeeded = Researcher.ItemTotalResearchCount(item.type);
             int remaining = (int)CreativeUI.GetSacrificesRemaining(item.type);
-            TooltipLine hyperResearch = new(Mod, "HyperResearch", $"Research {remaining} more to unlock duplication")
+            TooltipLine hyperResearch = new(Mod, "HyperResearch", $"Research {remaining} more to unlock duplication ({researched}/{totalNeeded})")
             {
                 OverrideColor = Colors.JourneyMode
             };
