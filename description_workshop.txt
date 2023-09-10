@@ -17,6 +17,13 @@ Hyper Research is quality of life mod that adds a lot of useful features to the 
 [*]Shows the number of items researched and the total number of items that can be researched 
 [/list]
 
+[h3]Minor features[/h3]
+[list]
+[*]Shows the number of items researched and the total number of items that can be researched 
+[*]Max stack researched items
+[*]Ability to set the number of items needed to unlock duplication to one
+[/list]
+
 Currently working on (in order of priority)
 [list]
 [*] (constantly) Bug fixing
