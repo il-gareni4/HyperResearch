@@ -146,7 +146,7 @@ Configs: {
 
 		ShowTotalResearchedItemsCount: {
 			Label: Show the total number of items researched
-			Tooltip: 
+			Tooltip:
 				'''
 				In the item duplication menu it shows the number of items researched and
 				the percentage of the total number of items that can be researched

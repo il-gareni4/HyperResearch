@@ -25,7 +25,16 @@ namespace HyperResearch.Utils
             List<DropRateInfo> dropRateInfos = new();
             DropRateInfoChainFeed dropRateInfo = new(1f);
             foreach (IItemDropRule item in itemDropRules) item.ReportDroprates(dropRateInfos, dropRateInfo);
-            return dropRateInfos.Select(info => info.itemId);
+
+            DropAttemptInfo attemptInfo = default;
+            attemptInfo.player = Main.LocalPlayer;
+            attemptInfo.item = itemId;
+            attemptInfo.IsExpertMode = Main.expertMode;
+            attemptInfo.IsMasterMode = Main.masterMode;
+            attemptInfo.rng = Main.rand;
+
+            return dropRateInfos.Where(info => info.conditions?.All(c => c.CanDrop(attemptInfo)) ?? true)
+                                .Select(info =>  info.itemId);
         }
 
         public static int GetShimmeredItemId(int itemId)
