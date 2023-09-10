@@ -8,7 +8,7 @@ namespace HyperResearch
 {
     public class HyperConfig : ModConfig
     {
-        private bool PrevOnlyOneItemNeeded { get; set; }
+        private bool PrevOnlyOneItemNeeded { get; set; } = false;
 
         public static HyperConfig Instance;
 
