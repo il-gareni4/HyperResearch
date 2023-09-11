@@ -135,6 +135,9 @@ namespace HyperResearch
         [DefaultValue(true)]
         public bool ShowResearchedShimmeredItems;
 
+        [DefaultValue(false)]
+        public bool ShowPartiallyResearchedItems;
+
         [Header("UISettingsHeader")]
 
         [DefaultValue(true)]

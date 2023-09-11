@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using HyperResearch.Utils;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace HyperResearch.Common
@@ -7,7 +8,7 @@ namespace HyperResearch.Common
     {
         public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
         {
-            if (Main.GameMode != 3) return;
+            if (!Researcher.IsPlayerInJourneyMode()) return;
 
             HyperPlayer modPlayer = Main.LocalPlayer.GetModPlayer<HyperPlayer>();
             modPlayer.CurrentShopItems = items;

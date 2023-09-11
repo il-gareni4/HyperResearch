@@ -36,6 +36,10 @@ namespace HyperResearch.Utils
             } 
         }
 
+        public static bool IsPlayerInJourneyMode() {
+            return Main.LocalPlayer.difficulty == 3;
+        }
+
         public static int ItemSharedValue(int itemId)
         {
             if (ContentSamples.CreativeResearchItemPersistentIdOverride.TryGetValue(itemId, out int value))
@@ -70,23 +74,22 @@ namespace HyperResearch.Utils
             return CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out _);
         }
 
-        /// <param name="researchedCraftable">Auto-researched crafting items</param>
-        public CreativeUI.ItemSacrificeResult SacrificeItem(Item item, ResearchSource source = ResearchSource.Default, bool researchCraftable = true)
+        public int SacrificeItem(Item item, ResearchSource source = ResearchSource.Default, bool researchCraftable = true)
         {
             int itemId = item.type;
             if (HyperConfig.Instance.OnlyOneItemNeeded)
             {
-                if (!IsResearchable(itemId) || IsResearched(itemId)) return CreativeUI.ItemSacrificeResult.CannotSacrifice;
+                if (!IsResearchable(itemId) || IsResearched(itemId)) return 0;
                 if (--item.stack <= 0) item.TurnToAir();
                 ResearchItem(itemId, source, researchCraftable);
-                return CreativeUI.ItemSacrificeResult.SacrificedAndDone;
+                return 1;
             }
             else
             {
-                CreativeUI.ItemSacrificeResult result = CreativeUI.SacrificeItem(item, out int _);
+                CreativeUI.ItemSacrificeResult result = CreativeUI.SacrificeItem(item, out int amountSacrificed);
                 if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone)
                     AfterResearch(itemId, source, researchCraftable);
-                return result;
+                return amountSacrificed;
             }
         }
 

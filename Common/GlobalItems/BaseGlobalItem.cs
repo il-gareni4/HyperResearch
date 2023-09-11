@@ -13,26 +13,26 @@ namespace HyperResearch.Common.GlobalItems
     {
         public override bool OnPickup(Item item, Player player)
         {
-            if (Main.GameMode != 3) return base.OnPickup(item, player);
+            if (!Researcher.IsPlayerInJourneyMode()) return base.OnPickup(item, player);
             HyperConfig config = ModContent.GetInstance<HyperConfig>();
             return !(Researcher.IsResearched(item.type) && config.AutoTrashResearched);
         }
 
         public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
         {
-            if (Main.GameMode != 3) return base.CanConsumeAmmo(weapon, ammo, player);
+            if (!Researcher.IsPlayerInJourneyMode()) return base.CanConsumeAmmo(weapon, ammo, player);
             return ModContent.GetInstance<HyperConfig>().ConsumeResearchedAmmo || !Researcher.IsResearched(ammo.type);
         }
 
         public override bool? CanConsumeBait(Player player, Item bait)
         {
-            if (Main.GameMode != 3) return base.CanConsumeBait(player, bait);
+            if (!Researcher.IsPlayerInJourneyMode()) return base.CanConsumeBait(player, bait);
             return ModContent.GetInstance<HyperConfig>().ConsumeResearchedBaits || !Researcher.IsResearched(bait.type);
         }
 
         public override bool ConsumeItem(Item item, Player player)
         {
-            if (Main.GameMode != 3) return base.ConsumeItem(item, player);
+            if (!Researcher.IsPlayerInJourneyMode()) return base.ConsumeItem(item, player);
             HyperConfig config = ModContent.GetInstance<HyperConfig>();
             if (Researcher.IsResearched(item.type))
             {
@@ -48,7 +48,7 @@ namespace HyperResearch.Common.GlobalItems
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (Main.GameMode != 3) return;
+            if (!Researcher.IsPlayerInJourneyMode()) return;
             if (Researcher.IsResearched(item.type) || !Researcher.IsResearchable(item.type)) return;
 
             int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
@@ -73,7 +73,7 @@ namespace HyperResearch.Common.GlobalItems
 
         public override void OnResearched(Item item, bool fullyResearched)
         {
-            if (Main.GameMode != 3 || !fullyResearched) return;
+            if (!Researcher.IsPlayerInJourneyMode() || !fullyResearched) return;
             Main.LocalPlayer.GetModPlayer<HyperPlayer>().ItemsResearchedCount++;
         }
     }

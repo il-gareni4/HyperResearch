@@ -27,6 +27,11 @@ namespace HyperResearch.Common.Systems
             _duplicationMenu?.Update(gameTime);
         }
 
+        public override void OnWorldUnload()
+        {
+            DuplicationMenu.CreativePowerSelected = 0;
+        }
+
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
             int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));

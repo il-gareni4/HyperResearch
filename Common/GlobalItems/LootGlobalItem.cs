@@ -11,8 +11,8 @@ namespace HyperResearch.Common.GlobalItems
     {
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (Main.GameMode != 3) return;
-            if (!Researcher.IsResearched(item.type) ||
+            if (!Researcher.IsPlayerInJourneyMode() ||
+                !Researcher.IsResearched(item.type) ||
                 !ItemLoader.CanRightClick(item) ||
                 !ItemsUtils.IsLootItem(item.type)) return;
 

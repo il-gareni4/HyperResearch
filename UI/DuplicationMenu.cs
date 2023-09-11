@@ -1,10 +1,9 @@
 ﻿using HyperResearch.Common;
+using HyperResearch.Utils;
 using Microsoft.Xna.Framework;
-using System;
 using System.Linq;
 using System.Reflection;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
@@ -17,7 +16,7 @@ namespace HyperResearch.UI
     class DuplicationMenu : UIState
     {
         private int _lastItemsResearchedCount;
-        private int _crativePowerSelected = 0;
+        public int CreativePowerSelected = 0;
 
         private HyperPlayer _hyperPlayer;
         private LocalizedText _totalResearchedText;
@@ -38,17 +37,18 @@ namespace HyperResearch.UI
 
         public override void Update(GameTime gameTime)
         {
-            if (Main.GameMode != 3) return;
-            if (!ModContent.GetInstance<HyperConfig>().ShowTotalResearchedItemsCount)
+            if (!Researcher.IsPlayerInJourneyMode()) return;
+            if (!HyperConfig.Instance.ShowTotalResearchedItemsCount)
             {
                 if (Children.Count() != 0) RemoveAllChildren();
                 return;
             }
 
-            if (Main.CreativeMenu.Enabled && _crativePowerSelected == 1)
+            if (Main.CreativeMenu.Enabled && CreativePowerSelected == 1)
             {
                 if (Children.Count() == 0) Append(UITotalResearchedText);
-            } else RemoveAllChildren();
+            }
+            else RemoveAllChildren();
 
             if (_hyperPlayer is null)
             {
@@ -85,7 +85,7 @@ namespace HyperResearch.UI
 
             UITotalResearchedText.Left = StyleDimension.FromPixels(88f);
             UITotalResearchedText.Top = StyleDimension.FromPixelsAndPercent(-60f, 1f);
-            _crativePowerSelected = (int)currentOptionField.GetValue(menuTree);
+            CreativePowerSelected = (int)currentOptionField.GetValue(menuTree);
         }
     }
 }

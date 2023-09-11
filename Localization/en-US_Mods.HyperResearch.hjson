@@ -159,6 +159,15 @@ Configs: {
 			Tooltip: This type of messages can be seen if "Auto research items that are obtained after shimmer transmutation" is enabled
 		}
 
+		ShowPartiallyResearchedItems: {
+			Label: Show partially researched items when using keybind
+			Tooltip:
+				'''
+				When using the keybind "Research Inventory Items"
+				the chat will display which items have been partially researched
+				'''
+		}
+
 		ShowTotalResearchedItemsCount: {
 			Label: Show the total number of items researched
 			Tooltip:

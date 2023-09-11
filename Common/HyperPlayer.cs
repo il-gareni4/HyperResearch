@@ -32,7 +32,7 @@ namespace HyperResearch.Common
 
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
-            if (Main.GameMode != 3) return;
+            if (!Researcher.IsPlayerInJourneyMode()) return;
 #if DEBUG
             if (HyperResearch.ForgetBind.JustPressed)
             {
@@ -69,7 +69,7 @@ namespace HyperResearch.Common
 
         public override void OnEnterWorld()
         {
-            if (Main.GameMode != 3) return;
+            if (!Researcher.IsPlayerInJourneyMode()) return;
             foreach (int itemId in CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId.Keys)
             {
                 TryAddToResearchedTiles(itemId);
@@ -93,15 +93,14 @@ namespace HyperResearch.Common
 
         public override void PostUpdate()
         {
-            if (Main.GameMode != 3) return;
-            HyperConfig config = ModContent.GetInstance<HyperConfig>();
+            if (!Researcher.IsPlayerInJourneyMode()) return;
 
-            if (config.ResearchInventory) ResearchInventory();
+            if (HyperConfig.Instance.ResearchInventory) ResearchInventory();
         }
 
         public override bool HoverSlot(Item[] inventory, int context, int slot)
         {
-            if (Main.GameMode != 3) return base.HoverSlot(inventory, context, slot);
+            if (!Researcher.IsPlayerInJourneyMode()) return base.HoverSlot(inventory, context, slot);
             _hoverItem = inventory[slot];
             return base.HoverSlot(inventory, context, slot);
         }
@@ -121,6 +120,7 @@ namespace HyperResearch.Common
                 if (item.IsAir) continue;
                 items[item.type] = items.GetValueOrDefault(item.type, 0) + item.stack;
             }
+            if (items.Count == 0) return;
 
             Researcher researcher = new();
             foreach ((int itemId, int itemCount) in items)
@@ -141,36 +141,41 @@ namespace HyperResearch.Common
         {
             HyperConfig config = ModContent.GetInstance<HyperConfig>();
 
-            bool anyItemSacrificed = false;
+            Dictionary<int, int> sacrificed = new();
             Researcher researcher = new();
             for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
             {
                 Item item = Player.inventory[slot];
-                if (item.favorited || item.IsAir || Researcher.IsResearched(item.type)) continue;
-                if (!config.SacrificeHotbarSlots && slot >= 0 && slot <= 9) continue;
-                if (!config.SacrificeCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
-                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount)
-                {
-                    continue;
-                }
+                int itemId = item.type; // If item turned into air than it will lose id
 
-                if (!config.SacrificeAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
-                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount)
-                {
-                    continue;
-                }
+                if (item.favorited || item.IsAir ||
+                    Researcher.IsResearched(item.type) || !Researcher.IsResearchable(item.type) ||
+                    (!config.SacrificeHotbarSlots && slot >= 0 && slot <= 9) ||
+                    (!config.SacrificeCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
+                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount) || 
+                    (!config.SacrificeAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
+                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount)) {
+                        continue;
+                    }
 
-                if (researcher.SacrificeItem(item) != CreativeUI.ItemSacrificeResult.CannotSacrifice)
-                    anyItemSacrificed = true;
+                int itemsNeeded = Researcher.ItemTotalResearchCount(itemId) - Researcher.ItemResearchedCount(itemId);
+                int researched = researcher.SacrificeItem(item);
+                if (researched != 0) {
+                    if (itemsNeeded != researched) 
+                        sacrificed[itemId] = sacrificed.GetValueOrDefault(itemId, 0) + researched;
+                    else
+                        sacrificed.Remove(itemId);
+                }
             }
 
             if (ModContent.GetInstance<HyperConfig>().AutoTrashAfterResearching && researcher.AnyItemResearched())
                 TrashInventoryItems(researcher.AllResearchedItems);
 
+            TextUtils.MessageSacrifices(sacrificed);
             TextUtils.MessageResearcherResults(researcher);
 
-            if (researcher.ResearchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
-            else if (anyItemSacrificed) SoundEngine.PlaySound(SoundID.Research);
+            if (researcher.AnyItemResearched()) SoundEngine.PlaySound(SoundID.ResearchComplete);
+            else if (sacrificed.Count > 0) SoundEngine.PlaySound(SoundID.Research);
         }
 
         public void ClearResearched()
