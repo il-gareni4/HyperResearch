@@ -12,9 +12,7 @@ Hyper Research is quality of life mod that adds a lot of useful features to the 
 [*]Researching the contents of NPC shops in one tap
 [*]Infinite researched consumable items (divided into categories: potions, blocks, throwing weapons, etc.)
 [*]Messages notifying about researching new items and crafting items
-[*]Max stack researched items
 [*]Custom research tooltip which will be visible even in mods
-[*]Shows the number of items researched and the total number of items that can be researched 
 [/list]
 
 [h3]Minor features[/h3]
