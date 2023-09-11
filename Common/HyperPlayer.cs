@@ -55,7 +55,7 @@ namespace HyperResearch.Common
                 SoundEngine.PlaySound(SoundID.Grab);
             }
             if (HyperResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
-                Researcher.IsResearched(Main.HoverItem.type))
+                Researcher.IsResearched(Main.HoverItem.type) && ItemsUtils.CanOpenLootItem(Main.HoverItem.type))
             {
                 ResearchAndMessageLoot(Main.HoverItem.type);
             }

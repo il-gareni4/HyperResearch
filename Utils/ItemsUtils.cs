@@ -19,6 +19,14 @@ namespace HyperResearch.Utils
             return rules.Count > 0;
         }
 
+        public static bool CanOpenLootItem(int itemId) {
+            if (itemId == ItemID.LockBox) 
+                return Researcher.IsResearched(ItemID.GoldenKey);
+            else if (itemId == ItemID.ObsidianLockbox) 
+                return Researcher.IsResearched(ItemID.ShadowKey) || Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(ItemID.ShadowKey);
+            return true;
+        }
+
         public static IEnumerable<int> GetItemLoot(int itemId)
         {
             List<IItemDropRule> itemDropRules = Main.ItemDropsDB.GetRulesForItemID(itemId);
