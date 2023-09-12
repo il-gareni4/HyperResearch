@@ -20,8 +20,8 @@ namespace HyperResearch
         {
             if (Main.PlayerLoaded)
             {
-                if (!PrevOnlyOneItemNeeded && OnlyOneItemNeeded)
-                    Main.LocalPlayer.GetModPlayer<HyperPlayer>().RecheckResearchingItems();
+                if (!PrevOnlyOneItemNeeded && OnlyOneItemNeeded && Main.LocalPlayer.TryGetModPlayer(out HyperPlayer player))
+                    player.RecheckResearchingItems();
             }
             PrevOnlyOneItemNeeded = OnlyOneItemNeeded;
         }
