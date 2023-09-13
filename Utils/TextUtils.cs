@@ -48,8 +48,8 @@ namespace HyperResearch.Utils
             int i = 0;
             foreach ((int itemId, int count) in sacrifices)
             {
-                int needed = Researcher.ItemTotalResearchCount(itemId);
-                int researched = Researcher.ItemResearchedCount(itemId);
+                int needed = Researcher.GetTotalNeeded(itemId);
+                int researched = Researcher.GetResearchedCount(itemId);
                 sacrificesStr += $"[i/s{count}:{itemId}]({researched}/{needed})";
                 if (i++ != sacrifices.Count - 1) sacrificesStr += ", ";
             }

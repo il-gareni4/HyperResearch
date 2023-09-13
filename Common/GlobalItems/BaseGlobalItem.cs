@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace HyperResearch.Common.GlobalItems
 {
@@ -54,15 +55,15 @@ namespace HyperResearch.Common.GlobalItems
             if (Researcher.IsResearched(item.type) || !Researcher.IsResearchable(item.type)) return;
 
             int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
-            if (!HyperConfig.Instance.UseCustomResearchTooltip && HyperConfig.Instance.OnlyOneItemNeeded && vanillaTooltipIndex >= 0)
+            if (!HyperConfig.Instance.UseCustomResearchTooltip)
             {
-                tooltips[vanillaTooltipIndex].Text = Regex.Replace(tooltips[vanillaTooltipIndex].Text, @"\d+", "1");
+                if (HyperConfig.Instance.OnlyOneItemNeeded && vanillaTooltipIndex >= 0)
+                    tooltips[vanillaTooltipIndex].Text = Regex.Replace(tooltips[vanillaTooltipIndex].Text, @"\d+", "1");
                 return;
             }
-            else if (!HyperConfig.Instance.UseCustomResearchTooltip) return;
 
-            int researched = Researcher.ItemResearchedCount(item.type);
-            int totalNeeded = Researcher.ItemTotalResearchCount(item.type);
+            int researched = Researcher.GetResearchedCount(item.type);
+            int totalNeeded = Researcher.GetTotalNeeded(item.type);
             int remaining = totalNeeded - researched;
             LocalizedText tooltipText = Language.GetText("Mods.HyperResearch.Tooltips.NeededToResearch");
             TooltipLine hyperResearch = new(Mod, "HyperResearch", tooltipText.Format(remaining, researched, totalNeeded))
@@ -76,11 +77,12 @@ namespace HyperResearch.Common.GlobalItems
         public override void OnResearched(Item item, bool fullyResearched)
         {
             if (!Researcher.IsPlayerInJourneyMode() || !fullyResearched) return;
-            if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer player))
+            if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
             {
-                player.ItemsResearchedCount++;
+                modPlayer.TryAddToResearchedTiles(item.type);
+                modPlayer.ItemsResearchedCount++;
                 if (BannerSystem.ItemToBanner.TryGetValue(item.type, out var bannerId))
-                    player.ResearchedBanners.Add(bannerId);
+                    modPlayer.ResearchedBanners.Add(bannerId);
             }
         }
     }

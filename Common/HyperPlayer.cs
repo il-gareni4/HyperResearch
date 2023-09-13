@@ -47,7 +47,7 @@ namespace HyperResearch.Common
             if (KeybindSystem.ResearchAllBind.JustPressed)
             {
                 Researcher researcher = new();
-                researcher.ResearchItems(Enumerable.Range(0, ItemLoader.ItemCount));
+                researcher.ResearchItems(Enumerable.Range(0, ItemLoader.ItemCount), researchCraftable: false);
                 TextUtils.MessageResearcherResults(researcher);
             }
 #endif
@@ -93,7 +93,7 @@ namespace HyperResearch.Common
 
                 if (Researcher.IsResearched(itemId))
                 {
-                    if (Researcher.ItemSharedValue(itemId) == -1)
+                    if (Researcher.GetSharedValue(itemId) == -1)
                         ItemsResearchedCount++;
                     if (BannerSystem.ItemToBanner.TryGetValue(itemId, out int bannerId))
                         ResearchedBanners.Add(bannerId);
@@ -101,7 +101,7 @@ namespace HyperResearch.Common
                 else
                 {
                     if (HyperConfig.Instance.OnlyOneItemNeeded && Researcher.IsResearchable(itemId) &&
-                        Researcher.ItemResearchedCount(itemId) >= 1) researcher.ResearchItem(itemId);
+                        Researcher.GetResearchedCount(itemId) >= 1) researcher.ResearchItem(itemId);
                 }
             }
             TextUtils.MessageResearcherResults(researcher);
@@ -174,7 +174,7 @@ namespace HyperResearch.Common
                     continue;
                 }
 
-                int itemsNeeded = Researcher.ItemTotalResearchCount(itemId) - Researcher.ItemResearchedCount(itemId);
+                int itemsNeeded = Researcher.GetTotalNeeded(itemId) - Researcher.GetResearchedCount(itemId);
                 int researched = researcher.SacrificeItem(item);
                 if (researched != 0)
                 {
@@ -237,16 +237,18 @@ namespace HyperResearch.Common
         /// <returns>Has any tile been added to the <see cref="ResearchedTiles"/></returns>
         public bool TryAddToResearchedTiles(int itemId)
         {
-            if (!ContentSamples.ItemsByType.ContainsKey(itemId)) return false;
-
-            Item item = ContentSamples.ItemsByType[itemId];
-            if (item.createTile < TileID.Dirt || !Researcher.IsResearched(itemId)) return false;
+            if (!ContentSamples.ItemsByType.TryGetValue(itemId, out Item item) ||
+                item.createTile < TileID.Dirt || !Researcher.IsResearched(itemId)) 
+            {
+                return false;
+            }
 
             ResearchedTiles[item.createTile] = true;
             ModTile t = TileLoader.GetTile(item.createTile);
-            if (t != null)
+            if (t is not null)
+            {
                 foreach (int adj in t.AdjTiles) ResearchedTiles[adj] = true;
-
+            }
             return true;
         }
 
@@ -264,7 +266,6 @@ namespace HyperResearch.Common
                 if (item.shopSpecialCurrency != -1 && item.shopCustomPrice is not null &&
                     CustomCurrencyManager.TryGetCurrencySystem(item.shopSpecialCurrency, out CustomCurrencySystem system))
                 {
-                    // Use reflection to get a protected field that stores the item's ID and its local cost
                     FieldInfo info = system.GetType().GetField("_valuePerUnit", BindingFlags.NonPublic | BindingFlags.Instance);
                     if (info is null) continue;
 
@@ -288,7 +289,7 @@ namespace HyperResearch.Common
             Researcher researcher = new();
             for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++)
             {
-                if (Researcher.IsResearchable(itemId) && !Researcher.IsResearched(itemId) && Researcher.ItemResearchedCount(itemId) >= 1)
+                if (Researcher.IsResearchable(itemId) && !Researcher.IsResearched(itemId) && Researcher.GetResearchedCount(itemId) >= 1)
                     researcher.ResearchItem(itemId);
             }
             TextUtils.MessageResearcherResults(researcher);

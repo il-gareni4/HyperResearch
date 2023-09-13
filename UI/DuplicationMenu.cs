@@ -58,6 +58,9 @@ namespace HyperResearch.UI
             {
                 if (_hyperPlayer.ItemsResearchedCount == HyperResearch.ResearchableItemsCount)
                     UITotalResearchedText.TextColor = Colors.CoinGold;
+                else
+                    UITotalResearchedText.TextColor = Colors.JourneyMode;
+                _lastItemsResearchedCount = _hyperPlayer.ItemsResearchedCount;
                 UITotalResearchedText.SetText(GetTotalResearchedText());
             }
         }
@@ -75,8 +78,6 @@ namespace HyperResearch.UI
 
         private string GetTotalResearchedText()
         {
-
-            _lastItemsResearchedCount = _hyperPlayer.ItemsResearchedCount;
             string percentResearched = string.Format("{0:0.00}", (float)_hyperPlayer.ItemsResearchedCount / HyperResearch.ResearchableItemsCount * 100);
             return _totalResearchedText.Format(percentResearched, _hyperPlayer.ItemsResearchedCount, HyperResearch.ResearchableItemsCount);
         }
