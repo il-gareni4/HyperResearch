@@ -13,6 +13,7 @@ Hyper Research is quality of life mod that adds a lot of useful features to the 
 [*]Infinite researched consumable items (divided into categories: potions, blocks, throwing weapons, etc.)
 [*]Messages notifying about researching new items and crafting items
 [*]Custom research tooltip which will be visible even in mods
+[*]Ability to use the buff from researched banners without having to place banners
 [/list]
 
 [h3]Minor features[/h3]
@@ -25,8 +26,9 @@ Hyper Research is quality of life mod that adds a lot of useful features to the 
 Currently working on (in order of priority)
 [list]
 [*] (constantly) Bug fixing
-[*] Using buffs from learned banners
 [*] UI (quick research, clear and autocraft buttons, as well as shop research button)
+[*] A feature that allows you to disable certain banners buffs
+[*] Infinite buff of researched potions and the ability to disable certain potions
 [*] (sometime in the future) testing and if needed multiplayer support
 [*] (maybe) Port of the mod for game version 1.4.3
 [/list]
