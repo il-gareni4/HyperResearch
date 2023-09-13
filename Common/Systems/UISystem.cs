@@ -27,9 +27,14 @@ namespace HyperResearch.Common.Systems
             _duplicationMenu?.Update(gameTime);
         }
 
+        public override void OnWorldLoad()
+        {
+            DuplicationMenu.OnWorldLoad();
+        }
+
         public override void OnWorldUnload()
         {
-            DuplicationMenu.CreativePowerSelected = 0;
+            DuplicationMenu.OnWorldUnload();
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)

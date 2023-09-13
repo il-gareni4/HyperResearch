@@ -50,12 +50,7 @@ namespace HyperResearch.UI
             }
             else RemoveAllChildren();
 
-            if (_hyperPlayer is null)
-            {
-                if (Main.PlayerLoaded && Main.LocalPlayer.TryGetModPlayer(out HyperPlayer player))
-                    _hyperPlayer = player;
-                else return;
-            }
+            if (_hyperPlayer is null) return;
 
             if (_lastItemsResearchedCount != _hyperPlayer.ItemsResearchedCount)
             {
@@ -63,6 +58,17 @@ namespace HyperResearch.UI
                     UITotalResearchedText.TextColor = Colors.CoinGold;
                 UITotalResearchedText.SetText(GetTotalResearchedText());
             }
+        }
+
+        public void OnWorldLoad()
+        {
+            CreativePowerSelected = 0;
+            _hyperPlayer = Main.LocalPlayer.GetModPlayer<HyperPlayer>();
+        }
+
+        public void OnWorldUnload()
+        {
+            if (Children.Count() != 0) RemoveAllChildren();
         }
 
         private string GetTotalResearchedText()
