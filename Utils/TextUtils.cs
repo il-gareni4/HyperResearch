@@ -42,7 +42,7 @@ namespace HyperResearch.Utils
         }
 
         public static void MessageSacrifices(Dictionary<int, int> sacrifices) {
-            if (!HyperConfig.Instance.ShowNewlyResearchedItems || sacrifices.Count == 0) return;
+            if (!HyperConfig.Instance.ShowPartiallyResearchedItems || sacrifices.Count == 0) return;
             string researchStr = sacrifices.Count() > 1 ? $"{sacrifices.Count()} items" : "item";
             string sacrificesStr = "";
             int i = 0;
