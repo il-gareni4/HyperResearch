@@ -104,7 +104,7 @@ Configs: {
 		}
 
 		ClearHotbarSlots: {
-			Label: "[i:{0}] Clear hotbar slots on Clear Researched Items Items key"
+			Label: "[i:{0}] Clear hotbar slots on Clear Researched Items key"
 			Tooltip: ""
 		}
 
