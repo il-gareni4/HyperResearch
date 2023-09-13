@@ -1,4 +1,5 @@
-﻿using HyperResearch.Utils;
+﻿using HyperResearch.Common.Systems;
+using HyperResearch.Utils;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Terraria;
@@ -74,7 +75,12 @@ namespace HyperResearch.Common.GlobalItems
         public override void OnResearched(Item item, bool fullyResearched)
         {
             if (!Researcher.IsPlayerInJourneyMode() || !fullyResearched) return;
-            Main.LocalPlayer.GetModPlayer<HyperPlayer>().ItemsResearchedCount++;
+            if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer player))
+            {
+                player.ItemsResearchedCount++;
+                if (BannerSystem.ItemToBanner.TryGetValue(item.type, out var bannerId))
+                    player.ResearchedBanners.Add(bannerId);
+            }
         }
     }
 }

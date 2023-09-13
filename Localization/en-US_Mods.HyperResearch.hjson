@@ -65,6 +65,15 @@ Configs: {
 			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
 		}
 
+		UseResearchedBannersBuff: {
+			Label: "[i:{0}] Use the buff of researched banners"
+			Tooltip:
+				'''
+				If you have researched an NPC banner, the effect of the banner
+				will affect you even if you did not place the banner
+				'''
+		}
+
 		OnlyOneItemNeeded: {
 			Label: "[i:{0}] Only one item is required for full research"
 			Tooltip: ""

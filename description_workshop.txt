@@ -25,8 +25,8 @@ Hyper Research is quality of life mod that adds a lot of useful features to the 
 Currently working on (in order of priority)
 [list]
 [*] (constantly) Bug fixing
-[*] UI (quick research, clear and autocraft buttons, as well as shop research button)
 [*] Using buffs from learned banners
+[*] UI (quick research, clear and autocraft buttons, as well as shop research button)
 [*] (sometime in the future) testing and if needed multiplayer support
 [*] (maybe) Port of the mod for game version 1.4.3
 [/list]

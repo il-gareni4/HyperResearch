@@ -57,6 +57,10 @@ namespace HyperResearch
 
         [Header("OtherSettingsHeader")]
 
+        [LabelArgs(ItemID.ZombieBanner)]
+        [DefaultValue(false)]
+        public bool UseResearchedBannersBuff;
+
         [LabelArgs(ItemID.AlphabetStatue1)]
         [DefaultValue(false)]
         public bool OnlyOneItemNeeded;
