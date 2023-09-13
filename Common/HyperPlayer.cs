@@ -262,22 +262,10 @@ namespace HyperResearch.Common
             List<int> toResearch = new();
             foreach (Item item in shop)
             {
-                if (item == null || item.IsAir) continue;
-                if (item.shopSpecialCurrency != -1 && item.shopCustomPrice is not null &&
-                    CustomCurrencyManager.TryGetCurrencySystem(item.shopSpecialCurrency, out CustomCurrencySystem system))
-                {
-                    FieldInfo info = system.GetType().GetField("_valuePerUnit", BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (info is null) continue;
-
-                    Dictionary<int, int> currencyItems = (Dictionary<int, int>)info.GetValue(system);
-                    if (currencyItems.Any(itemWorth => Researcher.IsResearched(itemWorth.Key)))
-                        toResearch.Add(item.type);
-                }
-                else
-                {
-                    bool anyCoinReseached = new List<int>() { ItemID.CopperCoin, ItemID.SilverCoin, ItemID.GoldCoin, ItemID.PlatinumCoin }.Any(Researcher.IsResearched);
-                    if (anyCoinReseached) toResearch.Add(item.type);
-                }
+                if (item == null || item.IsAir || (item.shopSpecialCurrency != -1 && item.shopCustomPrice is null)) continue;
+                Dictionary<int, int> currencyValues = ItemsUtils.GetCurrencyItemsAndValues(item.shopSpecialCurrency);
+                if (currencyValues is not null && currencyValues.Keys.Any(Researcher.IsResearched))
+                    toResearch.Add(item.type);
             }
 
             if (TryResearchAndMessage(toResearch)) SoundEngine.PlaySound(SoundID.ResearchComplete);

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 
 namespace HyperResearch.Utils
@@ -10,6 +12,13 @@ namespace HyperResearch.Utils
     /// <seealso cref="Item"/>
     public static class ItemsUtils
     {
+        private static readonly Dictionary<int, int> _coinsCurrency = new()
+        {
+            { ItemID.CopperCoin, 1 },
+            { ItemID.SilverCoin, 100 },
+            { ItemID.GoldCoin, 10_000 },
+            { ItemID.PlatinumCoin, 1_000_000 }
+        };
         /// <summary>
         /// More readable variant of <code>Main.ItemDropsDB.GetRulesForItemID(itemId).Count == 0</code>
         /// </summary>
@@ -51,6 +60,20 @@ namespace HyperResearch.Utils
             if (ItemID.Sets.ShimmerCountsAsItem[itemId] != -1)
                 itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];
             return ItemID.Sets.ShimmerTransformToItem[itemId];
+        }
+
+        public static Dictionary<int, int> GetCurrencyItemsAndValues(int currencyId)
+        {
+            if (currencyId == -1)
+                return _coinsCurrency;
+
+            if (CustomCurrencyManager.TryGetCurrencySystem(currencyId, out CustomCurrencySystem system))
+            {
+                return (Dictionary<int, int>)system.GetType()
+                    .GetField("_valuePerUnit", BindingFlags.NonPublic | BindingFlags.Instance)
+                    ?.GetValue(system);
+            }
+            else return null;
         }
     }
 }
