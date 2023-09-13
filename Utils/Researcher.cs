@@ -73,6 +73,8 @@ namespace HyperResearch.Utils
 
         public static bool IsResearchable(int itemId)
         {
+            Item item = ContentSamples.ItemsByType[itemId];
+            if (item.IsAir || item.type != itemId) return false;
             return CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out _);
         }
 
@@ -134,8 +136,8 @@ namespace HyperResearch.Utils
         /// <returns>Researched crafting items</returns>
         public void ResearchItem(int itemId, ResearchSource source = ResearchSource.Default, bool researchCraftable = true)
         {
-            CreativeUI.ResearchItem(itemId);
-            AfterResearch(itemId, source, researchCraftable);
+            CreativeUI.ItemSacrificeResult result = CreativeUI.ResearchItem(itemId);
+            if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone) AfterResearch(itemId, source, researchCraftable);
         }
 
         /// <param name="items">Items to research</param>
@@ -144,8 +146,8 @@ namespace HyperResearch.Utils
         public void ResearchItems(IEnumerable<int> items, ResearchSource source = ResearchSource.Default, bool researchCraftable = true)
         {
             foreach (int itemId in items)
-                TryResearchItem(itemId, source, researchCraftable);
-            ResearchCraftable();
+                TryResearchItem(itemId, source, false);
+            if (researchCraftable) ResearchCraftable();
         }
 
         public void ResearchCraftable()

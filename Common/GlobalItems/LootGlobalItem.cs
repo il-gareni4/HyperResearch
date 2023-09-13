@@ -1,3 +1,4 @@
+using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace HyperResearch.Common.GlobalItems
 
             if (ItemsUtils.GetItemLoot(item.type).All(Researcher.IsResearched)) return;
 
-            string keybindStr = InputUtils.GetKeybindString(HyperResearch.ResearchLootBind);
+            string keybindStr = InputUtils.GetKeybindString(KeybindSystem.ResearchLootBind);
             TooltipLine tooltipLine = new(Mod, "ResearchLoot", Language.GetText("Mods.HyperResearch.Tooltips.ResearchLoot").Format(keybindStr))
             {
                 OverrideColor = Terraria.ID.Colors.JourneyMode

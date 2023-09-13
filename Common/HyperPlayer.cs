@@ -37,19 +37,24 @@ namespace HyperResearch.Common
         {
             if (!Researcher.IsPlayerInJourneyMode()) return;
 #if DEBUG
-            if (HyperResearch.ForgetBind.JustPressed)
+            if (KeybindSystem.ForgetBind.JustPressed)
             {
                 Player.creativeTracker.Reset();
                 ResearchedTiles.Clear();
                 ItemsResearchedCount = 0;
                 ResearchedBanners.Clear();
             }
-
+            if (KeybindSystem.ResearchAllBind.JustPressed)
+            {
+                Researcher researcher = new();
+                researcher.ResearchItems(Enumerable.Range(0, ItemLoader.ItemCount));
+                TextUtils.MessageResearcherResults(researcher);
+            }
 #endif
-            if (HyperResearch.SacrificeInventoryBind.JustPressed) SacrificeInventory();
-            if (HyperResearch.ClearResearchedBind.JustPressed) ClearResearched();
-            if (HyperResearch.ResearchCraftableBind.JustPressed) ResearchAndMessageCraftable();
-            if (HyperResearch.MaxStackBind.JustPressed && !Main.HoverItem.IsAir &&
+            if (KeybindSystem.SacrificeInventoryBind.JustPressed) SacrificeInventory();
+            if (KeybindSystem.ClearResearchedBind.JustPressed) ClearResearched();
+            if (KeybindSystem.ResearchCraftableBind.JustPressed) ResearchAndMessageCraftable();
+            if (KeybindSystem.MaxStackBind.JustPressed && !Main.HoverItem.IsAir &&
                 (Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryItem ||
                 Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryCoin ||
                 Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryAmmo) &&
@@ -58,13 +63,13 @@ namespace HyperResearch.Common
                 _hoverItem.stack = Main.HoverItem.maxStack;
                 SoundEngine.PlaySound(SoundID.Grab);
             }
-            if (HyperResearch.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
+            if (KeybindSystem.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
                 Researcher.IsResearched(Main.HoverItem.type) && ItemsUtils.CanOpenLootItem(Main.HoverItem.type))
             {
                 ResearchAndMessageLoot(Main.HoverItem.type);
             }
 
-            if (HyperResearch.ResearchShopBind.JustPressed && Player.TalkNPC is not null &&
+            if (KeybindSystem.ResearchShopBind.JustPressed && Player.TalkNPC is not null &&
                 Main.npcShop > 0 && CurrentShopItems.Length > 0)
             {
                 ResearchShop(CurrentShopItems);
