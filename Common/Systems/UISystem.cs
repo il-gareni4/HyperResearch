@@ -2,6 +2,7 @@
 using HyperResearch.UI;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.UI.States;
 using Terraria.ModLoader;
 using Terraria.UI;
 

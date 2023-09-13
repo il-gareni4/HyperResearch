@@ -149,8 +149,6 @@ namespace HyperResearch.Common
         /// </summary>
         public void SacrificeInventory()
         {
-            HyperConfig config = ModContent.GetInstance<HyperConfig>();
-
             Dictionary<int, int> sacrificed = new();
             Researcher researcher = new();
             for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
@@ -160,10 +158,10 @@ namespace HyperResearch.Common
 
                 if (item.favorited || item.IsAir ||
                     Researcher.IsResearched(item.type) || !Researcher.IsResearchable(item.type) ||
-                    (!config.SacrificeHotbarSlots && slot >= 0 && slot <= 9) ||
-                    (!config.SacrificeCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
+                    (!HyperConfig.Instance.SacrificeHotbarSlots && slot >= 0 && slot <= 9) ||
+                    (!HyperConfig.Instance.SacrificeCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
                     slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount) || 
-                    (!config.SacrificeAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
+                    (!HyperConfig.Instance.SacrificeAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
                     slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount)) {
                         continue;
                     }
@@ -178,7 +176,7 @@ namespace HyperResearch.Common
                 }
             }
 
-            if (ModContent.GetInstance<HyperConfig>().AutoTrashAfterResearching && researcher.AnyItemResearched())
+            if (HyperConfig.Instance.AutoTrashAfterResearching && researcher.AnyItemResearched())
                 TrashInventoryItems(researcher.AllResearchedItems);
 
             TextUtils.MessageSacrifices(sacrificed);
@@ -190,21 +188,19 @@ namespace HyperResearch.Common
 
         public void ClearResearched()
         {
-            HyperConfig config = ModContent.GetInstance<HyperConfig>();
-
             bool anyItemCleaned = false;
             for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
             {
                 Item item = Player.inventory[slot];
                 if (item.favorited || item.IsAir || !Researcher.IsResearched(item.type)) continue;
-                if (!config.ClearHotbarSlots && slot >= 0 && slot <= 9) continue;
-                if (!config.ClearCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
+                if (!HyperConfig.Instance.ClearHotbarSlots && slot >= 0 && slot <= 9) continue;
+                if (!HyperConfig.Instance.ClearCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
                     slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount)
                 {
                     continue;
                 }
 
-                if (!config.ClearAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
+                if (!HyperConfig.Instance.ClearAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
                     slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount)
                 {
                     continue;

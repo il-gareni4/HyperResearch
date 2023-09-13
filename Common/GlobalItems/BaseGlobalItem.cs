@@ -15,33 +15,35 @@ namespace HyperResearch.Common.GlobalItems
         public override bool OnPickup(Item item, Player player)
         {
             if (!Researcher.IsPlayerInJourneyMode()) return base.OnPickup(item, player);
-            HyperConfig config = ModContent.GetInstance<HyperConfig>();
-            return !(Researcher.IsResearched(item.type) && config.AutoTrashResearched);
+            return !(Researcher.IsResearched(item.type) && HyperConfig.Instance.AutoTrashResearched);
         }
 
         public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
         {
             if (!Researcher.IsPlayerInJourneyMode()) return base.CanConsumeAmmo(weapon, ammo, player);
-            return ModContent.GetInstance<HyperConfig>().ConsumeResearchedAmmo || !Researcher.IsResearched(ammo.type);
+            return HyperConfig.Instance.ConsumeResearchedAmmo || !Researcher.IsResearched(ammo.type);
         }
 
         public override bool? CanConsumeBait(Player player, Item bait)
         {
             if (!Researcher.IsPlayerInJourneyMode()) return base.CanConsumeBait(player, bait);
-            return ModContent.GetInstance<HyperConfig>().ConsumeResearchedBaits || !Researcher.IsResearched(bait.type);
+            return HyperConfig.Instance.ConsumeResearchedBaits || !Researcher.IsResearched(bait.type);
         }
 
         public override bool ConsumeItem(Item item, Player player)
         {
             if (!Researcher.IsPlayerInJourneyMode()) return base.ConsumeItem(item, player);
-            HyperConfig config = ModContent.GetInstance<HyperConfig>();
             if (Researcher.IsResearched(item.type))
             {
-                if (item.createTile >= TileID.Dirt || item.createWall > WallID.None) return config.ConsumeResearchedBlocks;
-                else if (item.shoot > ProjectileID.None) return config.ConsumeResearchedThrowingWeapons;
-                else if (item.potion || item.healMana > 0 || item.buffType > 0) return config.ConsumeResearchedPotions;
-                else if (ItemsUtils.IsLootItem(item.type)) return config.ConsumeResearchedLootItems;
-                else if (!config.ConsumeOtherResearchedItems)
+                if (item.createTile >= TileID.Dirt || item.createWall > WallID.None) 
+                    return HyperConfig.Instance.ConsumeResearchedBlocks;
+                else if (item.shoot > ProjectileID.None) 
+                    return HyperConfig.Instance.ConsumeResearchedThrowingWeapons;
+                else if (item.potion || item.healMana > 0 || item.buffType > 0) 
+                    return HyperConfig.Instance.ConsumeResearchedPotions;
+                else if (ItemsUtils.IsLootItem(item.type)) 
+                    return HyperConfig.Instance.ConsumeResearchedLootItems;
+                else if (!HyperConfig.Instance.ConsumeOtherResearchedItems)
                     return false;
             }
             return base.ConsumeItem(item, player);

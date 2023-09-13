@@ -148,7 +148,6 @@ namespace HyperResearch.Utils
 
         public void ResearchCraftable()
         {
-            HyperConfig config = ModContent.GetInstance<HyperConfig>();
             HyperPlayer player = Main.LocalPlayer.GetModPlayer<HyperPlayer>();
 
             bool newItemResearched = true;
@@ -171,7 +170,7 @@ namespace HyperResearch.Utils
                         tileId => player.ResearchedTiles.GetValueOrDefault(tileId, false) || Main.LocalPlayer.adjTile[tileId]);
                     if (!allTilesResearched) continue;
 
-                    bool allConditionsAreMet = config.IgnoreCraftingConditions || recipe.Conditions.All(condition => condition.IsMet());
+                    bool allConditionsAreMet = HyperConfig.Instance.IgnoreCraftingConditions || recipe.Conditions.All(condition => condition.IsMet());
                     if (!allConditionsAreMet) continue;
 
                     newItemResearched = newItemResearched || recipe.createItem.material || recipe.createItem.createTile >= TileID.Dirt;
@@ -190,11 +189,9 @@ namespace HyperResearch.Utils
 
         private void AfterResearch(int itemId, ResearchSource source, bool researchCraftable)
         {
-            HyperConfig config = ModContent.GetInstance<HyperConfig>();
-
             Main.LocalPlayer.GetModPlayer<HyperPlayer>().TryAddToResearchedTiles(itemId);
-            if (config.AutoResearchShimmeredItems) TryResearchShimmeredItem(itemId);
-            if (researchCraftable && config.AutoResearchCraftable) ResearchCraftable();
+            if (HyperConfig.Instance.AutoResearchShimmeredItems) TryResearchShimmeredItem(itemId);
+            if (researchCraftable && HyperConfig.Instance.AutoResearchCraftable) ResearchCraftable();
 
             GetItemsListBySource(source).Add(itemId);
         }

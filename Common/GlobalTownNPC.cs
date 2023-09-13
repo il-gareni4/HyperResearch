@@ -10,10 +10,11 @@ namespace HyperResearch.Common
         {
             if (!Researcher.IsPlayerInJourneyMode()) return;
 
-            HyperPlayer modPlayer = Main.LocalPlayer.GetModPlayer<HyperPlayer>();
-            modPlayer.CurrentShopItems = items;
-            if (ModContent.GetInstance<HyperConfig>().AutoResearchShop) modPlayer.ResearchShop(items);
-            base.ModifyActiveShop(npc, shopName, items);
+            if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
+            {
+                modPlayer.CurrentShopItems = items;
+                if (HyperConfig.Instance.AutoResearchShop) modPlayer.ResearchShop(items);
+            }
         }
     }
 }
