@@ -1,4 +1,5 @@
 ﻿using HyperResearch.Common;
+using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using Microsoft.Xna.Framework;
 using System.Linq;
@@ -24,6 +25,8 @@ namespace HyperResearch.UI
 
         public override void OnInitialize()
         {
+            UISystem.WorldLoaded += OnWorldLoad;
+            UISystem.WorldUnloaded += OnWorldUnload;
             _totalResearchedText = Language.GetText("Mods.HyperResearch.UI.DuplicationMenu.TotalResearched");
 
             UITotalResearchedText = new("")

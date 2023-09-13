@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HyperResearch.UI;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -10,6 +11,9 @@ namespace HyperResearch.Common.Systems
 {
     class UISystem : ModSystem
     {
+        internal static event Action WorldLoaded;
+        internal static event Action WorldUnloaded;
+
         internal DuplicationMenu DuplicationMenu;
         private UserInterface _duplicationMenu;
 
@@ -28,15 +32,9 @@ namespace HyperResearch.Common.Systems
             _duplicationMenu?.Update(gameTime);
         }
 
-        public override void OnWorldLoad()
-        {
-            DuplicationMenu.OnWorldLoad();
-        }
+        public override void OnWorldLoad() => WorldLoaded?.Invoke();
 
-        public override void OnWorldUnload()
-        {
-            DuplicationMenu.OnWorldUnload();
-        }
+        public override void OnWorldUnload() => WorldUnloaded?.Invoke();
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
