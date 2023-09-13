@@ -85,13 +85,15 @@ namespace HyperResearch.Common
             {
                 if (HyperConfig.Instance.AutoResearchShimmeredItems)
                     researcher.TryResearchShimmeredItem(itemId);
-                
-                if (Researcher.IsResearched(itemId)) {
+
+                if (Researcher.IsResearched(itemId))
+                {
                     if (Researcher.ItemSharedValue(itemId) == -1)
                         ItemsResearchedCount++;
                     if (BannerSystem.ItemToBanner.TryGetValue(itemId, out int bannerId))
                         ResearchedBanners.Add(bannerId);
-                } else
+                }
+                else
                 {
                     if (HyperConfig.Instance.OnlyOneItemNeeded && Researcher.IsResearchable(itemId) &&
                         Researcher.ItemResearchedCount(itemId) >= 1) researcher.ResearchItem(itemId);
@@ -138,7 +140,7 @@ namespace HyperResearch.Common
 
             if (HyperConfig.Instance.AutoTrashAfterResearching && researcher.AnyItemResearched())
                 TrashInventoryItems(researcher.AllResearchedItems);
-            
+
 
             TextUtils.MessageResearcherResults(researcher);
             if (researcher.ResearchedItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
@@ -160,16 +162,18 @@ namespace HyperResearch.Common
                     Researcher.IsResearched(item.type) || !Researcher.IsResearchable(item.type) ||
                     (!HyperConfig.Instance.SacrificeHotbarSlots && slot >= 0 && slot <= 9) ||
                     (!HyperConfig.Instance.SacrificeCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
-                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount) || 
+                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount) ||
                     (!HyperConfig.Instance.SacrificeAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
-                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount)) {
-                        continue;
-                    }
+                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount))
+                {
+                    continue;
+                }
 
                 int itemsNeeded = Researcher.ItemTotalResearchCount(itemId) - Researcher.ItemResearchedCount(itemId);
                 int researched = researcher.SacrificeItem(item);
-                if (researched != 0) {
-                    if (itemsNeeded != researched) 
+                if (researched != 0)
+                {
+                    if (itemsNeeded != researched)
                         sacrificed[itemId] = sacrificed.GetValueOrDefault(itemId, 0) + researched;
                     else
                         sacrificed.Remove(itemId);
@@ -277,7 +281,8 @@ namespace HyperResearch.Common
         {
             if (!HyperConfig.Instance.OnlyOneItemNeeded) return;
             Researcher researcher = new();
-            for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++) {
+            for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++)
+            {
                 if (Researcher.IsResearchable(itemId) && !Researcher.IsResearched(itemId) && Researcher.ItemResearchedCount(itemId) >= 1)
                     researcher.ResearchItem(itemId);
             }

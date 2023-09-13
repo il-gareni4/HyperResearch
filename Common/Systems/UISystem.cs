@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using HyperResearch.UI;
+﻿using HyperResearch.UI;
 using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent.UI.States;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -43,7 +42,8 @@ namespace HyperResearch.Common.Systems
             {
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
                     "HyperResearch: Duplication Menu Text",
-                    () => {
+                    () =>
+                    {
                         _duplicationMenu.Draw(Main.spriteBatch, new GameTime());
                         return true;
                     },

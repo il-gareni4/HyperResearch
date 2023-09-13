@@ -14,7 +14,7 @@ namespace HyperResearch.Common.GlobalItems
             if (!Researcher.IsPlayerInJourneyMode() ||
                 !Researcher.IsResearched(item.type) ||
                 !ItemLoader.CanRightClick(item) ||
-                !ItemsUtils.IsLootItem(item.type) || 
+                !ItemsUtils.IsLootItem(item.type) ||
                 !ItemsUtils.CanOpenLootItem(item.type)) return;
 
             if (ItemsUtils.GetItemLoot(item.type).All(Researcher.IsResearched)) return;

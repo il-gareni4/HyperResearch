@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace HyperResearch.Utils
 {
@@ -41,12 +40,14 @@ namespace HyperResearch.Utils
             Main.NewText($"Researched {researchStr}: [i:{string.Join("][i:", items)}]", Color.Lerp(Colors.JourneyMode, Colors.RarityPurple, 0.4f));
         }
 
-        public static void MessageSacrifices(Dictionary<int, int> sacrifices) {
+        public static void MessageSacrifices(Dictionary<int, int> sacrifices)
+        {
             if (!HyperConfig.Instance.ShowPartiallyResearchedItems || sacrifices.Count == 0) return;
             string researchStr = sacrifices.Count() > 1 ? $"{sacrifices.Count()} items" : "item";
             string sacrificesStr = "";
             int i = 0;
-            foreach ((int itemId, int count) in sacrifices)  {
+            foreach ((int itemId, int count) in sacrifices)
+            {
                 int needed = Researcher.ItemTotalResearchCount(itemId);
                 int researched = Researcher.ItemResearchedCount(itemId);
                 sacrificesStr += $"[i/s{count}:{itemId}]({researched}/{needed})";

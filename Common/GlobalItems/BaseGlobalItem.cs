@@ -3,7 +3,6 @@ using HyperResearch.Utils;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -35,13 +34,13 @@ namespace HyperResearch.Common.GlobalItems
             if (!Researcher.IsPlayerInJourneyMode()) return base.ConsumeItem(item, player);
             if (Researcher.IsResearched(item.type))
             {
-                if (item.createTile >= TileID.Dirt || item.createWall > WallID.None) 
+                if (item.createTile >= TileID.Dirt || item.createWall > WallID.None)
                     return HyperConfig.Instance.ConsumeResearchedBlocks;
-                else if (item.shoot > ProjectileID.None) 
+                else if (item.shoot > ProjectileID.None)
                     return HyperConfig.Instance.ConsumeResearchedThrowingWeapons;
-                else if (item.potion || item.healMana > 0 || item.buffType > 0) 
+                else if (item.potion || item.healMana > 0 || item.buffType > 0)
                     return HyperConfig.Instance.ConsumeResearchedPotions;
-                else if (ItemsUtils.IsLootItem(item.type)) 
+                else if (ItemsUtils.IsLootItem(item.type))
                     return HyperConfig.Instance.ConsumeResearchedLootItems;
                 else if (!HyperConfig.Instance.ConsumeOtherResearchedItems)
                     return false;

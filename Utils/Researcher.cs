@@ -5,8 +5,6 @@ using System.Linq;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
-using Terraria.ModLoader;
-using tModPorter;
 
 namespace HyperResearch.Utils
 {
@@ -31,12 +29,16 @@ namespace HyperResearch.Utils
             ResearchedShimmeredItems = new();
         }
 
-        public List<int> AllResearchedItems { get {
+        public List<int> AllResearchedItems
+        {
+            get
+            {
                 return ResearchedItems.Concat(ResearchedCraftableItems).Concat(ResearchedShimmeredItems).ToList();
-            } 
+            }
         }
 
-        public static bool IsPlayerInJourneyMode() {
+        public static bool IsPlayerInJourneyMode()
+        {
             return Main.LocalPlayer.difficulty == 3;
         }
 

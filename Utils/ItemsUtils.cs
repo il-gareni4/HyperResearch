@@ -3,7 +3,6 @@ using System.Linq;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace HyperResearch.Utils
 {
@@ -20,10 +19,11 @@ namespace HyperResearch.Utils
             return rules.Count > 0;
         }
 
-        public static bool CanOpenLootItem(int itemId) {
-            if (itemId == ItemID.LockBox) 
+        public static bool CanOpenLootItem(int itemId)
+        {
+            if (itemId == ItemID.LockBox)
                 return Researcher.IsResearched(ItemID.GoldenKey);
-            else if (itemId == ItemID.ObsidianLockbox) 
+            else if (itemId == ItemID.ObsidianLockbox)
                 return Researcher.IsResearched(ItemID.ShadowKey) || Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(ItemID.ShadowKey);
             return true;
         }
@@ -43,7 +43,7 @@ namespace HyperResearch.Utils
             attemptInfo.rng = Main.rand;
 
             return dropRateInfos.Where(info => info.conditions?.All(c => c.CanDrop(attemptInfo)) ?? true)
-                                .Select(info =>  info.itemId);
+                                .Select(info => info.itemId);
         }
 
         public static int GetShimmeredItemId(int itemId)
