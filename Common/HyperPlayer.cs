@@ -3,11 +3,9 @@ using HyperResearch.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Creative;
-using Terraria.GameContent.UI;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -79,6 +77,7 @@ namespace HyperResearch.Common
         public override void OnEnterWorld()
         {
             if (!Researcher.IsPlayerInJourneyMode()) return;
+
             foreach (int itemId in CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId.Keys)
             {
                 TryAddToResearchedTiles(itemId);
@@ -238,7 +237,7 @@ namespace HyperResearch.Common
         public bool TryAddToResearchedTiles(int itemId)
         {
             if (!ContentSamples.ItemsByType.TryGetValue(itemId, out Item item) ||
-                item.createTile < TileID.Dirt || !Researcher.IsResearched(itemId)) 
+                item.createTile < TileID.Dirt || !Researcher.IsResearched(itemId))
             {
                 return false;
             }

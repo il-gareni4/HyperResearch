@@ -74,7 +74,7 @@ namespace HyperResearch.Utils
 
         public static bool IsResearchable(int itemId)
         {
-            if (ContentSamples.ItemsByType.TryGetValue(itemId, out Item item) && (item.IsAir || item.type != itemId)) 
+            if (ContentSamples.ItemsByType.TryGetValue(itemId, out Item item) && (item.IsAir || item.type != itemId))
                 return false;
             return CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out _);
         }

@@ -1,6 +1,5 @@
-﻿using HyperResearch.Common;
+﻿using System;
 using System.ComponentModel;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
 
@@ -8,7 +7,7 @@ namespace HyperResearch
 {
     public class HyperConfig : ModConfig
     {
-        private bool PrevOnlyOneItemNeeded { get; set; } = false;
+        public static event Action Changed;
 
         public static HyperConfig Instance;
 
@@ -16,15 +15,7 @@ namespace HyperResearch
 
         public override void OnLoaded() => Instance = this;
 
-        public override void OnChanged()
-        {
-            if (Main.PlayerLoaded)
-            {
-                if (!PrevOnlyOneItemNeeded && OnlyOneItemNeeded && Main.LocalPlayer.TryGetModPlayer(out HyperPlayer player))
-                    player.RecheckResearchingItems();
-            }
-            PrevOnlyOneItemNeeded = OnlyOneItemNeeded;
-        }
+        public override void OnChanged() => Changed?.Invoke();
 
         [LabelArgs(ItemID.YoyoBag)]
         [DefaultValue(true)]
