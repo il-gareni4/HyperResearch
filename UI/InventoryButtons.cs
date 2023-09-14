@@ -1,6 +1,7 @@
 ﻿using HyperResearch.Common.Systems;
 using HyperResearch.UI.Components;
 using HyperResearch.Utils;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
@@ -64,6 +65,11 @@ namespace HyperResearch.UI
         {
             if (Researcher.IsPlayerInJourneyMode() && ShowUI())
                 base.Draw(spriteBatch);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (Researcher.IsPlayerInJourneyMode()) base.Update(gameTime);
         }
 
         public void RebuildButtons()
