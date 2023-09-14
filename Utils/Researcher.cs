@@ -19,6 +19,32 @@ namespace HyperResearch.Utils
     /// <summary>Utility class that contains all the methods related to the research and sacrification of items</summary>
     public class Researcher
     {
+        public static readonly List<Condition> IgnoringCraftConditions = new()
+        {
+            Condition.NearWater, Condition.NearLava, Condition.NearHoney, Condition.NearShimmer,
+            Condition.TimeDay, Condition.TimeNight, Condition.InDungeon, Condition.InCorrupt,
+            Condition.InHallow, Condition.InMeteor, Condition.InJungle, Condition.InSnow,
+            Condition.InCrimson, Condition.InWaterCandle, Condition.InPeaceCandle, Condition.InTowerSolar,
+            Condition.InTowerVortex, Condition.InTowerNebula, Condition.InTowerStardust, Condition.InDesert,
+            Condition.InGlowshroom, Condition.InUndergroundDesert, Condition.InSkyHeight, Condition.InSpace,
+            Condition.InOverworldHeight, Condition.InDirtLayerHeight, Condition.InRockLayerHeight,
+            Condition.InUnderworldHeight, Condition.InUnderworld, Condition.InBeach, Condition.InRain,
+            Condition.InSandstorm, Condition.InOldOneArmy, Condition.InGranite, Condition.InMarble,
+            Condition.InHive, Condition.InGemCave, Condition.InLihzhardTemple, Condition.InGraveyard,
+            Condition.InAether, Condition.InShoppingZoneForest, Condition.InBelowSurface, Condition.InEvilBiome,
+            Condition.NotInEvilBiome, Condition.NotInHallow, Condition.NotInGraveyard, Condition.NotInUnderworld,
+            Condition.Christmas, Condition.Halloween, Condition.BloodMoon, Condition.NotBloodMoon, Condition.Eclipse,
+            Condition.NotEclipse, Condition.EclipseOrBloodMoon, Condition.NotEclipseAndNotBloodMoon,
+            Condition.Thunderstorm, Condition.BirthdayParty, Condition.LanternNight, Condition.HappyWindyDay,
+            Condition.BloodMoonOrHardmode, Condition.NightOrEclipse, Condition.MoonPhaseFull,
+            Condition.MoonPhaseWaningGibbous, Condition.MoonPhaseThirdQuarter, Condition.MoonPhaseWaningCrescent,
+            Condition.MoonPhaseNew, Condition.MoonPhaseWaxingCrescent, Condition.MoonPhaseFirstQuarter,
+            Condition.MoonPhaseWaxingGibbous, Condition.MoonPhasesQuarter0, Condition.MoonPhasesQuarter1,
+            Condition.MoonPhasesQuarter2, Condition.MoonPhasesQuarter3, Condition.MoonPhasesHalf0,
+            Condition.MoonPhasesHalf1, Condition.MoonPhasesEven, Condition.MoonPhasesOdd, Condition.MoonPhasesNearNew,
+            Condition.MoonPhasesEvenQuarters, Condition.MoonPhasesOddQuarters, Condition.MoonPhases04,
+            Condition.MoonPhases15, Condition.MoonPhases26, Condition.MoonPhases37,
+        };
         public List<int> ResearchedItems;
         public List<int> ResearchedCraftableItems;
         public List<int> ResearchedShimmeredItems;
@@ -154,7 +180,9 @@ namespace HyperResearch.Utils
                         tileId => player.ResearchedTiles.GetValueOrDefault(tileId, false) || Main.LocalPlayer.adjTile[tileId]);
                     if (!allTilesResearched) continue;
 
-                    bool allConditionsAreMet = HyperConfig.Instance.IgnoreCraftingConditions || recipe.Conditions.All(condition => condition.IsMet());
+                    bool allConditionsAreMet = recipe.Conditions.All(condition =>
+                        IgnoringCraftConditions.Contains(condition) && HyperConfig.Instance.IgnoreCraftingConditions ? true : condition.IsMet()
+                    );
                     if (!allConditionsAreMet) continue;
 
                     newItemResearched = newItemResearched || recipe.createItem.material || recipe.createItem.createTile >= TileID.Dirt;

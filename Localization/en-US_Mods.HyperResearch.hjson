@@ -50,8 +50,14 @@ Configs: {
 		}
 
 		IgnoreCraftingConditions: {
-			Label: "[i:{0}] Ignore crafting conditions"
-			Tooltip: Ignore crafting conditions such as being near water, Ecto Mist, etc.
+			Label: "[i:{0}] Ignore some crafting conditions"
+			Tooltip:
+				'''
+				For autocrafting items, the following types of conditions are ignored: conditions of being near a liquid,
+				conditions of time, events and moons, conditions of being in a biome.
+				This means that the conditions of a certain world seed and boss kills will not be ignored anyway.
+				All custom mod conditions will be ignored.
+				'''
 		}
 
 		AutoResearchShop: {
