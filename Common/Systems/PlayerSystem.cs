@@ -16,16 +16,23 @@ namespace HyperResearch.Common.Systems
             ModContent.GetInstance<UISystem>().InventoryButtons.ResearchButton.OnLeftMouseDown += OnResearchButtonMouseDown;
             ModContent.GetInstance<UISystem>().InventoryButtons.ClearButton.OnLeftMouseDown += OnClearButtonMouseDown;
             ModContent.GetInstance<UISystem>().InventoryButtons.AutoCraftButton.OnLeftMouseDown += OnAutoCraftButtonMouseDown;
+            ModContent.GetInstance<UISystem>().ShopButtons.ResearchShopButton.OnLeftMouseDown += OnShopButtonMouseDown;
         }
 
         public override void OnWorldUnload()
         {
             HyperConfig.Changed -= HPlayer.RecheckResearchingItems;
+            ModContent.GetInstance<UISystem>().InventoryButtons.ResearchButton.OnLeftMouseDown -= OnResearchButtonMouseDown;
+            ModContent.GetInstance<UISystem>().InventoryButtons.ClearButton.OnLeftMouseDown -= OnClearButtonMouseDown;
+            ModContent.GetInstance<UISystem>().InventoryButtons.AutoCraftButton.OnLeftMouseDown -= OnAutoCraftButtonMouseDown;
+            ModContent.GetInstance<UISystem>().ShopButtons.ResearchShopButton.OnLeftMouseDown -= OnShopButtonMouseDown;
+
             HPlayer = null;
         }
 
         private void OnResearchButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.SacrificeInventory();
         private void OnClearButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.ClearResearched();
         private void OnAutoCraftButtonMouseDown(UIMouseEvent evt, UIElement el) => HyperPlayer.ResearchAndMessageCraftable();
+        private void OnShopButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.ResearchShop(HPlayer.CurrentShopItems);
     }
 }

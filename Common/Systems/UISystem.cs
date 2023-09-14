@@ -15,6 +15,7 @@ namespace HyperResearch.Common.Systems
         public static Asset<Texture2D> ResearchButtonTexture;
         public static Asset<Texture2D> ClearButtonTexture;
         public static Asset<Texture2D> AutoCraftButtonTexture;
+        public static Asset<Texture2D> ResearchShopButtonTexture;
 
         internal static event Action WorldLoaded;
         internal static event Action WorldUnloaded;
@@ -23,6 +24,8 @@ namespace HyperResearch.Common.Systems
         private UserInterface _duplicationMenu;
         internal InventoryButtons InventoryButtons;
         private UserInterface _inventoryButtons;
+        internal ShopButtons ShopButtons;
+        private UserInterface _shopButtons;
 
         public override void Load()
         {
@@ -31,6 +34,7 @@ namespace HyperResearch.Common.Systems
             ResearchButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/ResearchButton");
             ClearButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/ClearButton");
             AutoCraftButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/AutoCraftButton");
+            ResearchShopButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/ResearchShopButton");
 
             DuplicationMenu = new();
             DuplicationMenu.Activate();
@@ -41,12 +45,18 @@ namespace HyperResearch.Common.Systems
             InventoryButtons.Activate();
             _inventoryButtons = new UserInterface();
             _inventoryButtons.SetState(InventoryButtons);
+
+            ShopButtons = new();
+            ShopButtons.Activate();
+            _shopButtons = new UserInterface();
+            _shopButtons.SetState(ShopButtons);
         }
 
         public override void UpdateUI(GameTime gameTime)
         {
             _duplicationMenu?.Update(gameTime);
             _inventoryButtons?.Update(gameTime);
+            _shopButtons?.Update(gameTime);
         }
 
         public override void OnWorldLoad() => WorldLoaded?.Invoke();
@@ -76,6 +86,15 @@ namespace HyperResearch.Common.Systems
                     },
                     InterfaceScaleType.UI)
                 );
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "HyperResearch: Shop Buttons",
+                    () =>
+                    {
+                        _shopButtons.Draw(Main.spriteBatch, new GameTime());
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
             }
         }
 
@@ -84,6 +103,7 @@ namespace HyperResearch.Common.Systems
             ResearchButtonTexture = null;
             ClearButtonTexture = null;
             AutoCraftButtonTexture = null;
+            ResearchShopButtonTexture = null;
         }
     }
 }

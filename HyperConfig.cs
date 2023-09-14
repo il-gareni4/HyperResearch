@@ -150,6 +150,9 @@ namespace HyperResearch
         public int InventoryButtonsSlotOffset;
 
         [DefaultValue(true)]
+        public bool ShowResearchShopButton;
+
+        [DefaultValue(true)]
         public bool ShowTotalResearchedItemsCount;
     }
 }

@@ -3,10 +3,8 @@ using HyperResearch.UI.Components;
 using HyperResearch.Utils;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.CodeDom;
 using Terraria;
 using Terraria.Localization;
-using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace HyperResearch.UI
@@ -20,7 +18,7 @@ namespace HyperResearch.UI
         public UIAnimatedImageButton ResearchButton { get; set; }
         public UIAnimatedImageButton ClearButton { get; set; }
         public UIAnimatedImageButton AutoCraftButton { get; set; }
-        public static bool ShowUI { get => !Main.CreativeMenu.Blocked && Main.playerInventory; }
+        private bool ShowUI() => !Main.CreativeMenu.Blocked && Main.playerInventory;
 
         public override void OnInitialize()
         {
@@ -35,6 +33,7 @@ namespace HyperResearch.UI
                 OneFrameCount = 4,
                 AnimationFramesCount = 5,
                 HoverFrame = 6,
+                CanInteract = ShowUI
             };
             ClearButton = new(UISystem.ClearButtonTexture)
             {
@@ -45,6 +44,7 @@ namespace HyperResearch.UI
                 OneFrameCount = 3,
                 AnimationFramesCount = 8,
                 HoverFrame = 8,
+                CanInteract = ShowUI
             };
             AutoCraftButton = new(UISystem.AutoCraftButtonTexture)
             {
@@ -55,13 +55,14 @@ namespace HyperResearch.UI
                 OneFrameCount = 3,
                 AnimationFramesCount = 8,
                 HoverFrame = 8,
+                CanInteract = ShowUI
             };
             RebuildButtons();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (Researcher.IsPlayerInJourneyMode() && ShowUI)
+            if (Researcher.IsPlayerInJourneyMode() && ShowUI())
                 base.Draw(spriteBatch);
         }
 
@@ -70,7 +71,7 @@ namespace HyperResearch.UI
             if (HyperConfig.Instance is null) return;
 
             Left = StyleDimension.FromPixels(MathF.Floor(BaseMargin + (ItemSlotSize + ItemSlotGap) * (HyperConfig.Instance.InventoryButtonsSlotOffset - 1)));
-            Top = StyleDimension.FromPixels(MathF.Floor(BaseMargin + (ItemSlotSize + ItemSlotGap) * 5)); 
+            Top = StyleDimension.FromPixels(MathF.Floor(BaseMargin + (ItemSlotSize + ItemSlotGap) * 5));
 
             float left = 0f;
             RemoveAllChildren();

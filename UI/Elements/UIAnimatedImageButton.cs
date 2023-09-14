@@ -1,10 +1,9 @@
-﻿using log4net.Plugin;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
@@ -19,6 +18,7 @@ namespace HyperResearch.UI.Components
         public float OneFrameCount { get; set; } = 1;
         public LocalizedText HoverText { get; set; }
         private Asset<Texture2D> SpriteSheet { get; set; }
+        public Func<bool> CanInteract { get; set; }
         private int CurrentFrame { get; set; }
         private int _subFrame = 0;
 
@@ -29,7 +29,7 @@ namespace HyperResearch.UI.Components
 
         public override void Update(GameTime gameTime)
         {
-            if (IsMouseHovering && HoverText is not null && InventoryButtons.ShowUI)
+            if (IsMouseHovering && HoverText is not null && CanInteract())
             {
                 Main.LocalPlayer.creativeInterface = true;
                 Main.LocalPlayer.mouseInterface = true;
@@ -67,7 +67,7 @@ namespace HyperResearch.UI.Components
 
         public override void LeftMouseDown(UIMouseEvent evt)
         {
-            if (!InventoryButtons.ShowUI) return;
+            if (!CanInteract()) return;
             base.LeftMouseDown(evt);
             CurrentFrame = 1;
             SoundEngine.PlaySound(SoundID.MenuTick);

@@ -12,6 +12,7 @@ UI: {
 		AutoCraftHoverText: Research Craftable Items
 	}
 
+	ShopButtons.ResearchButtonHoverText: Research Shop Items
 	DuplicationMenu.TotalResearched: "{0}% researched ({1}/{2} items)"
 }
 
@@ -211,6 +212,11 @@ Configs: {
 
 		InventoryButtonsSlotOffset: {
 			Label: Inventory Buttons Slot Offset
+			Tooltip: ""
+		}
+
+		ShowResearchShopButton: {
+			Label: Show Research Shop Button
 			Tooltip: ""
 		}
 	}
