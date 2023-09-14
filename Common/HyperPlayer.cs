@@ -46,7 +46,7 @@ namespace HyperResearch.Common
             {
                 Researcher researcher = new();
                 researcher.ResearchItems(Enumerable.Range(0, ItemLoader.ItemCount), researchCraftable: false);
-                TextUtils.MessageResearcherResults(researcher);
+                TextUtils.MessageResearchedItems(researcher.AllResearchedItems);
             }
 #endif
             if (KeybindSystem.SacrificeInventoryBind.JustPressed) SacrificeInventory();
@@ -280,7 +280,7 @@ namespace HyperResearch.Common
                     researcher.ResearchItem(itemId);
             }
             TextUtils.MessageResearcherResults(researcher);
-            if (researcher.ResearchedCraftableItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
+            if (researcher.AnyItemResearched()) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
         public static void ResearchAndMessageCraftable()
@@ -288,7 +288,7 @@ namespace HyperResearch.Common
             Researcher researcher = new();
             researcher.ResearchCraftable();
             TextUtils.MessageResearcherResults(researcher);
-            if (researcher.ResearchedCraftableItems.Count > 0) SoundEngine.PlaySound(SoundID.ResearchComplete);
+            if (researcher.AnyItemResearched()) SoundEngine.PlaySound(SoundID.ResearchComplete);
         }
 
         public static void ResearchAndMessageLoot(int itemId)
@@ -306,7 +306,7 @@ namespace HyperResearch.Common
             Researcher researcher = new();
             researcher.ResearchItems(items);
             TextUtils.MessageResearcherResults(researcher);
-            return researcher.ResearchedItems.Count > 0;
+            return researcher.AnyItemResearched();
         }
     }
 }

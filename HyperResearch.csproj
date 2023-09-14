@@ -8,6 +8,9 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\Images\UI\AutoCraftButton.png" />
+    <None Remove="Assets\Images\UI\ClearButton.png" />
+    <None Remove="Assets\Images\UI\ResearchButton.png" />
     <None Remove="en-US.hjson" />
     <None Remove="icon_workshop.png" />
   </ItemGroup>

@@ -5,7 +5,15 @@ Tooltips: {
 	ResearchLoot: Press {0} to research all loot (excluding global)
 }
 
-UI.DuplicationMenu.TotalResearched: "{0}% researched ({1}/{2} items)"
+UI: {
+	InventoryButtons: {
+		ResearchButtonHoverText: Research Inventory Items
+		ClearButtonHoverText: Clear Researched Items
+		AutoCraftHoverText: Research Craftable Items
+	}
+
+	DuplicationMenu.TotalResearched: "{0}% researched ({1}/{2} items)"
+}
 
 Configs: {
 	HyperConfig: {
@@ -184,6 +192,26 @@ Configs: {
 				In the item duplication menu it shows the number of items researched and
 				the percentage of the total number of items that can be researched
 				'''
+		}
+
+		ShowResearchInventoryButton: {
+			Label: Show Research Inventory Button
+			Tooltip: ""
+		}
+
+		ShowClearInventoryButton: {
+			Label: Show Clear Inventory Button
+			Tooltip: ""
+		}
+
+		ShowAutoCraftButton: {
+			Label: Show Auto Craft Button
+			Tooltip: ""
+		}
+
+		InventoryButtonsSlotOffset: {
+			Label: Inventory Buttons Slot Offset
+			Tooltip: ""
 		}
 	}
 }

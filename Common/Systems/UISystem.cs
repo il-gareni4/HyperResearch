@@ -1,5 +1,7 @@
 ﻿using HyperResearch.UI;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -10,25 +12,41 @@ namespace HyperResearch.Common.Systems
 {
     class UISystem : ModSystem
     {
+        public static Asset<Texture2D> ResearchButtonTexture;
+        public static Asset<Texture2D> ClearButtonTexture;
+        public static Asset<Texture2D> AutoCraftButtonTexture;
+
         internal static event Action WorldLoaded;
         internal static event Action WorldUnloaded;
 
         internal DuplicationMenu DuplicationMenu;
         private UserInterface _duplicationMenu;
+        internal InventoryButtons InventoryButtons;
+        private UserInterface _inventoryButtons;
 
         public override void Load()
         {
             if (Main.dedServ) return;
 
+            ResearchButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/ResearchButton");
+            ClearButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/ClearButton");
+            AutoCraftButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/AutoCraftButton");
+
             DuplicationMenu = new();
             DuplicationMenu.Activate();
             _duplicationMenu = new UserInterface();
             _duplicationMenu.SetState(DuplicationMenu);
+
+            InventoryButtons = new();
+            InventoryButtons.Activate();
+            _inventoryButtons = new UserInterface();
+            _inventoryButtons.SetState(InventoryButtons);
         }
 
         public override void UpdateUI(GameTime gameTime)
         {
             _duplicationMenu?.Update(gameTime);
+            _inventoryButtons?.Update(gameTime);
         }
 
         public override void OnWorldLoad() => WorldLoaded?.Invoke();
@@ -49,7 +67,23 @@ namespace HyperResearch.Common.Systems
                     },
                     InterfaceScaleType.UI)
                 );
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "HyperResearch: Inventory Buttons",
+                    () =>
+                    {
+                        _inventoryButtons.Draw(Main.spriteBatch, new GameTime());
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
             }
+        }
+
+        public override void Unload()
+        {
+            ResearchButtonTexture = null;
+            ClearButtonTexture = null;
+            AutoCraftButtonTexture = null;
         }
     }
 }

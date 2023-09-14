@@ -136,6 +136,20 @@ namespace HyperResearch
         [Header("UISettingsHeader")]
 
         [DefaultValue(true)]
+        public bool ShowResearchInventoryButton;
+
+        [DefaultValue(true)]
+        public bool ShowClearInventoryButton;
+
+        [DefaultValue(true)]
+        public bool ShowAutoCraftButton;
+
+        [Range(2, 9)]
+        [Slider()]
+        [DefaultValue(2)]
+        public int InventoryButtonsSlotOffset;
+
+        [DefaultValue(true)]
         public bool ShowTotalResearchedItemsCount;
     }
 }
