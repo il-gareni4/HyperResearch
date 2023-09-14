@@ -7,12 +7,12 @@ Tooltips: {
 
 UI: {
 	InventoryButtons: {
-		ResearchButtonHoverText: Research Inventory Items
-		ClearButtonHoverText: Clear Researched Items
-		AutoCraftHoverText: Research Craftable Items
+		ResearchButtonHoverText: "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"
+		ClearButtonHoverText: "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"
+		AutoCraftHoverText: "{$Mods.HyperResearch.Keybinds.ResearchCraftableItems.DisplayName}"
 	}
 
-	ShopButtons.ResearchButtonHoverText: Research Shop Items
+	ShopButtons.ResearchButtonHoverText: "{$Mods.HyperResearch.Keybinds.ResearchShop.DisplayName}"
 	DuplicationMenu.TotalResearched: "{0}% researched ({1}/{2} items)"
 }
 
@@ -186,6 +186,35 @@ Configs: {
 				'''
 		}
 
+		ShowResearchInventoryButton: {
+			Label: Show "{$Mods.HyperResearch.UI.InventoryButtons.ResearchButtonHoverText}" button
+			Tooltip: ""
+		}
+
+		ShowClearInventoryButton: {
+			Label: Show "{$Mods.HyperResearch.UI.InventoryButtons.ClearButtonHoverText}" button
+			Tooltip: ""
+		}
+
+		ShowAutoCraftButton: {
+			Label: Show "{$Mods.HyperResearch.UI.InventoryButtons.AutoCraftHoverText}" button
+			Tooltip: ""
+		}
+
+		InventoryButtonsSlotOffset: {
+			Label: Inventory buttons slot offset
+			Tooltip:
+				'''
+				Allows you to determine the position of the buttons
+				based on which slot the first button will draw from
+				'''
+		}
+
+		ShowResearchShopButton: {
+			Label: Show "{$Mods.HyperResearch.UI.ShopButtons.ResearchButtonHoverText}" button in the shop menu
+			Tooltip: ""
+		}
+
 		ShowTotalResearchedItemsCount: {
 			Label: Show the total number of items researched
 			Tooltip:
@@ -194,42 +223,17 @@ Configs: {
 				the percentage of the total number of items that can be researched
 				'''
 		}
-
-		ShowResearchInventoryButton: {
-			Label: Show Research Inventory Button
-			Tooltip: ""
-		}
-
-		ShowClearInventoryButton: {
-			Label: Show Clear Inventory Button
-			Tooltip: ""
-		}
-
-		ShowAutoCraftButton: {
-			Label: Show Auto Craft Button
-			Tooltip: ""
-		}
-
-		InventoryButtonsSlotOffset: {
-			Label: Inventory Buttons Slot Offset
-			Tooltip: ""
-		}
-
-		ShowResearchShopButton: {
-			Label: Show Research Shop Button
-			Tooltip: ""
-		}
 	}
 }
 
 Keybinds: {
-	"Forget All Researches.DisplayName": Forget  All  Researches
-	"Research Inventory Items.DisplayName": Research  Inventory  Items
-	"Clear Researched Item.DisplayName": Clear  Researched  Items
-	"Research Craftable Items.DisplayName": Research  Craftable  Items
-	"Clear Researched Items.DisplayName": Clear  Researched  Items
-	"Max Stack Researched Item.DisplayName": Max  Stack  Researched  Item
-	"Research Bag/Crate Contents.DisplayName": Research  Bag/Crate  Contents
-	"Research Shop.DisplayName": Research  Shop
-	"Research All.DisplayName": Research  All
+	ForgetAll.DisplayName: Forget All
+	ResearchAll.DisplayName: Research  All
+	ResearchInventoryItems.DisplayName: Research Inventory Items
+	ClearResearchedItems.DisplayName: Clear Researched Items
+	ResearchCraftableItems.DisplayName: Research Craftable Items
+	MaxStack.DisplayName: Max  Stack  Researched Item
+	ResearchBagContents.DisplayName: Research Bag/Crate Contents
+	ResearchShop.DisplayName: Research Shop
+	"MaxStack ResearchedItems.DisplayName": Max Stack Researched Items
 }

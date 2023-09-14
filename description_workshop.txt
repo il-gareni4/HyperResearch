@@ -3,13 +3,13 @@ Hyper Research is quality of life mod that adds a lot of useful features to the 
 [h1]Features[/h1]
 [list]
 [*]Auto-researching of all items in the inventory without having to open the Research Menu every time
-[*]Partial researching of unresearched items using the keybind
-[*]Cleaning of all researched items in the inventory using the keybind (excluding favorites)
+[*]Partial researching of unresearched items using the keybind or UI button
+[*]Cleaning of all researched items in the inventory using the keybind or UI button (excluding favorites)
 [*]Auto-researching of items that can be crafted (you need to research the necessary materials and crafting stations (or stand next to them))
 [*]Auto researching of items that are obtained after shimmer transmutation
 [*]Auto-trash items that have already been researched
 [*]Researching the contents of bags, crates and other loot items in one tap
-[*]Researching the contents of NPC shops in one tap
+[*]Researching the contents of NPC shops in one tap or using UI button
 [*]Infinite researched consumable items (divided into categories: potions, blocks, throwing weapons, etc.)
 [*]Messages notifying about researching new items and crafting items
 [*]Custom research tooltip which will be visible even in mods
@@ -26,7 +26,6 @@ Hyper Research is quality of life mod that adds a lot of useful features to the 
 Currently working on (in order of priority)
 [list]
 [*] (constantly) Bug fixing
-[*] UI (quick research, clear and autocraft buttons, as well as shop research button)
 [*] A feature that allows you to disable certain banners buffs
 [*] Infinite buff of researched potions and the ability to disable certain potions
 [*] (sometime in the future) testing and if needed multiplayer support

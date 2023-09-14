@@ -35,7 +35,7 @@ namespace HyperResearch.Common
         {
             if (!Researcher.IsPlayerInJourneyMode()) return;
 #if DEBUG
-            if (KeybindSystem.ForgetBind.JustPressed)
+            if (KeybindSystem.ForgetAllBind.JustPressed)
             {
                 Player.creativeTracker.Reset();
                 ResearchedTiles.Clear();
