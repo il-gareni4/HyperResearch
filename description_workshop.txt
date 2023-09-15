@@ -1,4 +1,4 @@
-Hyper Research is quality of life mod that adds a lot of useful features to the Journey mode
+[b]Hyper Research[/b] is quality of life mod that adds a lot of useful features to the [i]Journey mode[/i]
 
 [h1]Features[/h1]
 [list]
