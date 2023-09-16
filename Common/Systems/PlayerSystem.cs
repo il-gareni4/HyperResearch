@@ -12,7 +12,7 @@ namespace HyperResearch.Common.Systems
             if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
                 HPlayer = modPlayer;
 
-            HyperConfig.Changed += HPlayer.RecheckResearchingItems;
+            HyperConfig.Changed += HPlayer.OnConfigChanged;
             ModContent.GetInstance<UISystem>().InventoryButtons.ResearchButton.OnLeftMouseDown += OnResearchButtonMouseDown;
             ModContent.GetInstance<UISystem>().InventoryButtons.ClearButton.OnLeftMouseDown += OnClearButtonMouseDown;
             ModContent.GetInstance<UISystem>().InventoryButtons.AutoCraftButton.OnLeftMouseDown += OnAutoCraftButtonMouseDown;
@@ -21,7 +21,7 @@ namespace HyperResearch.Common.Systems
 
         public override void OnWorldUnload()
         {
-            HyperConfig.Changed -= HPlayer.RecheckResearchingItems;
+            HyperConfig.Changed -= HPlayer.OnConfigChanged;
             ModContent.GetInstance<UISystem>().InventoryButtons.ResearchButton.OnLeftMouseDown -= OnResearchButtonMouseDown;
             ModContent.GetInstance<UISystem>().InventoryButtons.ClearButton.OnLeftMouseDown -= OnClearButtonMouseDown;
             ModContent.GetInstance<UISystem>().InventoryButtons.AutoCraftButton.OnLeftMouseDown -= OnAutoCraftButtonMouseDown;
