@@ -18,6 +18,7 @@
 
 [h3]Minor features[/h3]
 [list]
+[*]Basic multiplayer support
 [*]Shows the number of items researched and the total number of items that can be researched 
 [*]Max stack researched items
 [*]Ability to set the number of items needed to unlock duplication to one
@@ -28,9 +29,6 @@ Currently working on (in order of priority)
 [*] (constantly) Bug fixing
 [*] A feature that allows you to disable certain banners buffs
 [*] Infinite buff of researched potions and the ability to disable certain potions
-[*] (sometime in the future) testing and if needed multiplayer support
 [*] (maybe) Port of the mod for game version 1.4.3
 [/list]
 The list is constantly updated
-
-[b]!The mod has not been tested in multiplayer so bugs are possible. Full-fledged multiplayer support is not planned yet![/b]
