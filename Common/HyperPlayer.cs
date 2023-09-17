@@ -106,7 +106,7 @@ namespace HyperResearch.Common
 
         public override void PostUpdate()
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return;
+            if (!Researcher.IsPlayerInJourneyMode() || Player != Main.LocalPlayer) return;
 
             if (HyperConfig.Instance.ResearchInventory) ResearchInventory();
         }
