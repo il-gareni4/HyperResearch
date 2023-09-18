@@ -136,7 +136,7 @@ namespace HyperResearch.Common
             if (items.Count == 0) return;
 
             Researcher researcher = new();
-            researcher.ResearchItems(items);
+            researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
 
             if (HyperConfig.Instance.AutoTrashAfterResearching && researcher.AnyItemResearched())
                 TrashInventoryItems(researcher.AllResearchedItems);
@@ -168,7 +168,7 @@ namespace HyperResearch.Common
                 itemToSacrifice.Add(item);
             }
             Researcher researcher = new();
-            researcher.SacrificeItems(itemToSacrifice);
+            researcher.SacrificeItems(itemToSacrifice, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
 
             if (HyperConfig.Instance.AutoTrashAfterResearching && researcher.AnyItemResearched())
                 TrashInventoryItems(researcher.AllResearchedItems);
@@ -291,7 +291,7 @@ namespace HyperResearch.Common
         private static bool TryResearchAndMessage(IEnumerable<int> items)
         {
             Researcher researcher = new();
-            researcher.ResearchItems(items);
+            researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
             TextUtils.MessageResearcherResults(researcher);
             return researcher.AnyItemResearched();
         }
