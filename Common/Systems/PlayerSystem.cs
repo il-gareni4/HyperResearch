@@ -11,7 +11,8 @@ namespace HyperResearch.Common.Systems
         public override void OnWorldLoad()
         {
             if (Main.netMode == NetmodeID.Server) return;
-            if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer)) {
+            if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
+            {
                 HPlayer = modPlayer;
 
                 HyperConfig.Changed += HPlayer.OnConfigChanged;

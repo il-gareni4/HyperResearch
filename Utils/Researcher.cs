@@ -1,7 +1,5 @@
 ﻿
 using HyperResearch.Common;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -173,14 +171,14 @@ namespace HyperResearch.Utils
             {
                 if (!IsResearchable(itemId) || itemCount < GetRemaining(itemId)) continue;
                 if (ResearchItem(itemId, source, false))
-                        anyItemResearched = true;
+                    anyItemResearched = true;
             }
             if (researchCraftable && anyItemResearched) ResearchCraftable();
         }
 
         public bool ResearchItem(int itemId, int itemCount, ResearchSource source = default, bool researchCraftable = true)
         {
-            if (HyperConfig.Instance.OnlyOneItemNeeded && itemCount >= 1) 
+            if (HyperConfig.Instance.OnlyOneItemNeeded && itemCount >= 1)
                 return ResearchItem(itemId, source, researchCraftable);
 
             if (itemCount >= GetRemaining(itemId)) return ResearchItem(itemId, source, researchCraftable);
@@ -206,12 +204,19 @@ namespace HyperResearch.Utils
                 {
                     if (!IsResearchable(recipe.createItem.type) || IsResearched(recipe.createItem.type)) continue;
 
-                    bool allRecipeGroupsResearched = recipe.acceptedGroups.All((recipeGroupId) =>
-                        RecipeGroup.recipeGroups[recipeGroupId].ValidItems.Any(IsResearched)
-                    );
-                    if (!allRecipeGroupsResearched) continue;
+                    Dictionary<int, IEnumerable<int>> iconicAndOthers = new();
+                    foreach (int recipeGroupId in recipe.acceptedGroups)
+                    {
+                        RecipeGroup recipeGroup = RecipeGroup.recipeGroups[recipeGroupId];
+                        iconicAndOthers[recipeGroup.IconicItemId] = recipeGroup.ValidItems;
+                    }
 
-                    bool allItemsResearched = recipe.requiredItem.All(item => IsResearched(item.type));
+                    bool allItemsResearched = recipe.requiredItem.All(item =>
+                    {
+                        if (iconicAndOthers.TryGetValue(item.type, out IEnumerable<int> validItems))
+                            return validItems.Any(IsResearched);
+                        else return IsResearched(item.type);
+                    });
                     if (!allItemsResearched) continue;
 
                     bool allTilesResearched = recipe.requiredTile.All(
