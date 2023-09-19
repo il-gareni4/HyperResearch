@@ -1,5 +1,4 @@
-﻿
-using HyperResearch.Common;
+﻿using HyperResearch.Common;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -194,44 +193,8 @@ namespace HyperResearch.Utils
 
         public void ResearchCraftable()
         {
-            HyperPlayer player = Main.LocalPlayer.GetModPlayer<HyperPlayer>();
-
-            bool newItemResearched = true;
-            while (newItemResearched)
-            {
-                newItemResearched = false;
-                foreach (Recipe recipe in Main.recipe)
-                {
-                    if (!IsResearchable(recipe.createItem.type) || IsResearched(recipe.createItem.type)) continue;
-
-                    Dictionary<int, IEnumerable<int>> iconicAndOthers = new();
-                    foreach (int recipeGroupId in recipe.acceptedGroups)
-                    {
-                        RecipeGroup recipeGroup = RecipeGroup.recipeGroups[recipeGroupId];
-                        iconicAndOthers[recipeGroup.IconicItemId] = recipeGroup.ValidItems;
-                    }
-
-                    bool allItemsResearched = recipe.requiredItem.All(item =>
-                    {
-                        if (iconicAndOthers.TryGetValue(item.type, out IEnumerable<int> validItems))
-                            return validItems.Any(IsResearched);
-                        else return IsResearched(item.type);
-                    });
-                    if (!allItemsResearched) continue;
-
-                    bool allTilesResearched = recipe.requiredTile.All(
-                        tileId => player.ResearchedTiles.GetValueOrDefault(tileId, false) || Main.LocalPlayer.adjTile[tileId]);
-                    if (!allTilesResearched) continue;
-
-                    bool allConditionsAreMet = recipe.Conditions.All(condition =>
-                        IgnoringCraftConditions.Contains(condition) && HyperConfig.Instance.IgnoreCraftingConditions ? true : condition.IsMet()
-                    );
-                    if (!allConditionsAreMet) continue;
-
-                    newItemResearched = newItemResearched || recipe.createItem.material || recipe.createItem.createTile >= TileID.Dirt;
-                    ResearchItem(recipe.createItem.type, ResearchSource.Craft, false);
-                }
-            }
+            foreach (Recipe recipe in Main.recipe)
+                ResearchRecipeAndCheck(recipe);
         }
 
         public bool TryResearchShimmeredItem(int itemId, bool researchCraftable = true)
@@ -253,6 +216,54 @@ namespace HyperResearch.Utils
         public bool AnyItemResearched()
         {
             return ResearchedItems.Count > 0 || ResearchedCraftableItems.Count > 0 || ResearchedShimmeredItems.Count > 0;
+        }
+
+        private void ResearchRecipeAndCheck(Recipe recipe)
+        {
+            if (!IsRecipeResearchable(recipe)) return;
+
+            ResearchItem(recipe.createItem.type, ResearchSource.Craft, false);
+            if (recipe.createItem.material && HyperResearch.ItemRecipesOccurrences.TryGetValue(recipe.createItem.type, out List<int> itemRecipeIds))
+            {
+                foreach (int recipeId in itemRecipeIds)
+                    ResearchRecipeAndCheck(Main.recipe[recipeId]);
+            }
+            if (recipe.createItem.createTile >= TileID.Dirt && HyperResearch.TileRecipesOccurrences.TryGetValue(recipe.createItem.createTile, out List<int> tileRecipeIds))
+            {
+                foreach (int recipeId in tileRecipeIds)
+                    ResearchRecipeAndCheck(Main.recipe[recipeId]);
+            }
+        }
+
+        private bool IsRecipeResearchable(Recipe recipe)
+        {
+            if (!IsResearchable(recipe.createItem.type) || IsResearched(recipe.createItem.type)) return false;
+
+            Dictionary<int, IEnumerable<int>> iconicAndOthers = new();
+            foreach (int recipeGroupId in recipe.acceptedGroups)
+            {
+                RecipeGroup recipeGroup = RecipeGroup.recipeGroups[recipeGroupId];
+                iconicAndOthers[recipeGroup.IconicItemId] = recipeGroup.ValidItems;
+            }
+
+            bool allItemsResearched = recipe.requiredItem.All(item =>
+            {
+                if (iconicAndOthers.TryGetValue(item.type, out IEnumerable<int> validItems))
+                    return validItems.Any(IsResearched);
+                else return IsResearched(item.type);
+            });
+            if (!allItemsResearched) return false;
+
+            HyperPlayer hyperPlayer = Main.LocalPlayer.GetModPlayer<HyperPlayer>();
+            bool allTilesResearched = recipe.requiredTile.All(
+                tileId => hyperPlayer.ResearchedTiles.GetValueOrDefault(tileId, false) || Main.LocalPlayer.adjTile[tileId]);
+            if (!allTilesResearched) return false;
+
+            bool allConditionsAreMet = recipe.Conditions.All(condition =>
+                IgnoringCraftConditions.Contains(condition) && HyperConfig.Instance.IgnoreCraftingConditions ? true : condition.IsMet()
+            );
+            if (!allConditionsAreMet) return false;
+            return true;
         }
 
         private List<int> GetItemsListBySource(ResearchSource source)
