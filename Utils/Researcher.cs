@@ -1,4 +1,5 @@
 ﻿using HyperResearch.Common;
+using HyperResearch.Common.Systems;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -49,6 +50,8 @@ namespace HyperResearch.Utils
 
         private Dictionary<int, int> _sacrificedItems;
         public Dictionary<int, int> SacrificedItems { get => _sacrificedItems ??= new(); }
+        private Queue<int> _researchedQueue;
+        public Queue<int> ResearchedQueue { get => _researchedQueue ??= new(); }
 
         public Researcher()
         {
@@ -113,13 +116,9 @@ namespace HyperResearch.Utils
 
         public void SacrificeItems(IEnumerable<Item> items, ResearchSource source = default, bool researchCraftable = true)
         {
-            bool anyItemResearched = false;
             foreach (Item item in items)
-            {
-                CreativeUI.ItemSacrificeResult result = SacrificeItem(item, source, false);
-                anyItemResearched = anyItemResearched || result == CreativeUI.ItemSacrificeResult.SacrificedAndDone;
-            }
-            if (researchCraftable && anyItemResearched) ResearchCraftable();
+                SacrificeItem(item, source, false);
+            if (researchCraftable) ResearchQueue();
         }
 
         public CreativeUI.ItemSacrificeResult SacrificeItem(Item item, ResearchSource source = default, bool researchCraftable = true)
@@ -154,13 +153,9 @@ namespace HyperResearch.Utils
 
         public void ResearchItems(IEnumerable<int> items, ResearchSource source = default, bool researchCraftable = true)
         {
-            bool anyItemResearched = false;
             foreach (int itemId in items)
-            {
-                if (ResearchItem(itemId, source, false))
-                    anyItemResearched = true;
-            }
-            if (researchCraftable && anyItemResearched) ResearchCraftable();
+                ResearchItem(itemId, source, false);
+            if (researchCraftable) ResearchQueue();
         }
 
         public void ResearchItems(IDictionary<int, int> items, ResearchSource source = default, bool researchCraftable = true)
@@ -172,7 +167,7 @@ namespace HyperResearch.Utils
                 if (ResearchItem(itemId, source, false))
                     anyItemResearched = true;
             }
-            if (researchCraftable && anyItemResearched) ResearchCraftable();
+            if (researchCraftable && anyItemResearched) ResearchQueue();
         }
 
         public bool ResearchItem(int itemId, int itemCount, ResearchSource source = default, bool researchCraftable = true)
@@ -191,10 +186,19 @@ namespace HyperResearch.Utils
             return result == CreativeUI.ItemSacrificeResult.SacrificedAndDone;
         }
 
+        public void ResearchQueue()
+        {
+            while (ResearchedQueue.Count > 0)
+                ResearchItemOccurrences(ResearchedQueue.Dequeue());
+        }
+
         public void ResearchCraftable()
         {
             foreach (Recipe recipe in Main.recipe)
-                ResearchRecipeAndCheck(recipe);
+            {
+                if (IsRecipeResearchable(recipe))
+                    ResearchItem(recipe.createItem.type, ResearchSource.Craft, !HyperConfig.Instance.OneCycleResearchCraftable);
+            };
         }
 
         public bool TryResearchShimmeredItem(int itemId, bool researchCraftable = true)
@@ -205,37 +209,46 @@ namespace HyperResearch.Utils
             return ResearchItem(shimmerItemId, ResearchSource.Shimmer, researchCraftable);
         }
 
-        private void AfterResearch(int itemId, ResearchSource source, bool researchCraftable)
-        {
-            if (HyperConfig.Instance.AutoResearchShimmeredItems) TryResearchShimmeredItem(itemId);
-            if (researchCraftable && HyperConfig.Instance.AutoResearchCraftable) ResearchCraftable();
-
-            GetItemsListBySource(source).Add(itemId);
-        }
-
         public bool AnyItemResearched()
         {
             return ResearchedItems.Count > 0 || ResearchedCraftableItems.Count > 0 || ResearchedShimmeredItems.Count > 0;
         }
 
-        private void ResearchRecipeAndCheck(Recipe recipe)
+        private void AfterResearch(int itemId, ResearchSource source, bool researchCraftable)
         {
-            if (!IsRecipeResearchable(recipe)) return;
+            if (HyperConfig.Instance.AutoResearchShimmeredItems) TryResearchShimmeredItem(itemId, researchCraftable);
+            if (HyperConfig.Instance.AutoResearchCraftable || researchCraftable) ResearchedQueue.Enqueue(itemId);
+            if (researchCraftable) ResearchQueue();
 
-            ResearchItem(recipe.createItem.type, ResearchSource.Craft, false);
-            if (recipe.createItem.material && HyperResearch.ItemRecipesOccurrences.TryGetValue(recipe.createItem.type, out List<int> itemRecipeIds))
+            GetItemsListBySource(source).Add(itemId);
+        }
+
+        private void ResearchItemOccurrences(int itemId) =>
+            ResearchItemOccurrences(ContentSamples.ItemsByType[itemId]);
+
+        private void ResearchItemOccurrences(Item item)
+        {
+            if (item.material && RecipesSystem.ItemRecipesOccurrences.TryGetValue(item.type, out List<int> itemRecipeIds))
             {
                 foreach (int recipeId in itemRecipeIds)
-                    ResearchRecipeAndCheck(Main.recipe[recipeId]);
+                {
+                    Recipe recipe = Main.recipe[recipeId];
+                    if (IsRecipeResearchable(recipe))
+                        ResearchItem(recipe.createItem.type, ResearchSource.Craft, false);
+                }
             }
-            if (recipe.createItem.createTile >= TileID.Dirt && HyperResearch.TileRecipesOccurrences.TryGetValue(recipe.createItem.createTile, out List<int> tileRecipeIds))
+            if (item.createTile >= TileID.Dirt && RecipesSystem.TileRecipesOccurrences.TryGetValue(item.createTile, out List<int> tileRecipeIds))
             {
                 foreach (int recipeId in tileRecipeIds)
-                    ResearchRecipeAndCheck(Main.recipe[recipeId]);
+                {
+                    Recipe recipe = Main.recipe[recipeId];
+                    if (IsRecipeResearchable(recipe))
+                        ResearchItem(recipe.createItem.type, ResearchSource.Craft, false);
+                }
             }
         }
 
-        private bool IsRecipeResearchable(Recipe recipe)
+        private static bool IsRecipeResearchable(Recipe recipe)
         {
             if (!IsResearchable(recipe.createItem.type) || IsResearched(recipe.createItem.type)) return false;
 

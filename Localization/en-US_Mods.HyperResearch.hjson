@@ -28,6 +28,7 @@ Configs: {
 			SacrificeSettingsHeader: Research Settings
 			UISettingsHeader: UI Settings
 			OtherSettingsHeader: Other Settings
+			PerformanceSettingsHeader: Performance Settings Header Header
 		}
 
 		ResearchInventory: {
@@ -228,6 +229,11 @@ Configs: {
 				In the item duplication menu it shows the number of items researched and
 				the percentage of the total number of items that can be researched
 				'''
+		}
+
+		OneCycleResearchCraftable: {
+			Label: One Cycle Research Craftable
+			Tooltip: ""
 		}
 	}
 }
