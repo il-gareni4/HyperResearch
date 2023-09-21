@@ -228,11 +228,8 @@ namespace HyperResearch.Common
             }
 
             ResearchedTiles[item.createTile] = true;
-            ModTile t = TileLoader.GetTile(item.createTile);
-            if (t is not null)
-            {
-                foreach (int adj in t.AdjTiles) ResearchedTiles[adj] = true;
-            }
+            foreach (int adj in ItemsUtils.GetAdjTiles(item.createTile))
+                ResearchedTiles[adj] = true;
             return true;
         }
 

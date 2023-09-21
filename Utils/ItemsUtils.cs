@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace HyperResearch.Utils
 {
@@ -74,6 +75,38 @@ namespace HyperResearch.Utils
                     ?.GetValue(system);
             }
             else return null;
+        }
+
+        public static List<int> GetAdjTiles(int tileId)
+        {
+            List<int> adjTiles = new();
+            switch (tileId)
+            {
+                case 77:
+                case 302:
+                    adjTiles.Add(17);
+                    break;
+                case 133:
+                    adjTiles.Add(17);
+                    adjTiles.Add(77);
+                    break;
+                case 134:
+                    adjTiles.Add(16);
+                    break;
+                case 354:
+                case 469:
+                case 487:
+                    adjTiles.Add(14);
+                    break;
+                case 355:
+                    adjTiles.Add(13);
+                    adjTiles.Add(14);
+                    adjTiles.Add(355);
+                    break;
+            }
+            ModTile t = TileLoader.GetTile(tileId);
+            if (t is not null) adjTiles.AddRange(t.AdjTiles);
+            return adjTiles;
         }
     }
 }
