@@ -2,6 +2,7 @@ Messages.Researched: Researched
 
 Tooltips: {
 	NeededToResearch: Research {0} more to unlock duplication ({1}/{2})
+	Researched: Researched
 	ResearchLoot: Press {0} to research all loot (excluding global)
 }
 
@@ -71,14 +72,19 @@ Configs: {
 				'''
 		}
 
+		AutoResearchShimmeredItems: {
+			Label: "[i:{0}] Auto research items that are obtained after shimmer transmutation"
+			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
+		}
+
 		UseCustomResearchTooltip: {
 			Label: "[i:{0}] Use custom research tooltip"
 			Tooltip: Unlike the vanilla tooltip, the custom tooltip will show up everywhere when hovering over an item (include other mods)
 		}
 
-		AutoResearchShimmeredItems: {
-			Label: "[i:{0}] Auto research items that are obtained after shimmer transmutation"
-			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
+		ShowResearchedTooltip: {
+			Label: '''[i:{0}] Show "{$Tooltips.Researched}" tooltip'''
+			Tooltip: ""
 		}
 
 		UseResearchedBannersBuff: {
@@ -229,6 +235,11 @@ Configs: {
 				In the item duplication menu it shows the number of items researched and
 				the percentage of the total number of items that can be researched
 				'''
+		}
+
+		clr: {
+			Label: clr
+			Tooltip: ""
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.ComponentModel;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
@@ -38,15 +39,19 @@ namespace HyperResearch
         [DefaultValue(true)]
         public bool AutoResearchShop;
 
-        [LabelArgs(ItemID.HandOfCreation)]
-        [DefaultValue(true)]
-        public bool UseCustomResearchTooltip;
-
         [LabelArgs(ItemID.BottomlessShimmerBucket)]
         [DefaultValue(true)]
         public bool AutoResearchShimmeredItems;
 
         [Header("OtherSettingsHeader")]
+
+        [LabelArgs(ItemID.HandOfCreation)]
+        [DefaultValue(true)]
+        public bool UseCustomResearchTooltip;
+
+        [LabelArgs(ItemID.Sign)]
+        [DefaultValue(false)]
+        public bool ShowResearchedTooltip;
 
         [LabelArgs(ItemID.ZombieBanner)]
         [DefaultValue(false)]

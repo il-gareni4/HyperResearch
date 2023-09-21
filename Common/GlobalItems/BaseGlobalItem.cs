@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace HyperResearch.Common.GlobalItems
 {
@@ -50,27 +51,34 @@ namespace HyperResearch.Common.GlobalItems
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return;
-            if (Researcher.IsResearched(item.type) || !Researcher.IsResearchable(item.type)) return;
-
-            int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
-            if (!HyperConfig.Instance.UseCustomResearchTooltip)
+            if (!Researcher.IsPlayerInJourneyMode() || !Researcher.IsResearchable(item.type)) return;
+            if (Researcher.IsResearched(item.type) && HyperConfig.Instance.ShowResearchedTooltip && item.tooltipContext != ItemSlot.Context.CreativeInfinite)
             {
-                if (HyperConfig.Instance.OnlyOneItemNeeded && vanillaTooltipIndex >= 0)
-                    tooltips[vanillaTooltipIndex].Text = Regex.Replace(tooltips[vanillaTooltipIndex].Text, @"\d+", "1");
-                return;
+                TooltipLine researched = new(Mod, "Researched", "Researched")
+                {
+                    OverrideColor = Colors.FancyUIFatButtonMouseOver
+                };
+                tooltips.Add(researched);
             }
-
-            int researched = Researcher.GetResearchedCount(item.type);
-            int totalNeeded = Researcher.GetTotalNeeded(item.type);
-            int remaining = totalNeeded - researched;
-            LocalizedText tooltipText = Language.GetText("Mods.HyperResearch.Tooltips.NeededToResearch");
-            TooltipLine hyperResearch = new(Mod, "HyperResearch", tooltipText.Format(remaining, researched, totalNeeded))
+            else if (!Researcher.IsResearched(item.type))
             {
-                OverrideColor = Colors.JourneyMode
-            };
-            if (vanillaTooltipIndex >= 0) tooltips[vanillaTooltipIndex] = hyperResearch;
-            else tooltips.Add(hyperResearch);
+                int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
+                if (!HyperConfig.Instance.UseCustomResearchTooltip)
+                {
+                    if (HyperConfig.Instance.OnlyOneItemNeeded && vanillaTooltipIndex >= 0)
+                        tooltips[vanillaTooltipIndex].Text = Regex.Replace(tooltips[vanillaTooltipIndex].Text, @"\d+", "1");
+                    return;
+                }
+
+                LocalizedText tooltipText = Language.GetText("Mods.HyperResearch.Tooltips.NeededToResearch");
+                TooltipLine hyperResearch = new(Mod, "HyperResearch", 
+                    tooltipText.Format(Researcher.GetRemaining(item.type), Researcher.GetResearchedCount(item.type), Researcher.GetTotalNeeded(item.type)))
+                {
+                    OverrideColor = Colors.JourneyMode
+                };
+                if (vanillaTooltipIndex >= 0) tooltips[vanillaTooltipIndex] = hyperResearch;
+                else tooltips.Add(hyperResearch);
+            }
         }
 
         public override void OnResearched(Item item, bool fullyResearched)
