@@ -154,10 +154,5 @@ namespace HyperResearch
 
         [DefaultValue(true)]
         public bool ShowTotalResearchedItemsCount;
-
-        [Header("PerformanceSettingsHeader")]
-
-        [DefaultValue(false)]
-        public bool OneCycleResearchCraftable;
     }
 }

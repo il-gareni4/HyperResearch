@@ -230,11 +230,6 @@ Configs: {
 				the percentage of the total number of items that can be researched
 				'''
 		}
-
-		OneCycleResearchCraftable: {
-			Label: One Cycle Research Craftable
-			Tooltip: ""
-		}
 	}
 }
 

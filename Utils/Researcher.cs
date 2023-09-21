@@ -160,14 +160,12 @@ namespace HyperResearch.Utils
 
         public void ResearchItems(IDictionary<int, int> items, ResearchSource source = default, bool researchCraftable = true)
         {
-            bool anyItemResearched = false;
             foreach ((int itemId, int itemCount) in items)
             {
-                if (!IsResearchable(itemId) || itemCount < GetRemaining(itemId)) continue;
-                if (ResearchItem(itemId, source, false))
-                    anyItemResearched = true;
+                if (IsResearchable(itemId) && itemCount >= GetRemaining(itemId))
+                    ResearchItem(itemId, source);
             }
-            if (researchCraftable && anyItemResearched) ResearchQueue();
+            if (researchCraftable) ResearchQueue();
         }
 
         public bool ResearchItem(int itemId, int itemCount, ResearchSource source = default, bool researchCraftable = true)
@@ -197,7 +195,7 @@ namespace HyperResearch.Utils
             foreach (Recipe recipe in Main.recipe)
             {
                 if (IsRecipeResearchable(recipe))
-                    ResearchItem(recipe.createItem.type, ResearchSource.Craft, !HyperConfig.Instance.OneCycleResearchCraftable);
+                    ResearchItem(recipe.createItem.type, ResearchSource.Craft);
             };
         }
 
@@ -228,7 +226,7 @@ namespace HyperResearch.Utils
 
         private void ResearchItemOccurrences(Item item)
         {
-            if (item.material && RecipesSystem.ItemRecipesOccurrences.TryGetValue(item.type, out List<int> itemRecipeIds))
+            if (RecipesSystem.ItemRecipesOccurrences.TryGetValue(item.type, out List<int> itemRecipeIds))
             {
                 foreach (int recipeId in itemRecipeIds)
                 {
