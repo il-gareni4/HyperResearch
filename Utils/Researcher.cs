@@ -185,8 +185,8 @@ namespace HyperResearch.Utils
 
         public void ResearchQueue()
         {
-            while (ResearchedQueue.Count > 0)
-                ResearchItemOccurrences(ResearchedQueue.Dequeue());
+            while (ResearchedQueue.TryDequeue(out int itemId))
+                ResearchItemOccurrences(itemId);
         }
 
         public void ResearchCraftable()
@@ -236,9 +236,10 @@ namespace HyperResearch.Utils
             }
             if (item.createTile >= TileID.Dirt)
             {
-                foreach (int adjTile in ItemsUtils.GetAdjTiles(item.createTile))
+                foreach (int adjTile in ItemsUtils.GetAllAdjTiles(item.createTile))
                 {
-                    if (RecipesSystem.TileRecipesOccurrences.TryGetValue(adjTile, out List<int> tileRecipeIds)) { 
+                    if (RecipesSystem.TileRecipesOccurrences.TryGetValue(adjTile, out List<int> tileRecipeIds))
+                    {
                         foreach (int recipeId in tileRecipeIds)
                         {
                             Recipe recipe = Main.recipe[recipeId];

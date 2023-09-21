@@ -77,6 +77,13 @@ namespace HyperResearch.Utils
             else return null;
         }
 
+        public static List<int> GetAllAdjTiles(int tileId)
+        {
+            List<int> all = new() { tileId };
+            all.AddRange(GetAdjTiles(tileId));
+            return all;
+        }
+
         public static List<int> GetAdjTiles(int tileId)
         {
             List<int> adjTiles = new();

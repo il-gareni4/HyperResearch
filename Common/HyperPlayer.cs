@@ -227,8 +227,7 @@ namespace HyperResearch.Common
                 return false;
             }
 
-            ResearchedTiles[item.createTile] = true;
-            foreach (int adj in ItemsUtils.GetAdjTiles(item.createTile))
+            foreach (int adj in ItemsUtils.GetAllAdjTiles(item.createTile))
                 ResearchedTiles[adj] = true;
             return true;
         }
