@@ -150,7 +150,6 @@ namespace HyperResearch.Utils
             return result;
         }
 
-
         public void ResearchItems(IEnumerable<int> items, ResearchSource source = default, bool researchCraftable = true)
         {
             foreach (int itemId in items)

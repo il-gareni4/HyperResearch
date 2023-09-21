@@ -71,7 +71,7 @@ namespace HyperResearch.Common.GlobalItems
                 }
 
                 LocalizedText tooltipText = Language.GetText("Mods.HyperResearch.Tooltips.NeededToResearch");
-                TooltipLine hyperResearch = new(Mod, "HyperResearch", 
+                TooltipLine hyperResearch = new(Mod, "HyperResearch",
                     tooltipText.Format(Researcher.GetRemaining(item.type), Researcher.GetResearchedCount(item.type), Researcher.GetTotalNeeded(item.type)))
                 {
                     OverrideColor = Colors.JourneyMode
@@ -84,6 +84,8 @@ namespace HyperResearch.Common.GlobalItems
         public override void OnResearched(Item item, bool fullyResearched)
         {
             if (!Researcher.IsPlayerInJourneyMode() || !fullyResearched) return;
+
+            ItemLoader.OnPickup(item, Main.LocalPlayer); // For ItemChecklist and BossChecklist
             if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
             {
                 modPlayer.TryAddToResearchedTiles(item.type);

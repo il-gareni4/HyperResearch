@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.ComponentModel;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
