@@ -101,7 +101,6 @@ namespace HyperResearch.Utils
                 case 355:
                     adjTiles.Add(13);
                     adjTiles.Add(14);
-                    adjTiles.Add(355);
                     break;
             }
             ModTile t = TileLoader.GetTile(tileId);

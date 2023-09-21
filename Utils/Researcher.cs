@@ -234,13 +234,18 @@ namespace HyperResearch.Utils
                         ResearchItem(recipe.createItem.type, ResearchSource.Craft, false);
                 }
             }
-            if (item.createTile >= TileID.Dirt && RecipesSystem.TileRecipesOccurrences.TryGetValue(item.createTile, out List<int> tileRecipeIds))
+            if (item.createTile >= TileID.Dirt)
             {
-                foreach (int recipeId in tileRecipeIds)
+                foreach (int adjTile in ItemsUtils.GetAdjTiles(item.createTile))
                 {
-                    Recipe recipe = Main.recipe[recipeId];
-                    if (IsRecipeResearchable(recipe))
-                        ResearchItem(recipe.createItem.type, ResearchSource.Craft, false);
+                    if (RecipesSystem.TileRecipesOccurrences.TryGetValue(adjTile, out List<int> tileRecipeIds)) { 
+                        foreach (int recipeId in tileRecipeIds)
+                        {
+                            Recipe recipe = Main.recipe[recipeId];
+                            if (IsRecipeResearchable(recipe))
+                                ResearchItem(recipe.createItem.type, ResearchSource.Craft, false);
+                        }
+                    }
                 }
             }
         }
