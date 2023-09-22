@@ -162,7 +162,7 @@ namespace HyperResearch.Utils
             foreach ((int itemId, int itemCount) in items)
             {
                 if (IsResearchable(itemId) && itemCount >= GetRemaining(itemId))
-                    ResearchItem(itemId, source);
+                    ResearchItem(itemId, source, false);
             }
             if (researchCraftable) ResearchQueue();
         }
