@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HyperResearch.Common.Configs;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -9,19 +10,20 @@ namespace HyperResearch.Utils
     /// <summary>Utility class whose functions are related to text formatting and its output</summary>
     public static class TextUtils
     {
-        public static void MessageResearcherResults(Researcher researcher)
+        public static void MessageResearcherResults(Researcher researcher, int shared = -1)
         {
-            MessageResearchedItems(researcher.ResearchedItems);
+            MessageResearchedItems(researcher.ResearchedItems, shared);
             MessageResearchedShimmeredItems(researcher.ResearchedShimmeredItems);
             MessageResearchedCraftableItems(researcher.ResearchedCraftableItems);
         }
 
         /// <summary>Displays information about researched items in the game chat</summary>
-        public static void MessageResearchedItems(IEnumerable<int> items)
+        public static void MessageResearchedItems(IEnumerable<int> items, int shared = -1)
         {
             if (!HyperConfig.Instance.ShowNewlyResearchedItems || !items.Any()) return;
-            string researchStr = items.Count() > 1 ? $"{items.Count()} new items" : "new item";
-            Main.NewText($"Researched {researchStr}: [i:{string.Join("][i:", items)}]", Colors.JourneyMode);
+            string researchStr = shared < 0 ? "Researched" : $"{Main.player[shared].name} shared";
+            string countStr = items.Count() > 1 ? $"{items.Count()} new items" : "new item";
+            Main.NewText($"{researchStr} {countStr}: [i:{string.Join("][i:", items)}]", shared >= 0 ? Color.Pink : Colors.JourneyMode);
         }
 
         /// <summary>Displays information about researched crating items in the game chat</summary>
@@ -40,7 +42,7 @@ namespace HyperResearch.Utils
             Main.NewText($"Researched {researchStr}: [i:{string.Join("][i:", items)}]", Color.Lerp(Colors.JourneyMode, Colors.RarityPurple, 0.4f));
         }
 
-        public static void MessageSacrifices(Dictionary<int, int> sacrifices)
+        public static void MessageSacrifices(IDictionary<int, int> sacrifices)
         {
             if (!HyperConfig.Instance.ShowPartiallyResearchedItems || sacrifices.Count == 0) return;
             string researchStr = sacrifices.Count() > 1 ? $"{sacrifices.Count()} items" : "item";

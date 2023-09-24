@@ -1,4 +1,5 @@
-﻿using HyperResearch.Common.Systems;
+﻿using HyperResearch.Common.Configs;
+using HyperResearch.Common.Systems;
 using HyperResearch.UI.Components;
 using HyperResearch.Utils;
 using Microsoft.Xna.Framework;

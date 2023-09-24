@@ -1,4 +1,5 @@
 ﻿using HyperResearch.Common;
+using HyperResearch.Common.Configs;
 using HyperResearch.Common.Systems;
 using System.Collections.Generic;
 using System.Linq;
@@ -209,6 +210,11 @@ namespace HyperResearch.Utils
         public bool AnyItemResearched()
         {
             return ResearchedItems.Count > 0 || ResearchedCraftableItems.Count > 0 || ResearchedShimmeredItems.Count > 0;
+        }
+
+        public bool AnyItemSacrificed()
+        {
+            return _sacrificedItems is not null && SacrificedItems.Count > 0;
         }
 
         private void AfterResearch(int itemId, ResearchSource source, bool researchCraftable)

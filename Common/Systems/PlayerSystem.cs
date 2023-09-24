@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using HyperResearch.Common.Configs;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -38,7 +39,7 @@ namespace HyperResearch.Common.Systems
 
         private void OnResearchButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.SacrificeInventory();
         private void OnClearButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.ClearResearched();
-        private void OnAutoCraftButtonMouseDown(UIMouseEvent evt, UIElement el) => HyperPlayer.ResearchAndMessageCraftable();
+        private void OnAutoCraftButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.ResearchAndMessageCraftable();
         private void OnShopButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.ResearchShop(HPlayer.CurrentShopItems);
     }
 }

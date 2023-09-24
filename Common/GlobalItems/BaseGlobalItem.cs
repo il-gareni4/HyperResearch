@@ -1,4 +1,5 @@
-﻿using HyperResearch.Common.Systems;
+﻿using HyperResearch.Common.Configs;
+using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;

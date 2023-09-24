@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
 
-namespace HyperResearch
+namespace HyperResearch.Common.Configs
 {
     public class HyperConfig : ModConfig
     {

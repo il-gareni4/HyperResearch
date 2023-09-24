@@ -19,7 +19,7 @@ UI: {
 
 Configs: {
 	HyperConfig: {
-		DisplayName: Client config
+		DisplayName: Client Config
 
 		Headers: {
 			ResearchSettingsHeader: Item Research Settings
@@ -236,10 +236,14 @@ Configs: {
 				the percentage of the total number of items that can be researched
 				'''
 		}
+	}
 
-		clr: {
-			Label: clr
-			Tooltip: ""
+	ServerConfig: {
+		DisplayName: Server Config
+
+		SyncResearchedItemsInOneTeam: {
+			Label: Share what you have researched with your team
+			Tooltip: All team members will research what you have researched and vice versa
 		}
 	}
 }
