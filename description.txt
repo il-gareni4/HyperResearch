@@ -13,9 +13,9 @@ Features:
 - Messages notifying about researching new items and crafting items
 - Custom research tooltip which will be visible even in mods
 - Ability to use the buff from researched banners without having to place banners
+- Ability to share researched items with the team
 
 Minor features:
-- Basic multiplayer support
 - Shows the number of items researched and the total number of items that can be researched
 - Max stack researched items
 - Ability to set the number of items needed to unlock duplication to one
