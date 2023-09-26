@@ -1,5 +1,4 @@
 using HyperResearch.Common;
-using HyperResearch.Common.Configs;
 using HyperResearch.Utils;
 using HyperResearch.Utils.Extensions;
 using System.IO;
@@ -41,11 +40,7 @@ namespace HyperResearch
                     }
                     break;
                 case NetMessageType.SharedItems:
-                    byte fromPlayer = reader.ReadByte();
-                    int[] items = reader.ReadInts32();
-                    Researcher researcher = new();
-                    researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
-                    Main.LocalPlayer.GetModPlayer<HyperPlayer>().AfterResearch(researcher, fromPlayer);
+                    Main.LocalPlayer.GetModPlayer<HyperPlayer>().SharedItems(reader.ReadByte(), reader.ReadInts32());
                     break;
                 default:
                     Logger.Debug("Invalid message type");

@@ -199,6 +199,11 @@ Configs: {
 				'''
 		}
 
+		ShowOtherPlayersResearchedItems: {
+			Label: Show messages about new items researched by team players
+			Tooltip: Even those items that you have already researched are shown
+		}
+
 		ShowResearchInventoryButton: {
 			Label: Show "{$Mods.HyperResearch.UI.InventoryButtons.ResearchButtonHoverText}" button
 			Tooltip: ""

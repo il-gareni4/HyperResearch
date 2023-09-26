@@ -128,6 +128,15 @@ namespace HyperResearch.Common
             packet.Send(ignoreClient: Main.myPlayer);
         }
 
+        public void SharedItems(int fromPlayer, IEnumerable<int> items)
+        {
+            if (HyperConfig.Instance.ShowOtherPlayersResearchedItems)
+                TextUtils.MessageOtherPlayerResearchedItems(items, fromPlayer);
+            Researcher researcher = new();
+            researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
+            AfterResearch(researcher, fromPlayer);
+        }
+
         /// <summary>
         /// Automatically research items in the inventory if the total amount is equal to or more than required for research
         /// If number of items is not enough then it does nothing

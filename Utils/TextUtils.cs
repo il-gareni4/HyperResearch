@@ -57,5 +57,12 @@ namespace HyperResearch.Utils
             }
             Main.NewText($"Partially researched {researchStr}: {sacrificesStr}", Color.Lerp(Colors.JourneyMode, Colors.CoinPlatinum, 0.4f));
         }
+
+        public static void MessageOtherPlayerResearchedItems(IEnumerable<int> items, int playerId)
+        {
+            if (!HyperConfig.Instance.ShowOtherPlayersResearchedItems || !items.Any()) return;
+            string researchStr = items.Count() > 1 ? $"{items.Count()} new items" : "new item";
+            Main.NewText($"{Main.player[playerId].name} researched {researchStr}: [i:{string.Join("][i:", items)}]", Color.Pink);
+        }
     }
 }
