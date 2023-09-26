@@ -81,7 +81,7 @@ namespace HyperResearch.Common
 
             ItemsResearchedCount = 0;
             Researcher researcher = new();
-            for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++)
+            for (int itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
             {
                 TryAddToResearchedTiles(itemId);
 

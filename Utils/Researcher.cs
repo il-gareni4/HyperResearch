@@ -202,7 +202,7 @@ namespace HyperResearch.Utils
         public bool TryResearchShimmeredItem(int itemId, bool researchCraftable = true)
         {
             int shimmerItemId = ItemsUtils.GetShimmeredItemId(itemId);
-            if (!IsResearched(itemId) || shimmerItemId <= 0) return false;
+            if (shimmerItemId <= 0 || !IsResearched(itemId)) return false;
 
             return ResearchItem(shimmerItemId, ResearchSource.Shimmer, researchCraftable);
         }

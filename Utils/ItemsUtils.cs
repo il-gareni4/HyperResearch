@@ -58,7 +58,10 @@ namespace HyperResearch.Utils
 
         public static int GetShimmeredItemId(int itemId)
         {
-            if (ItemID.Sets.ShimmerCountsAsItem[itemId] != -1)
+            if (!ItemID.Sets.ShimmerCountsAsItem.IndexInRange(itemId) ||
+                !ItemID.Sets.ShimmerTransformToItem.IndexInRange(itemId)) return -1;
+
+            if (ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
                 itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];
             return ItemID.Sets.ShimmerTransformToItem[itemId];
         }
