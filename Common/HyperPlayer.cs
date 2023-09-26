@@ -254,7 +254,7 @@ namespace HyperResearch.Common
             if (!HyperConfig.Instance.OnlyOneItemNeeded && !HyperConfig.Instance.AutoResearchShimmeredItems) return;
 
             Researcher researcher = new();
-            for (int itemId = 0; itemId < ItemLoader.ItemCount; itemId++)
+            for (int itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
             {
                 if (HyperConfig.Instance.AutoResearchShimmeredItems)
                     researcher.TryResearchShimmeredItem(itemId);

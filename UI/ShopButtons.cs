@@ -30,14 +30,14 @@ namespace HyperResearch.UI
                 OneFrameCount = 4,
                 AnimationFramesCount = 5,
                 HoverFrame = 6,
-                CanInteract = () => Main.npcShop >= 1
+                CanInteract = () => Main.LocalPlayer.TalkNPC is not null && Main.npcShop >= 1
             };
             RebuildButtons();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (Researcher.IsPlayerInJourneyMode() && Main.npcShop >= 1)
+            if (Researcher.IsPlayerInJourneyMode() && Main.LocalPlayer.TalkNPC is not null && Main.npcShop >= 1)
                 base.Draw(spriteBatch);
         }
 
