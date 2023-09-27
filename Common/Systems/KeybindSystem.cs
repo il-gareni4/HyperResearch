@@ -25,7 +25,7 @@ namespace HyperResearch.Common.Systems
             SacrificeInventoryBind = KeybindLoader.RegisterKeybind(Mod, "ResearchInventoryItems", Keys.OemComma);
             ClearResearchedBind = KeybindLoader.RegisterKeybind(Mod, "ClearResearchedItems", Keys.OemPeriod);
             ResearchCraftableBind = KeybindLoader.RegisterKeybind(Mod, "ResearchCraftableItems", Keys.OemQuestion);
-            MaxStackBind = KeybindLoader.RegisterKeybind(Mod, "MaxStack ResearchedItems", Keys.OemSemicolon);
+            MaxStackBind = KeybindLoader.RegisterKeybind(Mod, "MaxStack", Keys.OemSemicolon);
             ResearchLootBind = KeybindLoader.RegisterKeybind(Mod, "ResearchBagContents", Keys.OemQuotes);
             ResearchShopBind = KeybindLoader.RegisterKeybind(Mod, "ResearchShop", Keys.OemSemicolon);
         }

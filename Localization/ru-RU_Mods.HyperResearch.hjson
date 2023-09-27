@@ -1,0 +1,275 @@
+Messages: {
+	ResearchedItems: "{^0:Изучен;Изучено;Изучено} {0} {^0:новый предмет;новых предмета;новых предметов}: {1}"
+	SharedItems: "{0} поделился {1} {^1:новым предметом;новыми предметами;новыми предметами}: {2}"
+	ResearchedCraftableItems: "{^0:Изучен;Изучено;Изучено} {0} {^0:автосозданный предмет;автосозданных предмета;автосозданных предметов}: {1}"
+	ResearchedShimmeredItems: Изучено {0} {^0:мерцающее преобразование;мерцающих преобразования;мерцающих преобразований}: {1}
+	Sacrifices: Частично {^0:изучен;изучено;изучено} {0} {^0:предмет;предмета;предметов}: {1}
+	OtherPlayerResearchedItems: "{0} изучил {1} {^1:новый предмет;новых предмета;новых предметов}: {2}"
+}
+
+Tooltips: {
+	NeededToResearch: Исследуйте {0} {^0:единицу;единицы;единиц} для дублирования ({1}/{2})
+	Researched: Изучено
+	ResearchLoot: Нажмите {0}, чтобы изучить содержимое (исключая глобальные предметы)
+}
+
+UI: {
+	InventoryButtons: {
+		ResearchButtonHoverText: "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"
+		ClearButtonHoverText: "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"
+		AutoCraftHoverText: "{$Mods.HyperResearch.Keybinds.ResearchCraftableItems.DisplayName}"
+	}
+
+	ShopButtons.ResearchButtonHoverText: "{$Mods.HyperResearch.Keybinds.ResearchShop.DisplayName}"
+	DuplicationMenu.TotalResearched: "{0}% изучены ({1}/{2} предметов)"
+}
+
+Configs: {
+	HyperConfig: {
+		DisplayName: Конфиг клиента
+
+		Headers: {
+			ResearchSettingsHeader: Настройки изучения предметов
+			ClearSettingsHeader: Найстроки очищения
+			MessagesSettingsHeader: Настройки сообщений
+			ConsumptionSettingsHeader: Настройки расходуемых предметов
+			SacrificeSettingsHeader: Настройки изучений
+			UISettingsHeader: Настройки пользовательского интерфейса
+			OtherSettingsHeader: Прочие настройки
+		}
+
+		ResearchInventory: {
+			Label: "[i:{0}] Изучать предметы в инвентаре"
+			Tooltip:
+				'''
+				Автоматичеки изучает предметы в инвентаре, если общее количество
+				одного предмета больше или равно необходимого количества для изучения
+				'''
+		}
+
+		AutoTrashResearched: {
+			Label: "[i:{0}] Не подбирать изученные предметы"
+			Tooltip: Все подобранные предметы, которые уже изучены, больше не будут добавляться в инвентарь
+		}
+
+		AutoResearchCraftable: {
+			Label: "[i:{0}] Изучать предметы, которые возможно создать"
+			Tooltip:
+				'''
+				После изучения нового предмета, все новые предметы, которые возможно создать
+				из уже изученных предметов, изучаются.
+				Для этого требуется изучить необходимые станции создания и
+				выполнить условия создания (только если параметр "{$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Name}" выключен)
+				'''
+		}
+
+		IgnoreCraftingConditions: {
+			Name: Игнорировать некоторые условия создания
+			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Name}"
+			Tooltip:
+				'''
+				Для автосоздания предметов следующие типы условий будут игнорироваться: 
+				условия нахождения рядом с жидкостями, условия времени, условия событий и
+				стадий лун и условия нахождения в биоме.
+				Это означает, что условия сида мира или убийств боссов не будут проигнорированы.
+				Все условия, которые добавляют моды, не будут проигнорированы.
+				'''
+		}
+
+		AutoResearchShop: {
+			Label: "[i:{0}] Изучать содержимое магазинов"
+			Tooltip:
+				'''
+				При открытии магазина изучается все, что NPC в данный момент продает.
+				Чтобы изучить некоторые предметы, необходимо изучить
+				соответвующую валюту (например, [i:{0}]Медали защитника)
+				'''
+		}
+
+		AutoResearchShimmeredItems: {
+			Label: "[i:{0}] Изучать Мерцающие превращения"
+			Tooltip: ""
+		}
+
+		UseCustomResearchTooltip: {
+			Label: "[i:{0}] Использовать пользовательскую подсказку прогресса изучения"
+			Tooltip:
+				'''
+				В отличие от стандартной подсказки, пользовательская будет отображаться везде
+				при наведении курсора на предмет (включая другие моды)
+				'''
+		}
+
+		ShowResearchedTooltip: {
+			Label: '''[i:{0}] Показывать подсказку "{$Tooltips.Researched}"'''
+			Tooltip: ""
+		}
+
+		UseResearchedBannersBuff: {
+			Label: "[i:{0}] Использовать бафф изученных баннеров"
+			Tooltip:
+				'''
+				Если изучен баннер NPC, то эффект баннера будет действовать
+				даже если сам баннер не поставлен
+				'''
+		}
+
+		OnlyOneItemNeeded: {
+			Label: "[i:{0}] Только одна единица предмета необходима для изучения"
+			Tooltip: ""
+		}
+
+		AutoTrashAfterResearching: {
+			Label: "[i:{0}] Убирать предмет после изучения"
+			Tooltip: ""
+		}
+
+		SacrificeHotbarSlots: {
+			Label: '''[i:{0}] Изучать слоты хотбара при нажатии на "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"'''
+			Tooltip: ""
+		}
+
+		SacrificeCoinsSlots: {
+			Label: '''[i:{0}] Изучать слоты монет при нажатии на "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"'''
+			Tooltip: ""
+		}
+
+		SacrificeAmmoSlots: {
+			Label: '''[i:{0}] Изучать слоты патрон при нажатии на "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"'''
+			Tooltip: ""
+		}
+
+		ClearHotbarSlots: {
+			Label: '''[i:{0}] Очищать слоты хотбара при нажатии на "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"'''
+			Tooltip: ""
+		}
+
+		ClearCoinsSlots: {
+			Label: '''[i:{0}] Очищать слоты монет при нажатии на "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"'''
+			Tooltip: ""
+		}
+
+		ClearAmmoSlots: {
+			Label: '''[i:{0}] Очищать слоты патрон при нажатии на "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"'''
+			Tooltip: ""
+		}
+
+		ConsumeResearchedAmmo: {
+			Label: "[i:{0}] Расходовать изученные патроны"
+			Tooltip: ""
+		}
+
+		ConsumeResearchedBaits: {
+			Label: "[i:{0}] Расходовать изученную наживку"
+			Tooltip: ""
+		}
+
+		ConsumeResearchedBlocks: {
+			Label: "[i:{0}] Расходовать изученные блоки"
+			Tooltip: Блоки также в себя включают стены и мебель
+		}
+
+		ConsumeResearchedThrowingWeapons: {
+			Label: "[i:{0}] Расходовать изученные метательные оружия"
+			Tooltip: ""
+		}
+
+		ConsumeResearchedPotions: {
+			Label: "[i:{0}] Расходовать изученные зелья"
+			Tooltip:
+				'''
+				Только зелья [i:{0}]баффов, [i:{1}]лечения и [i:{2}]маны включены в эту категорию. 
+				Зелья по типу [i:{3}]Зелья возвращения будут тратиться всё равно
+				'''
+		}
+
+		ConsumeResearchedLootItems: {
+			Label: "[i:{0}] Расходовать изученные мешки и ящики"
+			Tooltip: ""
+		}
+
+		ConsumeOtherResearchedItems: {
+			Label: "[i:{0}] Расходовать другие изученные предметы"
+			Tooltip: Другие предметы, которые не попали под категории выше, будут расходоваться
+		}
+
+		ShowNewlyResearchedItems: {
+			Label: Показывать изученные предметы
+			Tooltip: ""
+		}
+
+		ShowResearchedCraftableItems: {
+			Label: Показывать изученные автосоздаваемые предметы
+			Tooltip: ""
+		}
+
+		ShowResearchedShimmeredItems: {
+			Label: Показывать изученные Мерцающие превращения
+			Tooltip: Этот тип сообщений можно увидеть только если настройка "{$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Label}" включена
+		}
+
+		ShowPartiallyResearchedItems: {
+			Label: Показывать частично изученные предметы
+			Tooltip: ""
+		}
+
+		ShowOtherPlayersResearchedItems: {
+			Label: Показывать новые изученные предметы участников команды
+			Tooltip: Показываются даже те предметы, что были уже изучены вами
+		}
+
+		ShowResearchInventoryButton: {
+			Label: Показывать кнопку "{$Mods.HyperResearch.UI.InventoryButtons.ResearchButtonHoverText}"
+			Tooltip: ""
+		}
+
+		ShowClearInventoryButton: {
+			Label: Показывать кнопку "{$Mods.HyperResearch.UI.InventoryButtons.ClearButtonHoverText}"
+			Tooltip: ""
+		}
+
+		ShowAutoCraftButton: {
+			Label: Показывать кнопку "{$Mods.HyperResearch.UI.InventoryButtons.AutoCraftHoverText}"
+			Tooltip: ""
+		}
+
+		InventoryButtonsSlotOffset: {
+			Label: Смещение кнопок по слотам инвентаря
+			Tooltip:
+				'''
+				Определяет позицию отрисовки кнопок, основываясь
+				на каком слоте инвентаря первая кнопка будет нарисована
+				'''
+		}
+
+		ShowResearchShopButton: {
+			Label: Показывать кнопку "{$Mods.HyperResearch.UI.ShopButtons.ResearchButtonHoverText}" в меню магазина
+			Tooltip: ""
+		}
+
+		ShowTotalResearchedItemsCount: {
+			Label: Показывать общее количество изученных предметов
+			Tooltip: Показывается под меню дубликации
+		}
+	}
+
+	ServerConfig: {
+		DisplayName: Конфиг сервера
+
+		SyncResearchedItemsInOneTeam: {
+			Label: Делиться изученными предметами с командой
+			Tooltip: Все участники команды будут изучать вами только что изученные предметы
+		}
+	}
+}
+
+Keybinds: {
+	ForgetAll.DisplayName: Забыть всё
+	ResearchAll.DisplayName: Изучить всё
+	ResearchInventoryItems.DisplayName: Изучить предметы в инвентаре
+	ClearResearchedItems.DisplayName: Убрать изученные предметы
+	ResearchCraftableItems.DisplayName: Изучить предметы создания
+	MaxStack.DisplayName: Установить макс. стак предмету
+	ResearchBagContents.DisplayName: Изучить содержимое мешка/ящика
+	ResearchShop.DisplayName: Изучить магазин
+}

@@ -1,4 +1,11 @@
-Messages.Researched: Researched
+Messages: {
+	ResearchedItems: Researched {0} new {^0:item;items}: {1}
+	SharedItems: "{0} shared {1} {^1:item;items}: {2}"
+	ResearchedCraftableItems: Researched {0} craftable {^0:item;items}: {1}
+	ResearchedShimmeredItems: Researched {0} shimmered {^0:item;items}: {1}
+	Sacrifices: Partially researched {0} {^0:item;items}: {1}
+	OtherPlayerResearchedItems: "{0} researched {1} new {^1:item;items}: {2}"
+}
 
 Tooltips: {
 	NeededToResearch: Research {0} more to unlock duplication ({1}/{2})
@@ -29,7 +36,6 @@ Configs: {
 			SacrificeSettingsHeader: Research Settings
 			UISettingsHeader: UI Settings
 			OtherSettingsHeader: Other Settings
-			PerformanceSettingsHeader: Performance Settings Header Header
 		}
 
 		ResearchInventory: {
@@ -47,12 +53,13 @@ Configs: {
 			Tooltip:
 				'''
 				After learning a new item, all new items from already researched items will be researched. 
-				Requires researched crafting stations and compliance with custom conditions (only if "Ignore crafting conditions" is disabled).
+				Requires researched crafting stations and compliance with custom conditions (only if "{$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Name}" is disabled).
 				'''
 		}
 
 		IgnoreCraftingConditions: {
-			Label: "[i:{0}] Ignore some crafting conditions"
+			Name: Ignore some crafting conditions
+			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Name}"
 			Tooltip:
 				'''
 				For autocrafting items, the following types of conditions are ignored: conditions of being near a liquid,
@@ -262,5 +269,4 @@ Keybinds: {
 	MaxStack.DisplayName: Max  Stack  Researched Item
 	ResearchBagContents.DisplayName: Research Bag/Crate Contents
 	ResearchShop.DisplayName: Research Shop
-	"MaxStack ResearchedItems.DisplayName": Max Stack Researched Items
 }

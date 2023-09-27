@@ -55,7 +55,7 @@ namespace HyperResearch.Common.GlobalItems
             if (!Researcher.IsPlayerInJourneyMode() || !Researcher.IsResearchable(item.type)) return;
             if (Researcher.IsResearched(item.type) && HyperConfig.Instance.ShowResearchedTooltip && item.tooltipContext != ItemSlot.Context.CreativeInfinite)
             {
-                TooltipLine researched = new(Mod, "Researched", "Researched")
+                TooltipLine researched = new(Mod, "Researched", Language.GetTextValue("Mods.HyperResearch.Tooltips.Researched"))
                 {
                     OverrideColor = Colors.FancyUIFatButtonMouseOver
                 };
@@ -73,7 +73,8 @@ namespace HyperResearch.Common.GlobalItems
 
                 LocalizedText tooltipText = Language.GetText("Mods.HyperResearch.Tooltips.NeededToResearch");
                 TooltipLine hyperResearch = new(Mod, "HyperResearch",
-                    tooltipText.Format(Researcher.GetRemaining(item.type), Researcher.GetResearchedCount(item.type), Researcher.GetTotalNeeded(item.type)))
+                    tooltipText.Format(Researcher.GetRemaining(item.type), Researcher.GetResearchedCount(item.type), Researcher.GetTotalNeeded(item.type))
+                )
                 {
                     OverrideColor = Colors.JourneyMode
                 };
