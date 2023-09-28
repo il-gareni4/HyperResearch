@@ -33,11 +33,8 @@ namespace HyperResearch
                     packet.Write((byte)NetMessageType.SharedItems);
                     packet.Write((byte)whoAmI);
                     packet.Write(reader.ReadInts32());
-                    for (int i = 0; i < Main.maxNetPlayers; i++)
-                    {
-                        if (Main.player[i].active && i != whoAmI && Main.player[i].team == Main.player[whoAmI].team)
-                            packet.Send(i, whoAmI);
-                    }
+                    foreach (int playerId in MainUtils.GetTeamMembers(Main.player[whoAmI].team, whoAmI))
+                        packet.Send(playerId, whoAmI);
                     break;
                 case NetMessageType.SharedItems:
                     Main.LocalPlayer.GetModPlayer<HyperPlayer>().SharedItems(reader.ReadByte(), reader.ReadInts32());
