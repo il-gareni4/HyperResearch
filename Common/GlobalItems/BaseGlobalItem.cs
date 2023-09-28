@@ -85,7 +85,7 @@ namespace HyperResearch.Common.GlobalItems
 
         public override void OnResearched(Item item, bool fullyResearched)
         {
-            if (!Researcher.IsPlayerInJourneyMode() || !fullyResearched) return;
+            if (!Researcher.IsPlayerInJourneyMode() || !fullyResearched || item is null || item.IsAir) return;
 
             ItemLoader.OnPickup(item, Main.LocalPlayer); // For ItemChecklist and BossChecklist
             if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
