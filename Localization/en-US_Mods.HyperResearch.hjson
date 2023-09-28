@@ -80,7 +80,8 @@ Configs: {
 		}
 
 		AutoResearchShimmeredItems: {
-			Label: "[i:{0}] Auto research items that are obtained after shimmer transmutation"
+			Name: Auto research items that are obtained after shimmer transmutation
+			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}"
 			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
 		}
 
@@ -194,7 +195,7 @@ Configs: {
 
 		ShowResearchedShimmeredItems: {
 			Label: Show researched shimmered items
-			Tooltip: This type of messages can be seen if "Auto research items that are obtained after shimmer transmutation" is enabled
+			Tooltip: This type of messages can be seen if "{$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}" is enabled
 		}
 
 		ShowPartiallyResearchedItems: {

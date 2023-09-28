@@ -87,7 +87,8 @@ Configs: {
 		}
 
 		AutoResearchShimmeredItems: {
-			Label: "[i:{0}] Изучать Мерцающие превращения"
+			Name: Изучать Мерцающие превращения
+			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}"
 			Tooltip: ""
 		}
 
@@ -205,7 +206,7 @@ Configs: {
 
 		ShowResearchedShimmeredItems: {
 			Label: Показывать изученные Мерцающие превращения
-			Tooltip: Этот тип сообщений можно увидеть только если настройка "{$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Label}" включена
+			Tooltip: Этот тип сообщений можно увидеть только если настройка "{$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}" включена
 		}
 
 		ShowPartiallyResearchedItems: {

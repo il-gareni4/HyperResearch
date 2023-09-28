@@ -140,7 +140,6 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(false)]
         public bool ShowOtherPlayersResearchedItems;
 
-
         [Header("UISettingsHeader")]
 
         [DefaultValue(true)]
