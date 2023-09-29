@@ -4,6 +4,7 @@ Messages: {
 	ResearchedCraftableItems: Researched {0} craftable {^0:item;items}: {1}
 	ResearchedShimmeredItems: Researched {0} shimmered {^0:item;items}: {1}
 	Sacrifices: Partially researched {0} {^0:item;items}: {1}
+	SharedSacrifices: "{0} shared {1} partially researched {^1:item;items}: {2}"
 	OtherPlayerResearchedItems: "{0} researched {1} new {^1:item;items}: {2}"
 }
 
@@ -36,6 +37,7 @@ Configs: {
 			SacrificeSettingsHeader: Research Settings
 			UISettingsHeader: UI Settings
 			OtherSettingsHeader: Other Settings
+			MutiplayerMessagesSettingsHeader: Mutiplayer Messages Settings
 		}
 
 		ResearchInventory: {
@@ -249,6 +251,21 @@ Configs: {
 				the percentage of the total number of items that can be researched
 				'''
 		}
+
+		ShowSacrifices: {
+			Label: Show Sacrifices
+			Tooltip: ""
+		}
+
+		ShowSharedItems: {
+			Label: Show Shared Items
+			Tooltip: ""
+		}
+
+		ShowSharedSacrifices: {
+			Label: Show Shared Sacrifices
+			Tooltip: ""
+		}
 	}
 
 	ServerConfig: {
@@ -257,6 +274,11 @@ Configs: {
 		SyncResearchedItemsInOneTeam: {
 			Label: Share what you have researched with your team
 			Tooltip: All team members will research what you have researched and vice versa
+		}
+
+		SyncSacrificesInOneTeam: {
+			Label: Sync Sacrifices In One Team
+			Tooltip: ""
 		}
 	}
 }

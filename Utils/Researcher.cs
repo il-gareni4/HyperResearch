@@ -115,6 +115,11 @@ namespace HyperResearch.Utils
             return CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out _);
         }
 
+        public void SacrificeItems(IDictionary<int, int> itemCount, ResearchSource source = default, bool researchCraftable = true)
+        {
+            SacrificeItems(itemCount.Select(pair => new Item(pair.Key, pair.Value)), source, researchCraftable);
+        }
+
         public void SacrificeItems(IEnumerable<Item> items, ResearchSource source = default, bool researchCraftable = true)
         {
             foreach (Item item in items)

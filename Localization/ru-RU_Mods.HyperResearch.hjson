@@ -4,6 +4,7 @@ Messages: {
 	ResearchedCraftableItems: "{^0:Изучен;Изучено;Изучено} {0} {^0:автосозданный предмет;автосозданных предмета;автосозданных предметов}: {1}"
 	ResearchedShimmeredItems: Изучено {0} {^0:мерцающее преобразование;мерцающих преобразования;мерцающих преобразований}: {1}
 	Sacrifices: Частично {^0:изучен;изучено;изучено} {0} {^0:предмет;предмета;предметов}: {1}
+	// SharedSacrifices: "{0} shared {1} partially researched {^1:item;items}: {2}"
 	OtherPlayerResearchedItems: "{0} изучил {1} {^1:новый предмет;новых предмета;новых предметов}: {2}"
 }
 
@@ -36,6 +37,7 @@ Configs: {
 			SacrificeSettingsHeader: Настройки изучений
 			UISettingsHeader: Настройки пользовательского интерфейса
 			OtherSettingsHeader: Прочие настройки
+			MutiplayerMessagesSettingsHeader: Насйтроки сообщений мультиплеера
 		}
 
 		ResearchInventory: {
@@ -252,6 +254,21 @@ Configs: {
 			Label: Показывать общее количество изученных предметов
 			Tooltip: Показывается под меню дубликации
 		}
+
+		ShowSacrifices: {
+			// Label: Show Sacrifices
+			// Tooltip: ""
+		}
+
+		ShowSharedItems: {
+			// Label: Show Shared Items
+			// Tooltip: ""
+		}
+
+		ShowSharedSacrifices: {
+			// Label: Show Shared Sacrifices
+			// Tooltip: ""
+		}
 	}
 
 	ServerConfig: {
@@ -260,6 +277,11 @@ Configs: {
 		SyncResearchedItemsInOneTeam: {
 			Label: Делиться изученными предметами с командой
 			Tooltip: Все участники команды будут изучать вами только что изученные предметы
+		}
+
+		SyncSacrificesInOneTeam: {
+			// Label: Sync Sacrifices In One Team
+			// Tooltip: ""
 		}
 	}
 }

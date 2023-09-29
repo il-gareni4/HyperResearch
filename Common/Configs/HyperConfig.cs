@@ -135,7 +135,15 @@ namespace HyperResearch.Common.Configs
         public bool ShowResearchedShimmeredItems;
 
         [DefaultValue(false)]
-        public bool ShowPartiallyResearchedItems;
+        public bool ShowSacrifices;
+
+        [Header("MutiplayerMessagesSettingsHeader")]
+
+        [DefaultValue(true)]
+        public bool ShowSharedItems;
+
+        [DefaultValue(true)]
+        public bool ShowSharedSacrifices;
 
         [DefaultValue(false)]
         public bool ShowOtherPlayersResearchedItems;

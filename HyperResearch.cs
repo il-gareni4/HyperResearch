@@ -33,11 +33,12 @@ namespace HyperResearch
                     packet.Write((byte)NetMessageType.SharedItems);
                     packet.Write((byte)whoAmI);
                     packet.Write(reader.ReadInts32());
+                    packet.Write(reader.ReadDictInt32Int32());
                     foreach (int playerId in MainUtils.GetTeamMembers(Main.player[whoAmI].team, whoAmI))
                         packet.Send(playerId, whoAmI);
                     break;
                 case NetMessageType.SharedItems:
-                    Main.LocalPlayer.GetModPlayer<HyperPlayer>().SharedItems(reader.ReadByte(), reader.ReadInts32());
+                    Main.LocalPlayer.GetModPlayer<HyperPlayer>().SharedItems(reader.ReadByte(), reader.ReadInts32(), reader.ReadDictInt32Int32());
                     break;
                 default:
                     Logger.Debug("Invalid message type");

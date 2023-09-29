@@ -101,7 +101,7 @@ namespace HyperResearch.Common
                         Researcher.GetResearchedCount(itemId) >= 1) researcher.ResearchItem(itemId);
                 }
             }
-            AfterResearch(researcher);
+            AfterLocalResearch(researcher);
         }
 
         public override void PostUpdate()
@@ -118,23 +118,67 @@ namespace HyperResearch.Common
             return base.HoverSlot(inventory, context, slot);
         }
 
-        public void SyncItemsWithTeam(IEnumerable<int> items)
+        public void SyncItemsWithTeam(Researcher researcher) => SyncItemsWithTeam(researcher.AllResearchedItems, researcher.SacrificedItems);
+
+        public void SyncItemsWithTeam(IEnumerable<int> items, IDictionary<int, int> sacrifices)
         {
-            if (Main.LocalPlayer.team == 0) return;
+            if (Main.LocalPlayer.team == 0 && !ServerConfig.Instance.SyncResearchedItemsInOneTeam && !ServerConfig.Instance.SyncSacrificesInOneTeam) return;
 
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)NetMessageType.ShareItemsWithTeam);
-            packet.Write(items);
+
+            if (ServerConfig.Instance.SyncResearchedItemsInOneTeam && items.Any())
+                packet.Write(items);
+            else packet.Write(Array.Empty<int>());
+
+            if (ServerConfig.Instance.SyncSacrificesInOneTeam && sacrifices.Any())
+                packet.Write(sacrifices);
+            else packet.Write(new Dictionary<int, int>());
+
             packet.Send(ignoreClient: Main.myPlayer);
         }
 
-        public void SharedItems(int fromPlayer, IEnumerable<int> items)
+        public void SharedItems(int fromPlayer, IEnumerable<int> items, IDictionary<int, int> sacrifices)
         {
             if (HyperConfig.Instance.ShowOtherPlayersResearchedItems)
                 TextUtils.MessageOtherPlayerResearchedItems(items, fromPlayer);
-            Researcher researcher = new();
-            researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
-            AfterResearch(researcher, fromPlayer);
+
+            bool anyItemResearched = false;
+            Researcher sacrificesResearcher = new();
+            sacrificesResearcher.SacrificeItems(sacrifices, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
+            if (HyperConfig.Instance.ShowSharedSacrifices && sacrificesResearcher.AnyItemSacrificed())
+                TextUtils.MessageSharedSacrifices(sacrificesResearcher.SacrificedItems, fromPlayer);
+            if (HyperConfig.Instance.ShowNewlyResearchedItems && sacrificesResearcher.AnyItemResearched())
+            {
+                TextUtils.MessageResearchedItems(sacrificesResearcher.ResearchedItems);
+                anyItemResearched = true;
+            }
+
+            if (items.Any())
+            {
+                Researcher researcher = new();
+                researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
+
+                if (HyperConfig.Instance.ShowSharedItems)
+                    TextUtils.MessageSharedItems(researcher.ResearchedItems, fromPlayer);
+                anyItemResearched = anyItemResearched || researcher.AnyItemResearched();
+
+                sacrificesResearcher.ResearchedCraftableItems.AddRange(researcher.ResearchedCraftableItems);
+                sacrificesResearcher.ResearchedShimmeredItems.AddRange(researcher.ResearchedShimmeredItems);
+            }
+
+            if (HyperConfig.Instance.ShowResearchedCraftableItems)
+                TextUtils.MessageResearchedCraftableItems(sacrificesResearcher.ResearchedCraftableItems);
+            if (HyperConfig.Instance.ShowResearchedShimmeredItems)
+                TextUtils.MessageResearchedShimmeredItems(sacrificesResearcher.ResearchedShimmeredItems);
+
+            if (anyItemResearched)
+            {
+                sacrificesResearcher.SacrificedItems.Clear();
+                SyncItemsWithTeam(sacrificesResearcher);
+                SoundEngine.PlaySound(SoundID.ResearchComplete);
+            }
+            else if (sacrificesResearcher.AnyItemSacrificed()) SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         /// <summary>
@@ -155,7 +199,7 @@ namespace HyperResearch.Common
             if (items.Count == 0) return;
             Researcher researcher = new();
             researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
-            AfterResearch(researcher);
+            AfterLocalResearch(researcher);
         }
 
         /// <summary>
@@ -182,7 +226,7 @@ namespace HyperResearch.Common
             }
             Researcher researcher = new();
             researcher.SacrificeItems(itemToSacrifice, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
-            AfterResearch(researcher);
+            AfterLocalResearch(researcher);
         }
 
         public void ClearResearched()
@@ -255,7 +299,7 @@ namespace HyperResearch.Common
             }
             Researcher researcher = new();
             researcher.ResearchItems(toResearch, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
-            AfterResearch(researcher);
+            AfterLocalResearch(researcher);
         }
 
         public void OnConfigChanged()
@@ -270,14 +314,14 @@ namespace HyperResearch.Common
                 if (HyperConfig.Instance.OnlyOneItemNeeded && Researcher.IsResearchable(itemId) &&
                     Researcher.GetResearchedCount(itemId) >= 1) researcher.ResearchItem(itemId);
             }
-            AfterResearch(researcher);
+            AfterLocalResearch(researcher);
         }
 
         public void ResearchAndMessageCraftable()
         {
             Researcher researcher = new();
             researcher.ResearchCraftable();
-            AfterResearch(researcher);
+            AfterLocalResearch(researcher);
         }
 
         public void ResearchAndMessageLoot(int itemId)
@@ -287,32 +331,28 @@ namespace HyperResearch.Common
             IEnumerable<int> items = ItemsUtils.GetItemLoot(itemId);
             Researcher researcher = new();
             researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftable);
-            AfterResearch(researcher);
+            AfterLocalResearch(researcher);
         }
 
-        public void AfterResearch(Researcher researcher, int shared = -1)
+        public void AfterLocalResearch(Researcher researcher)
         {
             if (researcher.AnyItemResearched())
             {
-                TextUtils.MessageResearcherResults(researcher, shared);
-                if (researcher.AnyItemSacrificed())
-                    TextUtils.MessageSacrifices(researcher.SacrificedItems);
+                TextUtils.MessageResearcherResults(researcher);
                 SoundEngine.PlaySound(SoundID.ResearchComplete);
 
                 if (HyperConfig.Instance.AutoTrashAfterResearching)
                     TrashInventoryItems(researcher.AllResearchedItems);
-
-                if (ServerConfig.Instance.SyncResearchedItemsInOneTeam && Main.netMode == NetmodeID.MultiplayerClient &&
-                    (shared < 0 || researcher.ResearchedCraftableItems.Count > 0 || researcher.ResearchedShimmeredItems.Count > 0))
-                {
-                    SyncItemsWithTeam(researcher.AllResearchedItems);
-                }
             }
             else if (researcher.AnyItemSacrificed())
             {
-                TextUtils.MessageSacrifices(researcher.SacrificedItems);
+                if (HyperConfig.Instance.ShowSacrifices)
+                    TextUtils.MessageSacrifices(researcher.SacrificedItems);
                 SoundEngine.PlaySound(SoundID.Research);
             }
+
+            if (Main.netMode == NetmodeID.MultiplayerClient && (researcher.AnyItemResearched() || researcher.AnyItemSacrificed()))
+                SyncItemsWithTeam(researcher);
         }
     }
 }

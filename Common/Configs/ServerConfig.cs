@@ -13,5 +13,8 @@ namespace HyperResearch.Common.Configs
 
         [DefaultValue(false)]
         public bool SyncResearchedItemsInOneTeam;
+
+        [DefaultValue(false)]
+        public bool SyncSacrificesInOneTeam;
     }
 }
