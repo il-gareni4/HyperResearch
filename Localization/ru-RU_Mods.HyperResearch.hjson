@@ -4,7 +4,7 @@ Messages: {
 	ResearchedCraftableItems: "{^0:Изучен;Изучено;Изучено} {0} {^0:автосозданный предмет;автосозданных предмета;автосозданных предметов}: {1}"
 	ResearchedShimmeredItems: Изучено {0} {^0:мерцающее преобразование;мерцающих преобразования;мерцающих преобразований}: {1}
 	Sacrifices: Частично {^0:изучен;изучено;изучено} {0} {^0:предмет;предмета;предметов}: {1}
-	// SharedSacrifices: "{0} shared {1} partially researched {^1:item;items}: {2}"
+	SharedSacrifices: "{0} поделился {1} частично {^1:изученным предметом;изученными предметами;изученными предметами}: {2}"
 	OtherPlayerResearchedItems: "{0} изучил {1} {^1:новый предмет;новых предмета;новых предметов}: {2}"
 }
 
@@ -37,7 +37,7 @@ Configs: {
 			SacrificeSettingsHeader: Настройки изучений
 			UISettingsHeader: Настройки пользовательского интерфейса
 			OtherSettingsHeader: Прочие настройки
-			MutiplayerMessagesSettingsHeader: Насйтроки сообщений мультиплеера
+			MutiplayerMessagesSettingsHeader: Настройки сообщений мультиплеера
 		}
 
 		ResearchInventory: {
@@ -211,11 +211,6 @@ Configs: {
 			Tooltip: Этот тип сообщений можно увидеть только если настройка "{$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}" включена
 		}
 
-		ShowPartiallyResearchedItems: {
-			Label: Показывать частично изученные предметы
-			Tooltip: ""
-		}
-
 		ShowOtherPlayersResearchedItems: {
 			Label: Показывать новые изученные предметы участников команды
 			Tooltip: Показываются даже те предметы, что были уже изучены вами
@@ -256,18 +251,26 @@ Configs: {
 		}
 
 		ShowSacrifices: {
-			// Label: Show Sacrifices
-			// Tooltip: ""
+			Label: Показывать частично изученные предметы
+			Tooltip: ""
 		}
 
 		ShowSharedItems: {
-			// Label: Show Shared Items
-			// Tooltip: ""
+			Label: Показывать предметы, которыми с вами поделились
+			Tooltip:
+				'''
+				Показывает сообщение в чат, когда игрок из одной команды поделился с вами изученным предметом.
+				Нужен включенный параметр "{$Mods.HyperResearch.Configs.ServerConfig.SyncResearchedItemsInOneTeam.Label}" в конфиге сервера
+				'''
 		}
 
 		ShowSharedSacrifices: {
-			// Label: Show Shared Sacrifices
-			// Tooltip: ""
+			Label: Показывать частично изученные предметы, которыми с вами поделились
+			Tooltip:
+				'''
+				Показывает сообщение в чат, когда игрок из одной команды поделился с вами частично изученным предметом.
+				Нужен включенный параметр "{$Mods.HyperResearch.Configs.ServerConfig.SyncSacrificesInOneTeam.Label}" в конфиге сервера
+				'''
 		}
 	}
 
@@ -280,8 +283,8 @@ Configs: {
 		}
 
 		SyncSacrificesInOneTeam: {
-			// Label: Sync Sacrifices In One Team
-			// Tooltip: ""
+			Label: Делиться частично изученными предметами с комадной
+			Tooltip: ""
 		}
 	}
 }

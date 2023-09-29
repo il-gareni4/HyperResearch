@@ -200,15 +200,6 @@ Configs: {
 			Tooltip: This type of messages can be seen if "{$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}" is enabled
 		}
 
-		ShowPartiallyResearchedItems: {
-			Label: Show partially researched items when using keybind
-			Tooltip:
-				'''
-				When using the keybind "Research Inventory Items"
-				the chat will display which items have been partially researched
-				'''
-		}
-
 		ShowOtherPlayersResearchedItems: {
 			Label: Show messages about new items researched by team players
 			Tooltip: Even those items that you have already researched are shown
@@ -253,18 +244,30 @@ Configs: {
 		}
 
 		ShowSacrifices: {
-			Label: Show Sacrifices
-			Tooltip: ""
+			Label: Show partially researched items when using keybind
+			Tooltip:
+				'''
+				When using the keybind "Research Inventory Items"
+				the chat will display which items have been partially researched
+				'''
 		}
 
 		ShowSharedItems: {
-			Label: Show Shared Items
-			Tooltip: ""
+			Label: Show shared items
+			Tooltip:
+				'''
+				Shows a chat message when a player from one team shares a researched item with you.
+				You need to enable the "{$Mods.HyperResearch.Configs.ServerConfig.SyncResearchedItemsInOneTeam.Label}" parameter in the server config
+				'''
 		}
 
 		ShowSharedSacrifices: {
-			Label: Show Shared Sacrifices
-			Tooltip: ""
+			Label: Show shared partially researched items
+			Tooltip:
+				'''
+				Shows a chat message when a player from one team shares a partially reserched item with you.
+				You need to enable the "{$Mods.HyperResearch.Configs.ServerConfig.SyncSacrificesInOneTeam.Label}" parameter in the server config
+				'''
 		}
 	}
 
@@ -272,12 +275,12 @@ Configs: {
 		DisplayName: Server Config
 
 		SyncResearchedItemsInOneTeam: {
-			Label: Share what you have researched with your team
+			Label: Share researched items with your team
 			Tooltip: All team members will research what you have researched and vice versa
 		}
 
 		SyncSacrificesInOneTeam: {
-			Label: Sync Sacrifices In One Team
+			Label: Share partially researched items with your team
 			Tooltip: ""
 		}
 	}
