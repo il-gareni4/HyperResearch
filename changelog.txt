@@ -1,0 +1,6 @@
+Hyper Research v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
+[h1]Added[/h1]
+[list]
+[*] Ability to share all researched items with the team by pressing keybind 
+[*] Ability to set global settings for all server players (which ignore client settings)
+[/list]
