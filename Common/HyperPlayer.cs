@@ -46,7 +46,7 @@ namespace HyperResearch.Common
             if (KeybindSystem.ResearchAllBind.JustPressed)
             {
                 Researcher researcher = new();
-                researcher.ResearchItems(Enumerable.Range(0, ItemLoader.ItemCount), researchCraftable: false);
+                researcher.ResearchItems(Enumerable.Range(1, ItemLoader.ItemCount - 1), researchCraftable: false);
                 TextUtils.MessageResearchedItems(researcher.AllResearchedItems);
             }
 #endif
@@ -72,6 +72,12 @@ namespace HyperResearch.Common
                 Main.npcShop > 0 && CurrentShopItems.Length > 0)
             {
                 ResearchShop(CurrentShopItems);
+            }
+
+            if (KeybindSystem.ShareAllResearched.JustPressed && Main.LocalPlayer.team >= 1 && 
+                MainUtils.GetTeamMembers(Main.LocalPlayer.team, Main.myPlayer).Any())
+            {
+                SyncItemsWithTeam(Enumerable.Range(1, ItemLoader.ItemCount - 1).Where(Researcher.IsResearched), new Dictionary<int, int>());
             }
         }
 
@@ -122,7 +128,7 @@ namespace HyperResearch.Common
 
         public void SyncItemsWithTeam(IEnumerable<int> items, IDictionary<int, int> sacrifices)
         {
-            if (Main.LocalPlayer.team == 0 && !ServerConfig.Instance.SyncResearchedItemsInOneTeam && !ServerConfig.Instance.SyncSacrificesInOneTeam) return;
+            if (Main.LocalPlayer.team == 0 || (!ServerConfig.Instance.SyncResearchedItemsInOneTeam && !ServerConfig.Instance.SyncSacrificesInOneTeam)) return;
 
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)NetMessageType.ShareItemsWithTeam);

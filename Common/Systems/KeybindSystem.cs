@@ -15,6 +15,7 @@ namespace HyperResearch.Common.Systems
         public static ModKeybind MaxStackBind { get; set; }
         public static ModKeybind ResearchLootBind { get; set; }
         public static ModKeybind ResearchShopBind { get; set; }
+        public static ModKeybind ShareAllResearched { get; set; }
 
         public override void Load()
         {
@@ -28,6 +29,7 @@ namespace HyperResearch.Common.Systems
             MaxStackBind = KeybindLoader.RegisterKeybind(Mod, "MaxStack", Keys.OemSemicolon);
             ResearchLootBind = KeybindLoader.RegisterKeybind(Mod, "ResearchBagContents", Keys.OemQuotes);
             ResearchShopBind = KeybindLoader.RegisterKeybind(Mod, "ResearchShop", Keys.OemSemicolon);
+            ShareAllResearched = KeybindLoader.RegisterKeybind(Mod, "ShareAllResearched", Keys.OemSemicolon);
         }
 
         public override void Unload()
@@ -42,6 +44,7 @@ namespace HyperResearch.Common.Systems
             MaxStackBind = null;
             ResearchLootBind = null;
             ResearchShopBind = null;
+            ShareAllResearched = null;
         }
     }
 }

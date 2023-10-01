@@ -298,4 +298,5 @@ Keybinds: {
 	MaxStack.DisplayName: Установить макс. стак предмету
 	ResearchBagContents.DisplayName: Изучить содержимое мешка/ящика
 	ResearchShop.DisplayName: Изучить магазин
+	// ShareAllResearched.DisplayName: Share All Researched
 }

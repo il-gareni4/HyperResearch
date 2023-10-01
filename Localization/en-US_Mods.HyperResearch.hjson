@@ -295,4 +295,5 @@ Keybinds: {
 	MaxStack.DisplayName: Max  Stack  Researched Item
 	ResearchBagContents.DisplayName: Research Bag/Crate Contents
 	ResearchShop.DisplayName: Research Shop
+	ShareAllResearched.DisplayName: Share All Researched
 }
