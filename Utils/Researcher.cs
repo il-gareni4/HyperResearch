@@ -84,7 +84,7 @@ namespace HyperResearch.Utils
         public static int GetTotalNeeded(int itemId)
         {
             if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out int amountNeeded))
-                return HyperConfig.Instance.OnlyOneItemNeeded ? 1 : amountNeeded;
+                return ConfigOptions.OnlyOneItemNeeded ? 1 : amountNeeded;
             return 0;
         }
 
@@ -134,7 +134,7 @@ namespace HyperResearch.Utils
             int itemId = item.type;
             CreativeUI.ItemSacrificeResult result = CreativeUI.ItemSacrificeResult.CannotSacrifice;
             bool researched;
-            if (HyperConfig.Instance.OnlyOneItemNeeded)
+            if (ConfigOptions.OnlyOneItemNeeded)
             {
                 researched = ResearchItem(itemId, source, researchCraftable);
                 if (researched)
@@ -175,7 +175,7 @@ namespace HyperResearch.Utils
 
         public bool ResearchItem(int itemId, int itemCount, ResearchSource source = default, bool researchCraftable = true)
         {
-            if (HyperConfig.Instance.OnlyOneItemNeeded && itemCount >= 1)
+            if (ConfigOptions.OnlyOneItemNeeded && itemCount >= 1)
                 return ResearchItem(itemId, source, researchCraftable);
 
             if (itemCount >= GetRemaining(itemId)) return ResearchItem(itemId, source, researchCraftable);
@@ -224,8 +224,8 @@ namespace HyperResearch.Utils
 
         private void AfterResearch(int itemId, ResearchSource source, bool researchCraftable)
         {
-            if (HyperConfig.Instance.AutoResearchShimmeredItems) TryResearchShimmeredItem(itemId, researchCraftable);
-            if (HyperConfig.Instance.AutoResearchCraftable || researchCraftable) ResearchedQueue.Enqueue(itemId);
+            if (ConfigOptions.ResearchShimmerableItems) TryResearchShimmeredItem(itemId, researchCraftable);
+            if (HyperConfig.Instance.AutoResearchCraftableItems || researchCraftable) ResearchedQueue.Enqueue(itemId);
             if (researchCraftable) ResearchQueue();
 
             GetItemsListBySource(source).Add(itemId);
@@ -287,7 +287,7 @@ namespace HyperResearch.Utils
             if (!allTilesResearched) return false;
 
             bool allConditionsAreMet = recipe.Conditions.All(condition =>
-                IgnoringCraftConditions.Contains(condition) && HyperConfig.Instance.IgnoreCraftingConditions ? true : condition.IsMet()
+                ConfigOptions.IgnoreCraftingConditions && IgnoringCraftConditions.Contains(condition) ? true : condition.IsMet()
             );
             if (!allConditionsAreMet) return false;
             return true;

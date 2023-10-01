@@ -27,7 +27,7 @@ namespace HyperResearch.Common.Configs
 
         [LabelArgs(ItemID.WorkBench)]
         [DefaultValue(true)]
-        public bool AutoResearchCraftable;
+        public bool AutoResearchCraftableItems;
 
         [LabelArgs(ItemID.BottledWater)]
         [DefaultValue(true)]
@@ -40,7 +40,7 @@ namespace HyperResearch.Common.Configs
 
         [LabelArgs(ItemID.BottomlessShimmerBucket)]
         [DefaultValue(true)]
-        public bool AutoResearchShimmeredItems;
+        public bool ResearchShimmerableItems;
 
         [Header("OtherSettingsHeader")]
 

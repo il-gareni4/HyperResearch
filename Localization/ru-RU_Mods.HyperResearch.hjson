@@ -54,7 +54,7 @@ Configs: {
 			Tooltip: Все подобранные предметы, которые уже изучены, больше не будут добавляться в инвентарь
 		}
 
-		AutoResearchCraftable: {
+		AutoResearchCraftableItems: {
 			Label: "[i:{0}] Изучать предметы, которые возможно создать"
 			Tooltip:
 				'''
@@ -88,7 +88,7 @@ Configs: {
 				'''
 		}
 
-		AutoResearchShimmeredItems: {
+		ResearchShimmerableItems: {
 			Name: Изучать Мерцающие превращения
 			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}"
 			Tooltip: ""
@@ -285,6 +285,38 @@ Configs: {
 		SyncSacrificesInOneTeam: {
 			Label: Делиться частично изученными предметами с комадной
 			Tooltip: ""
+		}
+
+		// Headers.HostSettings: Host Settings Header
+
+		UseServerSettings: {
+			// Label: Use Server Settings
+			// Tooltip: ""
+		}
+
+		ResearchCraftableItems: {
+			// Label: Research Craftable Items
+			// Tooltip: ""
+		}
+
+		IgnoreCraftingConditions: {
+			// Label: Ignore Crafting Conditions
+			// Tooltip: ""
+		}
+
+		ResearchShimmerableItems: {
+			// Label: Research Shimmerable Items
+			// Tooltip: ""
+		}
+
+		UseResearchedBannersBuff: {
+			// Label: Use Researched Banners Buff
+			// Tooltip: ""
+		}
+
+		OnlyOneItemNeeded: {
+			// Label: Only One Item Needed
+			// Tooltip: ""
 		}
 	}
 }

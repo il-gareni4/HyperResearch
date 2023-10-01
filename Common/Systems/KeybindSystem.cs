@@ -29,7 +29,7 @@ namespace HyperResearch.Common.Systems
             MaxStackBind = KeybindLoader.RegisterKeybind(Mod, "MaxStack", Keys.OemSemicolon);
             ResearchLootBind = KeybindLoader.RegisterKeybind(Mod, "ResearchBagContents", Keys.OemQuotes);
             ResearchShopBind = KeybindLoader.RegisterKeybind(Mod, "ResearchShop", Keys.OemSemicolon);
-            ShareAllResearched = KeybindLoader.RegisterKeybind(Mod, "ShareAllResearched", Keys.OemSemicolon);
+            ShareAllResearched = KeybindLoader.RegisterKeybind(Mod, "ShareAllResearched", Keys.OemPipe);
         }
 
         public override void Unload()

@@ -50,7 +50,7 @@ Configs: {
 			Tooltip: All picked up items that have already been researched will no longer be added to the inventory
 		}
 
-		AutoResearchCraftable: {
+		AutoResearchCraftableItems: {
 			Label: "[i:{0}] Auto research craftable"
 			Tooltip:
 				'''
@@ -81,7 +81,7 @@ Configs: {
 				'''
 		}
 
-		AutoResearchShimmeredItems: {
+		ResearchShimmerableItems: {
 			Name: Auto research items that are obtained after shimmer transmutation
 			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}"
 			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
@@ -281,6 +281,38 @@ Configs: {
 
 		SyncSacrificesInOneTeam: {
 			Label: Share partially researched items with your team
+			Tooltip: ""
+		}
+
+		Headers.HostSettings: Host Settings
+
+		UseServerSettings: {
+			Label: Use Server Settings
+			Tooltip: Applies the settings below to all server players. The local settings in Client Config will be replaced by server ones.
+		}
+
+		ResearchCraftableItems: {
+			Label: Research Craftable Items
+			Tooltip: ""
+		}
+
+		IgnoreCraftingConditions: {
+			Label: Ignore Crafting Conditions
+			Tooltip: ""
+		}
+
+		ResearchShimmerableItems: {
+			Label: Research Shimmerable Items
+			Tooltip: ""
+		}
+
+		UseResearchedBannersBuff: {
+			Label: Use Researched Banners Buff
+			Tooltip: ""
+		}
+
+		OnlyOneItemNeeded: {
+			Label: Only One Item Needed
 			Tooltip: ""
 		}
 	}

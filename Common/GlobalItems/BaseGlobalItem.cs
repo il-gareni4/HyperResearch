@@ -66,7 +66,7 @@ namespace HyperResearch.Common.GlobalItems
                 int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
                 if (!HyperConfig.Instance.UseCustomResearchTooltip)
                 {
-                    if (HyperConfig.Instance.OnlyOneItemNeeded && vanillaTooltipIndex >= 0)
+                    if (ConfigOptions.OnlyOneItemNeeded && vanillaTooltipIndex >= 0)
                         tooltips[vanillaTooltipIndex].Text = Regex.Replace(tooltips[vanillaTooltipIndex].Text, @"\d+", "1");
                     return;
                 }

@@ -16,7 +16,7 @@ namespace HyperResearch.Common.Systems
             {
                 HPlayer = modPlayer;
 
-                HyperConfig.Changed += HPlayer.OnConfigChanged;
+                HyperConfig.Changed += HPlayer.OnClientConfigChanged;
                 ModContent.GetInstance<UISystem>().InventoryButtons.ResearchButton.OnLeftMouseDown += OnResearchButtonMouseDown;
                 ModContent.GetInstance<UISystem>().InventoryButtons.ClearButton.OnLeftMouseDown += OnClearButtonMouseDown;
                 ModContent.GetInstance<UISystem>().InventoryButtons.AutoCraftButton.OnLeftMouseDown += OnAutoCraftButtonMouseDown;
@@ -28,7 +28,7 @@ namespace HyperResearch.Common.Systems
         {
             if (Main.netMode == NetmodeID.Server || HPlayer == null) return;
 
-            HyperConfig.Changed -= HPlayer.OnConfigChanged;
+            HyperConfig.Changed -= HPlayer.OnClientConfigChanged;
             ModContent.GetInstance<UISystem>().InventoryButtons.ResearchButton.OnLeftMouseDown -= OnResearchButtonMouseDown;
             ModContent.GetInstance<UISystem>().InventoryButtons.ClearButton.OnLeftMouseDown -= OnClearButtonMouseDown;
             ModContent.GetInstance<UISystem>().InventoryButtons.AutoCraftButton.OnLeftMouseDown -= OnAutoCraftButtonMouseDown;

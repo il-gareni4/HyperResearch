@@ -1,5 +1,4 @@
-﻿using HyperResearch.Common.Configs;
-using HyperResearch.Utils;
+﻿using HyperResearch.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -36,7 +35,7 @@ namespace HyperResearch.Common.Systems
 
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
-            if (!Researcher.IsPlayerInJourneyMode() || !HyperConfig.Instance.UseResearchedBannersBuff) return;
+            if (!Researcher.IsPlayerInJourneyMode() || !ConfigOptions.UseResearchedBannersBuff) return;
             if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer player) && player.ResearchedBanners.Count > 0)
             {
                 foreach (int bannerId in player.ResearchedBanners)
