@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Config;
 
 namespace HyperResearch.Common.Configs
@@ -16,7 +17,7 @@ namespace HyperResearch.Common.Configs
         {
             if (whoAmI == 0) return true;
 
-            message = "Only host can change";
+            message = Language.GetTextValue("Mods.HyperResearch.Configs.ServerConfig.Messages.OnlyHost");
             return false;
         }
 

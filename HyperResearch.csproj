@@ -18,6 +18,7 @@
     <None Remove="Assets\Images\UI\ClearButton.png" />
     <None Remove="Assets\Images\UI\ResearchButton.png" />
     <None Remove="Assets\Images\UI\ResearchShopButton.png" />
+    <None Remove="changelog.txt" />
     <None Remove="en-US.hjson" />
     <None Remove="icon_workshop.png" />
     <None Remove="Localization\ru-RU_Mods.HyperResearch.hjson" />

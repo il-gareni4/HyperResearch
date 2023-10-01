@@ -6,6 +6,7 @@ Messages: {
 	Sacrifices: Частично {^0:изучен;изучено;изучено} {0} {^0:предмет;предмета;предметов}: {1}
 	SharedSacrifices: "{0} поделился {1} частично {^1:изученным предметом;изученными предметами;изученными предметами}: {2}"
 	OtherPlayerResearchedItems: "{0} изучил {1} {^1:новый предмет;новых предмета;новых предметов}: {2}"
+	SharedAllItems: Вы поделились {0} {^0:предметом;предметами;предметами}
 }
 
 Tooltips: {
@@ -275,6 +276,7 @@ Configs: {
 	}
 
 	ServerConfig: {
+		Messages.OnlyHost: Только хост может менять
 		DisplayName: Конфиг сервера
 
 		SyncResearchedItemsInOneTeam: {
@@ -329,5 +331,5 @@ Keybinds: {
 	MaxStack.DisplayName: Установить макс. стак предмету
 	ResearchBagContents.DisplayName: Изучить содержимое мешка/ящика
 	ResearchShop.DisplayName: Изучить магазин
-	// ShareAllResearched.DisplayName: Share All Researched
+	ShareAllResearched.DisplayName: Поделиться предметами с командой
 }

@@ -9,6 +9,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -77,7 +78,10 @@ namespace HyperResearch.Common
             if (KeybindSystem.ShareAllResearched.JustPressed && Main.LocalPlayer.team >= 1 &&
                 MainUtils.GetTeamMembers(Main.LocalPlayer.team, Main.myPlayer).Any())
             {
-                SyncItemsWithTeam(Enumerable.Range(1, ItemLoader.ItemCount - 1).Where(Researcher.IsResearched), new Dictionary<int, int>());
+                IEnumerable<int> itemsToShare = Enumerable.Range(1, ItemLoader.ItemCount - 1).Where(Researcher.IsResearched);
+                SyncItemsWithTeam(itemsToShare, new Dictionary<int, int>());
+                if (Main.LocalPlayer.team >= 1) 
+                    Main.NewText(Language.GetTextValue("Mods.HyperResearch.Messages.SharedAllItems", itemsToShare.Count()));
             }
         }
 
@@ -128,7 +132,7 @@ namespace HyperResearch.Common
 
         public void SyncItemsWithTeam(IEnumerable<int> items, IDictionary<int, int> sacrifices)
         {
-            if (Main.LocalPlayer.team == 0 || (!ServerConfig.Instance.SyncResearchedItemsInOneTeam && !ServerConfig.Instance.SyncSacrificesInOneTeam)) return;
+            if (Main.LocalPlayer.team == 0) return;
 
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)NetMessageType.ShareItemsWithTeam);
@@ -181,7 +185,8 @@ namespace HyperResearch.Common
             if (anyItemResearched)
             {
                 sacrificesResearcher.SacrificedItems.Clear();
-                SyncItemsWithTeam(sacrificesResearcher);
+                if (ServerConfig.Instance.SyncResearchedItemsInOneTeam || ServerConfig.Instance.SyncSacrificesInOneTeam)
+                    SyncItemsWithTeam(sacrificesResearcher);
                 SoundEngine.PlaySound(SoundID.ResearchComplete);
             }
             else if (sacrificesResearcher.AnyItemSacrificed()) SoundEngine.PlaySound(SoundID.MenuTick);
@@ -357,7 +362,9 @@ namespace HyperResearch.Common
                 SoundEngine.PlaySound(SoundID.Research);
             }
 
-            if (Main.netMode == NetmodeID.MultiplayerClient && (researcher.AnyItemResearched() || researcher.AnyItemSacrificed()))
+            if (Main.netMode == NetmodeID.MultiplayerClient && 
+                (ServerConfig.Instance.SyncResearchedItemsInOneTeam && researcher.AnyItemResearched()) ||
+                (ServerConfig.Instance.SyncSacrificesInOneTeam && researcher.AnyItemSacrificed()))
                 SyncItemsWithTeam(researcher);
         }
     }

@@ -6,6 +6,7 @@ Messages: {
 	Sacrifices: Partially researched {0} {^0:item;items}: {1}
 	SharedSacrifices: "{0} shared {1} partially researched {^1:item;items}: {2}"
 	OtherPlayerResearchedItems: "{0} researched {1} new {^1:item;items}: {2}"
+	SharedAllItems: Shared {0} {^0:item;items}
 }
 
 Tooltips: {
@@ -272,6 +273,7 @@ Configs: {
 	}
 
 	ServerConfig: {
+		Messages.OnlyHost: Only host can change
 		DisplayName: Server Config
 
 		SyncResearchedItemsInOneTeam: {
@@ -326,5 +328,5 @@ Keybinds: {
 	MaxStack.DisplayName: Max  Stack  Researched Item
 	ResearchBagContents.DisplayName: Research Bag/Crate Contents
 	ResearchShop.DisplayName: Research Shop
-	ShareAllResearched.DisplayName: Share All Researched
+	ShareAllResearched.DisplayName: Share Items With Team
 }
