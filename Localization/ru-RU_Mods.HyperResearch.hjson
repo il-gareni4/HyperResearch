@@ -90,7 +90,7 @@ Configs: {
 
 		ResearchShimmerableItems: {
 			Name: Изучать Мерцающие превращения
-			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}"
+			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
 			Tooltip: ""
 		}
 
@@ -208,7 +208,7 @@ Configs: {
 
 		ShowResearchedShimmeredItems: {
 			Label: Показывать изученные Мерцающие превращения
-			Tooltip: Этот тип сообщений можно увидеть только если настройка "{$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}" включена
+			Tooltip: Этот тип сообщений можно увидеть только если настройка "{$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}" включена
 		}
 
 		ShowOtherPlayersResearchedItems: {
@@ -287,36 +287,35 @@ Configs: {
 			Tooltip: ""
 		}
 
-		// Headers.HostSettings: Host Settings Header
+		Headers.HostSettings: Настройки хоста
 
 		UseServerSettings: {
-			// Label: Use Server Settings
-			// Tooltip: ""
-		}
-
-		ResearchCraftableItems: {
-			// Label: Research Craftable Items
-			// Tooltip: ""
+			Label: Использовать глобальные настройки сервера
+			Tooltip:
+				'''
+				Применяет настройки ниже ко всем игрокам сервера. 
+				Локальные настройки в конфиге клиента будут заменены серверными.
+				'''
 		}
 
 		IgnoreCraftingConditions: {
-			// Label: Ignore Crafting Conditions
-			// Tooltip: ""
+			Label: "{$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Label}"
+			Tooltip: ""
 		}
 
 		ResearchShimmerableItems: {
-			// Label: Research Shimmerable Items
-			// Tooltip: ""
+			Label: "{$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Label}"
+			Tooltip: ""
 		}
 
 		UseResearchedBannersBuff: {
-			// Label: Use Researched Banners Buff
-			// Tooltip: ""
+			Label: "{$Mods.HyperResearch.Configs.HyperConfig.UseResearchedBannersBuff.Label}"
+			Tooltip: ""
 		}
 
 		OnlyOneItemNeeded: {
-			// Label: Only One Item Needed
-			// Tooltip: ""
+			Label: "{$Mods.HyperResearch.Configs.HyperConfig.OnlyOneItemNeeded.Label}"
+			Tooltip: ""
 		}
 	}
 }

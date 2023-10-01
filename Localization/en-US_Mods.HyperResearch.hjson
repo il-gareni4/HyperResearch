@@ -83,7 +83,7 @@ Configs: {
 
 		ResearchShimmerableItems: {
 			Name: Auto research items that are obtained after shimmer transmutation
-			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}"
+			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
 			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
 		}
 
@@ -197,7 +197,7 @@ Configs: {
 
 		ShowResearchedShimmeredItems: {
 			Label: Show researched shimmered items
-			Tooltip: This type of messages can be seen if "{$Mods.HyperResearch.Configs.HyperConfig.AutoResearchShimmeredItems.Name}" is enabled
+			Tooltip: This type of messages can be seen if "{$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}" is enabled
 		}
 
 		ShowOtherPlayersResearchedItems: {
@@ -287,32 +287,31 @@ Configs: {
 		Headers.HostSettings: Host Settings
 
 		UseServerSettings: {
-			Label: Use Server Settings
-			Tooltip: Applies the settings below to all server players. The local settings in Client Config will be replaced by server ones.
-		}
-
-		ResearchCraftableItems: {
-			Label: Research Craftable Items
-			Tooltip: ""
+			Label: Use global server settings
+			Tooltip:
+				'''
+				Applies the settings below to all server players. 
+				The local settings in the client config will be replaced by server ones.
+				'''
 		}
 
 		IgnoreCraftingConditions: {
-			Label: Ignore Crafting Conditions
+			Label: "{$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Label}"
 			Tooltip: ""
 		}
 
 		ResearchShimmerableItems: {
-			Label: Research Shimmerable Items
+			Label: "{$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Label}"
 			Tooltip: ""
 		}
 
 		UseResearchedBannersBuff: {
-			Label: Use Researched Banners Buff
+			Label: "{$Mods.HyperResearch.Configs.HyperConfig.UseResearchedBannersBuff.Label}"
 			Tooltip: ""
 		}
 
 		OnlyOneItemNeeded: {
-			Label: Only One Item Needed
+			Label: "{$Mods.HyperResearch.Configs.HyperConfig.OnlyOneItemNeeded.Label}"
 			Tooltip: ""
 		}
 	}
