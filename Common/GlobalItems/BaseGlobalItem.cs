@@ -87,7 +87,6 @@ namespace HyperResearch.Common.GlobalItems
         {
             if (!Researcher.IsPlayerInJourneyMode() || !fullyResearched || item is null || item.IsAir) return;
 
-            ItemLoader.OnPickup(item, Main.LocalPlayer); // For ItemChecklist and BossChecklist
             if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
             {
                 modPlayer.TryAddToResearchedTiles(item.type);
