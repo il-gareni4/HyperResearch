@@ -20,6 +20,7 @@ namespace HyperResearch.Utils
             { ItemID.GoldCoin, 10_000 },
             { ItemID.PlatinumCoin, 1_000_000 }
         };
+
         /// <summary>
         /// More readable variant of <code>Main.ItemDropsDB.GetRulesForItemID(itemId).Count == 0</code>
         /// </summary>

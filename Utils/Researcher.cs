@@ -54,11 +54,16 @@ namespace HyperResearch.Utils
         private Queue<int> _researchedQueue;
         public Queue<int> ResearchedQueue { get => _researchedQueue ??= new(); }
 
+        public bool AutoResearchCraftableItems { get; init; }
+        public bool AutoResearchShimmerableItems { get; init; }
+
         public Researcher()
         {
             ResearchedItems = new();
             ResearchedCraftableItems = new();
             ResearchedShimmeredItems = new();
+            AutoResearchCraftableItems = HyperConfig.Instance.AutoResearchCraftableItems;
+            AutoResearchShimmerableItems = ConfigOptions.ResearchShimmerableItems;
         }
 
         public List<int> AllResearchedItems
@@ -103,7 +108,7 @@ namespace HyperResearch.Utils
             if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out int amountNeeded))
             {
                 int researched = Main.LocalPlayerCreativeTracker.ItemSacrifices.GetSacrificeCount(itemId);
-                return amountNeeded - researched == 0;
+                return amountNeeded <= researched;
             }
             else return false;
         }
@@ -115,19 +120,18 @@ namespace HyperResearch.Utils
             return CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out _);
         }
 
-        public void SacrificeItems(IDictionary<int, int> itemCount, ResearchSource source = default, bool researchCraftable = true)
+        public void SacrificeItems(IDictionary<int, int> itemCount, ResearchSource source = default)
         {
-            SacrificeItems(itemCount.Select(pair => new Item(pair.Key, pair.Value)), source, researchCraftable);
+            SacrificeItems(itemCount.Select(pair => new Item(pair.Key, pair.Value)), source);
         }
 
-        public void SacrificeItems(IEnumerable<Item> items, ResearchSource source = default, bool researchCraftable = true)
+        public void SacrificeItems(IEnumerable<Item> items, ResearchSource source = default)
         {
             foreach (Item item in items)
-                SacrificeItem(item, source, false);
-            if (researchCraftable) ResearchQueue();
+                SacrificeItem(item, source);
         }
 
-        public CreativeUI.ItemSacrificeResult SacrificeItem(Item item, ResearchSource source = default, bool researchCraftable = true)
+        public CreativeUI.ItemSacrificeResult SacrificeItem(Item item, ResearchSource source = default)
         {
             if (item.stack == 0) return 0;
 
@@ -136,7 +140,7 @@ namespace HyperResearch.Utils
             bool researched;
             if (ConfigOptions.OnlyOneItemNeeded)
             {
-                researched = ResearchItem(itemId, source, researchCraftable);
+                researched = ResearchItem(itemId, source);
                 if (researched)
                 {
                     result = CreativeUI.ItemSacrificeResult.SacrificedAndDone;
@@ -148,7 +152,7 @@ namespace HyperResearch.Utils
                 result = CreativeUI.SacrificeItem(item, out int amountSacrificed);
                 researched = result == CreativeUI.ItemSacrificeResult.SacrificedAndDone;
                 if (researched)
-                    AfterResearch(itemId, source, researchCraftable);
+                    AfterResearch(itemId, source);
                 else if (result == CreativeUI.ItemSacrificeResult.SacrificedButNotDone)
                     SacrificedItems[itemId] = SacrificedItems.GetValueOrDefault(itemId, 0) + amountSacrificed;
             }
@@ -156,36 +160,32 @@ namespace HyperResearch.Utils
             return result;
         }
 
-        public void ResearchItems(IEnumerable<int> items, ResearchSource source = default, bool researchCraftable = true)
+        public void ResearchItems(IEnumerable<int> items, ResearchSource source = default)
         {
             foreach (int itemId in items)
-                ResearchItem(itemId, source, false);
-            if (researchCraftable) ResearchQueue();
+                ResearchItem(itemId, source);
         }
 
-        public void ResearchItems(IDictionary<int, int> items, ResearchSource source = default, bool researchCraftable = true)
+        public void ResearchItems(IDictionary<int, int> items, ResearchSource source = default)
         {
             foreach ((int itemId, int itemCount) in items)
-            {
                 if (IsResearchable(itemId) && itemCount >= GetRemaining(itemId))
-                    ResearchItem(itemId, source, false);
-            }
-            if (researchCraftable) ResearchQueue();
+                    ResearchItem(itemId, source);
         }
 
-        public bool ResearchItem(int itemId, int itemCount, ResearchSource source = default, bool researchCraftable = true)
+        public bool ResearchItem(int itemId, int itemCount, ResearchSource source = default)
         {
             if (ConfigOptions.OnlyOneItemNeeded && itemCount >= 1)
-                return ResearchItem(itemId, source, researchCraftable);
+                return ResearchItem(itemId, source);
 
-            if (itemCount >= GetRemaining(itemId)) return ResearchItem(itemId, source, researchCraftable);
+            if (itemCount >= GetRemaining(itemId)) return ResearchItem(itemId, source);
             else return false;
         }
 
-        public bool ResearchItem(int itemId, ResearchSource source = default, bool researchCraftable = true)
+        public bool ResearchItem(int itemId, ResearchSource source = default, bool researchQueue = true)
         {
             CreativeUI.ItemSacrificeResult result = CreativeUI.ResearchItem(itemId);
-            if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone) AfterResearch(itemId, source, researchCraftable);
+            if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone) AfterResearch(itemId, source);
             return result == CreativeUI.ItemSacrificeResult.SacrificedAndDone;
         }
 
@@ -204,12 +204,12 @@ namespace HyperResearch.Utils
             };
         }
 
-        public bool TryResearchShimmeredItem(int itemId, bool researchCraftable = true)
+        public bool TryResearchShimmeredItem(int itemId)
         {
             int shimmerItemId = ItemsUtils.GetShimmeredItemId(itemId);
             if (shimmerItemId <= 0 || !IsResearched(itemId)) return false;
 
-            return ResearchItem(shimmerItemId, ResearchSource.Shimmer, researchCraftable);
+            return ResearchItem(shimmerItemId, ResearchSource.Shimmer);
         }
 
         public bool AnyItemResearched()
@@ -222,11 +222,14 @@ namespace HyperResearch.Utils
             return _sacrificedItems is not null && SacrificedItems.Count > 0;
         }
 
-        private void AfterResearch(int itemId, ResearchSource source, bool researchCraftable)
+        private void AfterResearch(int itemId, ResearchSource source, bool researchQueue = true)
         {
-            if (ConfigOptions.ResearchShimmerableItems) TryResearchShimmeredItem(itemId, researchCraftable);
-            if (HyperConfig.Instance.AutoResearchCraftableItems || researchCraftable) ResearchedQueue.Enqueue(itemId);
-            if (researchCraftable) ResearchQueue();
+            if (AutoResearchShimmerableItems) TryResearchShimmeredItem(itemId);
+            if (AutoResearchCraftableItems)
+            {
+                ResearchedQueue.Enqueue(itemId);
+                if (researchQueue) ResearchQueue();
+            }
 
             GetItemsListBySource(source).Add(itemId);
         }
@@ -287,7 +290,7 @@ namespace HyperResearch.Utils
             if (!allTilesResearched) return false;
 
             bool allConditionsAreMet = recipe.Conditions.All(condition =>
-                ConfigOptions.IgnoreCraftingConditions && IgnoringCraftConditions.Contains(condition) ? true : condition.IsMet()
+                ConfigOptions.IgnoreCraftingConditions && IgnoringCraftConditions.Contains(condition) || condition.IsMet()
             );
             if (!allConditionsAreMet) return false;
             return true;

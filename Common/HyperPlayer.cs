@@ -17,14 +17,10 @@ namespace HyperResearch.Common
 {
     public class HyperPlayer : ModPlayer
     {
-        /// <summary>
-        /// Same as <see cref="Main.HoverItem"/> but not cloned
-        /// </summary>
+        /// <summary>Same as <see cref="Main.HoverItem"/> but not cloned</summary>
         private Item _hoverItem = new();
 
-        /// <summary>Dictionary of researched tiles (contains <c>TileId</c> as Keys). 
-        /// If Value > 0 then tile is researched </summary> 
-        /// <seealso cref="Researcher.IsTileResearched(int)"/>
+        /// <summary>Dictionary of researched tiles (contains <c>TileId</c> as Keys)</summary> 
         public readonly Dictionary<int, bool> ResearchedTiles = new();
 
         public List<int> ResearchedBanners = new();
@@ -46,8 +42,8 @@ namespace HyperResearch.Common
             }
             if (KeybindSystem.ResearchAllBind.JustPressed)
             {
-                Researcher researcher = new();
-                researcher.ResearchItems(Enumerable.Range(1, ItemLoader.ItemCount - 1), researchCraftable: false);
+                Researcher researcher = new() { AutoResearchCraftableItems = false };
+                researcher.ResearchItems(Enumerable.Range(1, ItemLoader.ItemCount - 1));
                 TextUtils.MessageResearchedItems(researcher.AllResearchedItems);
             }
 #endif
@@ -155,7 +151,7 @@ namespace HyperResearch.Common
 
             bool anyItemResearched = false;
             Researcher sacrificesResearcher = new();
-            sacrificesResearcher.SacrificeItems(sacrifices, researchCraftable: HyperConfig.Instance.AutoResearchCraftableItems);
+            sacrificesResearcher.SacrificeItems(sacrifices);
             if (HyperConfig.Instance.ShowSharedSacrifices && sacrificesResearcher.AnyItemSacrificed())
                 TextUtils.MessageSharedSacrifices(sacrificesResearcher.SacrificedItems, fromPlayer);
             if (HyperConfig.Instance.ShowNewlyResearchedItems && sacrificesResearcher.AnyItemResearched())
@@ -167,7 +163,7 @@ namespace HyperResearch.Common
             if (items.Any())
             {
                 Researcher researcher = new();
-                researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftableItems);
+                researcher.ResearchItems(items);
 
                 if (HyperConfig.Instance.ShowSharedItems)
                     TextUtils.MessageSharedItems(researcher.ResearchedItems, fromPlayer);
@@ -209,7 +205,7 @@ namespace HyperResearch.Common
             }
             if (items.Count == 0) return;
             Researcher researcher = new();
-            researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftableItems);
+            researcher.ResearchItems(items);
             AfterLocalResearch(researcher);
         }
 
@@ -236,7 +232,7 @@ namespace HyperResearch.Common
                 itemToSacrifice.Add(item);
             }
             Researcher researcher = new();
-            researcher.SacrificeItems(itemToSacrifice, researchCraftable: HyperConfig.Instance.AutoResearchCraftableItems);
+            researcher.SacrificeItems(itemToSacrifice);
             AfterLocalResearch(researcher);
         }
 
@@ -309,7 +305,7 @@ namespace HyperResearch.Common
                     toResearch.Add(item.type);
             }
             Researcher researcher = new();
-            researcher.ResearchItems(toResearch, researchCraftable: HyperConfig.Instance.AutoResearchCraftableItems);
+            researcher.ResearchItems(toResearch);
             AfterLocalResearch(researcher);
         }
 
@@ -341,7 +337,7 @@ namespace HyperResearch.Common
 
             IEnumerable<int> items = ItemsUtils.GetItemLoot(itemId);
             Researcher researcher = new();
-            researcher.ResearchItems(items, researchCraftable: HyperConfig.Instance.AutoResearchCraftableItems);
+            researcher.ResearchItems(items);
             AfterLocalResearch(researcher);
         }
 
