@@ -14,6 +14,8 @@ Tooltips: {
 	NeededToResearch: Research {0} more to unlock duplication ({1}/{2})
 	Researched: Researched
 	ResearchLoot: Press {0} to research all loot (excluding global)
+	EnableBuff: Press {0} to enable buff
+	DisableBuff: Press {0} to disable buff
 }
 
 UI: {
@@ -356,4 +358,5 @@ Keybinds: {
 	ResearchBagContents.DisplayName: Research Bag/Crate Contents
 	ResearchShop.DisplayName: Research Shop
 	ShareAllResearched.DisplayName: Share Items With Team
+	EnableDisableBuff.DisplayName: Enable Disable Buff
 }

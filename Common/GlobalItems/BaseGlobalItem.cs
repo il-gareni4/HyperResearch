@@ -1,4 +1,5 @@
 ﻿using HyperResearch.Common.Configs;
+using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using System.Collections.Generic;
@@ -95,6 +96,8 @@ namespace HyperResearch.Common.GlobalItems
                 if (BannerSystem.ItemToBanner.TryGetValue(item.type, out var bannerId))
                     modPlayer.ResearchedBanners.Add(bannerId);
             }
+            if (Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer))
+                buffPlayer.ResearchItem(item);
         }
     }
 }

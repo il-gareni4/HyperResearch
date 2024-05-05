@@ -1,5 +1,5 @@
-﻿using HyperResearch.Common;
-using HyperResearch.Common.Configs;
+﻿using HyperResearch.Common.Configs;
+using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.Systems;
 using System.Collections.Generic;
 using System.Linq;

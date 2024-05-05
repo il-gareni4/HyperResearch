@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 
-namespace HyperResearch.Common
+namespace HyperResearch.Common.ModPlayers
 {
     public class HyperPlayer : ModPlayer
     {
@@ -79,7 +79,7 @@ namespace HyperResearch.Common
             {
                 IEnumerable<int> itemsToShare = Enumerable.Range(1, ItemLoader.ItemCount - 1).Where(Researcher.IsResearched);
                 SyncItemsWithTeam(itemsToShare, new Dictionary<int, int>());
-                if (Main.LocalPlayer.team >= 1) 
+                if (Main.LocalPlayer.team >= 1)
                     Main.NewText(Language.GetTextValue("Mods.HyperResearch.Messages.SharedAllItems", itemsToShare.Count()));
             }
         }
@@ -138,11 +138,13 @@ namespace HyperResearch.Common
 
         public override void SaveData(TagCompound tag)
         {
+            if (Main.CurrentPlayer.difficulty != 3) return;
             tag["WasInAether"] = WasInAether;
         }
 
         public override void LoadData(TagCompound tag)
         {
+            if (Main.CurrentPlayer.difficulty != 3) return;
             if (tag.TryGet("WasInAether", out bool wasInAether))
                 WasInAether = wasInAether;
         }
@@ -250,11 +252,11 @@ namespace HyperResearch.Common
                 Item item = Player.inventory[slot];
 
                 if (item.IsAir || item.favorited ||
-                    (!HyperConfig.Instance.SacrificeHotbarSlots && slot >= 0 && slot <= 9) ||
-                    (!HyperConfig.Instance.SacrificeCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
-                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount) ||
-                    (!HyperConfig.Instance.SacrificeAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
-                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount))
+                    !HyperConfig.Instance.SacrificeHotbarSlots && slot >= 0 && slot <= 9 ||
+                    !HyperConfig.Instance.SacrificeCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
+                    slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount ||
+                    !HyperConfig.Instance.SacrificeAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
+                    slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount)
                 {
                     continue;
                 }
@@ -329,7 +331,7 @@ namespace HyperResearch.Common
             List<int> toResearch = [];
             foreach (Item item in shop)
             {
-                if (item == null || item.IsAir || (item.shopSpecialCurrency != -1 && item.shopCustomPrice is null)) continue;
+                if (item == null || item.IsAir || item.shopSpecialCurrency != -1 && item.shopCustomPrice is null) continue;
                 Dictionary<int, int> currencyValues = ItemsUtils.GetCurrencyItemsAndValues(item.shopSpecialCurrency);
                 if (currencyValues is not null && currencyValues.Keys.Any(Researcher.IsResearched))
                     toResearch.Add(item.type);
@@ -388,9 +390,9 @@ namespace HyperResearch.Common
                 SoundEngine.PlaySound(SoundID.Research);
             }
 
-            if (Main.netMode == NetmodeID.MultiplayerClient && 
-                (ServerConfig.Instance.SyncResearchedItemsInOneTeam && researcher.AnyItemResearched()) ||
-                (ServerConfig.Instance.SyncSacrificesInOneTeam && researcher.AnyItemSacrificed()))
+            if (Main.netMode == NetmodeID.MultiplayerClient &&
+                ServerConfig.Instance.SyncResearchedItemsInOneTeam && researcher.AnyItemResearched() ||
+                ServerConfig.Instance.SyncSacrificesInOneTeam && researcher.AnyItemSacrificed())
                 SyncItemsWithTeam(researcher);
         }
     }

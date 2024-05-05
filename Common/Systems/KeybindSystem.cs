@@ -13,6 +13,7 @@ namespace HyperResearch.Common.Systems
         public static ModKeybind ClearResearchedBind { get; set; }
         public static ModKeybind ResearchCraftableBind { get; set; }
         public static ModKeybind MaxStackBind { get; set; }
+        public static ModKeybind EnableDisableBuffBind { get; set; }
         public static ModKeybind ResearchLootBind { get; set; }
         public static ModKeybind ResearchShopBind { get; set; }
         public static ModKeybind ShareAllResearched { get; set; }
@@ -26,7 +27,8 @@ namespace HyperResearch.Common.Systems
             SacrificeInventoryBind = KeybindLoader.RegisterKeybind(Mod, "ResearchInventoryItems", Keys.OemComma);
             ClearResearchedBind = KeybindLoader.RegisterKeybind(Mod, "ClearResearchedItems", Keys.OemPeriod);
             ResearchCraftableBind = KeybindLoader.RegisterKeybind(Mod, "ResearchCraftableItems", Keys.OemQuestion);
-            MaxStackBind = KeybindLoader.RegisterKeybind(Mod, "MaxStack", Keys.OemSemicolon);
+            MaxStackBind = KeybindLoader.RegisterKeybind(Mod, "MaxStack", Keys.OemTilde);
+            EnableDisableBuffBind = KeybindLoader.RegisterKeybind(Mod, "EnableDisableBuff", Keys.OemSemicolon);
             ResearchLootBind = KeybindLoader.RegisterKeybind(Mod, "ResearchBagContents", Keys.OemQuotes);
             ResearchShopBind = KeybindLoader.RegisterKeybind(Mod, "ResearchShop", Keys.OemSemicolon);
             ShareAllResearched = KeybindLoader.RegisterKeybind(Mod, "ShareAllResearched", Keys.OemPipe);
@@ -42,6 +44,7 @@ namespace HyperResearch.Common.Systems
             ClearResearchedBind = null;
             ResearchCraftableBind = null;
             MaxStackBind = null;
+            EnableDisableBuffBind = null;
             ResearchLootBind = null;
             ResearchShopBind = null;
             ShareAllResearched = null;

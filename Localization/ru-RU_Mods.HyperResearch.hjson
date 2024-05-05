@@ -14,6 +14,8 @@ Tooltips: {
 	NeededToResearch: Исследуйте {0} {^0:единицу;единицы;единиц} для дублирования ({1}/{2})
 	Researched: Изучено
 	ResearchLoot: Нажмите {0}, чтобы изучить содержимое (исключая глобальные предметы)
+	EnableBuff: Нажмите {0}, чтобы включить бафф
+	DisableBuff: Нажмите {0}, чтобы выключить бафф
 }
 
 UI: {
@@ -359,4 +361,5 @@ Keybinds: {
 	ResearchBagContents.DisplayName: Изучить содержимое мешка/ящика
 	ResearchShop.DisplayName: Изучить магазин
 	ShareAllResearched.DisplayName: Поделиться предметами с командой
+	// EnableDisableBuff.DisplayName: Enable Disable Buff
 }

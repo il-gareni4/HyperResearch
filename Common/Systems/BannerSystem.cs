@@ -1,4 +1,5 @@
-﻿using HyperResearch.Utils;
+﻿using HyperResearch.Common.ModPlayers;
+using HyperResearch.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
