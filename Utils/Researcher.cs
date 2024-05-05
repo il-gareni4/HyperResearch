@@ -20,8 +20,8 @@ namespace HyperResearch.Utils
     /// <summary>Utility class that contains all the methods related to the research and sacrification of items</summary>
     public class Researcher
     {
-        public static readonly List<Condition> IgnoringCraftConditions = new()
-        {
+        public static readonly List<Condition> IgnoringCraftConditions =
+        [
             Condition.NearWater, Condition.NearLava, Condition.NearHoney, Condition.NearShimmer,
             Condition.TimeDay, Condition.TimeNight, Condition.InDungeon, Condition.InCorrupt,
             Condition.InHallow, Condition.InMeteor, Condition.InJungle, Condition.InSnow,
@@ -45,14 +45,14 @@ namespace HyperResearch.Utils
             Condition.MoonPhasesHalf1, Condition.MoonPhasesEven, Condition.MoonPhasesOdd, Condition.MoonPhasesNearNew,
             Condition.MoonPhasesEvenQuarters, Condition.MoonPhasesOddQuarters, Condition.MoonPhases04,
             Condition.MoonPhases15, Condition.MoonPhases26, Condition.MoonPhases37,
-        };
+        ];
         public List<int> ResearchedItems;
         public List<int> ResearchedCraftableItems;
         public List<int> ResearchedShimmeredItems;
         public List<int> ResearchedDecraftItems;
 
         private Dictionary<int, int> _sacrificedItems;
-        public Dictionary<int, int> SacrificedItems { get => _sacrificedItems ??= new(); }
+        public Dictionary<int, int> SacrificedItems { get => _sacrificedItems ??= []; }
         private Queue<int> _researchedQueue;
         public Queue<int> ResearchedQueue { get => _researchedQueue ??= new(); }
 
@@ -63,10 +63,10 @@ namespace HyperResearch.Utils
 
         public Researcher()
         {
-            ResearchedItems = new();
-            ResearchedCraftableItems = new();
-            ResearchedShimmeredItems = new();
-            ResearchedDecraftItems = new();
+            ResearchedItems = [];
+            ResearchedCraftableItems = [];
+            ResearchedShimmeredItems = [];
+            ResearchedDecraftItems = [];
         }
 
         public List<int> AllResearchedItems

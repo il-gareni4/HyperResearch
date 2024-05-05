@@ -7,8 +7,8 @@ namespace HyperResearch.Common.Systems
 {
     public class RecipesSystem : ModSystem
     {
-        public static readonly Dictionary<int, List<int>> ItemRecipesOccurrences = new();
-        public static readonly Dictionary<int, List<int>> TileRecipesOccurrences = new();
+        public static readonly Dictionary<int, List<int>> ItemRecipesOccurrences = [];
+        public static readonly Dictionary<int, List<int>> TileRecipesOccurrences = [];
 
         public override void PostAddRecipes()
         {
@@ -16,14 +16,14 @@ namespace HyperResearch.Common.Systems
             {
                 if (ItemRecipesOccurrences.TryGetValue(itemId, out List<int> recipeIds))
                     recipeIds.Add(recipeId);
-                else ItemRecipesOccurrences[itemId] = new List<int> { recipeId };
+                else ItemRecipesOccurrences[itemId] = [recipeId];
             }
 
             foreach (Recipe recipe in Main.recipe)
             {
                 if (!Researcher.IsResearchable(recipe.createItem.type)) return;
 
-                Dictionary<int, IEnumerable<int>> iconicAndOthers = new();
+                Dictionary<int, IEnumerable<int>> iconicAndOthers = [];
                 foreach (int recipeGroupId in recipe.acceptedGroups)
                 {
                     RecipeGroup recipeGroup = RecipeGroup.recipeGroups[recipeGroupId];
@@ -44,7 +44,7 @@ namespace HyperResearch.Common.Systems
                 {
                     if (TileRecipesOccurrences.TryGetValue(tileId, out List<int> recipeIds))
                         recipeIds.Add(recipe.RecipeIndex);
-                    else TileRecipesOccurrences[tileId] = new List<int> { recipe.RecipeIndex };
+                    else TileRecipesOccurrences[tileId] = [recipe.RecipeIndex];
                 }
             }
         }

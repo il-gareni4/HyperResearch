@@ -43,7 +43,7 @@ namespace HyperResearch.Utils
         public static IEnumerable<int> GetItemLoot(int itemId)
         {
             List<IItemDropRule> itemDropRules = Main.ItemDropsDB.GetRulesForItemID(itemId);
-            List<DropRateInfo> dropRateInfos = new();
+            List<DropRateInfo> dropRateInfos = [];
             DropRateInfoChainFeed dropRateInfo = new(1f);
             foreach (IItemDropRule item in itemDropRules) item.ReportDroprates(dropRateInfos, dropRateInfo);
 
@@ -104,9 +104,7 @@ namespace HyperResearch.Utils
 
         public static List<int> GetAllAdjTiles(int tileId)
         {
-            List<int> all = new() { tileId };
-            all.AddRange(GetAdjTiles(tileId));
-            return all;
+            return [tileId, .. GetAdjTiles(tileId)];
         }
 
         public static List<int> GetAdjTiles(int tileId)

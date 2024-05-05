@@ -43,13 +43,13 @@ namespace HyperResearch.UI
             if (!Researcher.IsPlayerInJourneyMode()) return;
             if (!HyperConfig.Instance.ShowTotalResearchedItemsCount)
             {
-                if (Children.Count() != 0) RemoveAllChildren();
+                if (Children.Any()) RemoveAllChildren();
                 return;
             }
 
             if (Main.CreativeMenu.Enabled && CreativePowerSelected == 1)
             {
-                if (Children.Count() == 0) Append(UITotalResearchedText);
+                if (!Children.Any()) Append(UITotalResearchedText);
             }
             else RemoveAllChildren();
 
@@ -74,7 +74,7 @@ namespace HyperResearch.UI
 
         public void OnWorldUnload()
         {
-            if (Children.Count() != 0) RemoveAllChildren();
+            if (Children.Any()) RemoveAllChildren();
         }
 
         private string GetTotalResearchedText()

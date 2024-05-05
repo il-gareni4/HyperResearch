@@ -13,7 +13,7 @@ namespace HyperResearch.Common.Systems
 
         public override void Load()
         {
-            ItemToBanner = new();
+            ItemToBanner = [];
         }
 
         public override void PostSetupContent()

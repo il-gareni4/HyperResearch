@@ -22,12 +22,12 @@ namespace HyperResearch.Common
         private Item _hoverItem = new();
 
         /// <summary>Dictionary of researched tiles (contains <c>TileId</c> as Keys)</summary> 
-        public readonly Dictionary<int, bool> ResearchedTiles = new();
+        public readonly Dictionary<int, bool> ResearchedTiles = [];
 
-        public List<int> ResearchedBanners = new();
+        public List<int> ResearchedBanners = [];
 
         /// <summary>Array of items in current shop. Used for <see cref="HyperResearch.ResearchShopBind"/></summary>
-        public Item[] CurrentShopItems { get; set; } = Array.Empty<Item>();
+        public Item[] CurrentShopItems { get; set; } = [];
         public int ItemsResearchedCount { get; set; }
 
         public bool WasInAether { get; private set; } = false;
@@ -134,7 +134,6 @@ namespace HyperResearch.Common
                 }
                 TextUtils.MessageResearcherResults(researcher);
             }
-
         }
 
         public override void SaveData(TagCompound tag)
@@ -227,7 +226,7 @@ namespace HyperResearch.Common
         {
             // Counting every item into a single dictionary
             // Used so that items of the same type and different slots are counted together
-            Dictionary<int, int> items = new();
+            Dictionary<int, int> items = [];
             for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
             {
                 Item item = Player.inventory[slot];
@@ -245,7 +244,7 @@ namespace HyperResearch.Common
         /// </summary>
         public void SacrificeInventory()
         {
-            List<Item> itemToSacrifice = new();
+            List<Item> itemToSacrifice = [];
             for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
             {
                 Item item = Player.inventory[slot];
@@ -327,7 +326,7 @@ namespace HyperResearch.Common
         /// <param name="shop">Array of shop items</param>
         public void ResearchShop(Item[] shop)
         {
-            List<int> toResearch = new();
+            List<int> toResearch = [];
             foreach (Item item in shop)
             {
                 if (item == null || item.IsAir || (item.shopSpecialCurrency != -1 && item.shopCustomPrice is null)) continue;
