@@ -11,6 +11,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
 
 namespace HyperResearch.Common
@@ -28,6 +29,8 @@ namespace HyperResearch.Common
         /// <summary>Array of items in current shop. Used for <see cref="HyperResearch.ResearchShopBind"/></summary>
         public Item[] CurrentShopItems { get; set; } = Array.Empty<Item>();
         public int ItemsResearchedCount { get; set; }
+
+        public bool WasInAether { get; private set; } = false;
 
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
@@ -115,6 +118,34 @@ namespace HyperResearch.Common
             if (!Researcher.IsPlayerInJourneyMode() || Player != Main.LocalPlayer) return;
 
             if (HyperConfig.Instance.ResearchInventory) ResearchInventory();
+
+            if (!WasInAether && Main.LocalPlayer.ZoneShimmer)
+            {
+                WasInAether = true;
+                if (!ConfigOptions.BalanceShimmerAutoresearch) return;
+
+                Researcher researcher = new();
+                for (int itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
+                {
+                    if (ConfigOptions.ResearchShimmerableItems)
+                        researcher.TryResearchShimmeredItem(itemId);
+                    if (ConfigOptions.ResearchDecraftItems)
+                        researcher.ResearchDecraftItems(itemId);
+                }
+                TextUtils.MessageResearcherResults(researcher);
+            }
+
+        }
+
+        public override void SaveData(TagCompound tag)
+        {
+            tag["WasInAether"] = WasInAether;
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            if (tag.TryGet("WasInAether", out bool wasInAether))
+                WasInAether = wasInAether;
         }
 
         public override bool HoverSlot(Item[] inventory, int context, int slot)

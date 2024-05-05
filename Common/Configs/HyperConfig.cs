@@ -46,6 +46,10 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(true)]
         public bool ResearchDecraftItems;
 
+        [LabelArgs(ItemID.Shimmerfly)]
+        [DefaultValue(true)]
+        public bool BalanceShimmerAutoresearch;
+
         [Header("OtherSettingsHeader")]
 
         [LabelArgs(ItemID.HandOfCreation)]

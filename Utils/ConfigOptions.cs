@@ -26,6 +26,12 @@ namespace HyperResearch.Utils
                 UseServerSettings ? ServerConfig.Instance.ResearchDecraftItems : HyperConfig.Instance.ResearchDecraftItems;
         }
 
+        public static bool BalanceShimmerAutoresearch
+        {
+            get =>
+                UseServerSettings ? ServerConfig.Instance.BalanceShimmerAutoresearch : HyperConfig.Instance.BalanceShimmerAutoresearch;
+        }
+
         public static bool UseResearchedBannersBuff
         {
             get =>

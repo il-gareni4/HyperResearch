@@ -285,6 +285,11 @@ Configs: {
 				Нужен включенный параметр "{$Mods.HyperResearch.Configs.ServerConfig.SyncSacrificesInOneTeam.Label}" в конфиге сервера
 				'''
 		}
+
+		BalanceShimmerAutoresearch: {
+			// Label: Balance Shimmer Autoresearch
+			// Tooltip: ""
+		}
 	}
 
 	ServerConfig: {
@@ -334,6 +339,11 @@ Configs: {
 
 		ResearchDecraftItems: {
 			// Label: Research Decraft Items
+			// Tooltip: ""
+		}
+
+		BalanceShimmerAutoresearch: {
+			// Label: Balance Shimmer Autoresearch
 			// Tooltip: ""
 		}
 	}

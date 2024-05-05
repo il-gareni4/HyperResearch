@@ -43,6 +43,10 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(true)]
         public bool ResearchDecraftItems;
 
+        [LabelArgs(ItemID.Shimmerfly)]
+        [DefaultValue(true)]
+        public bool BalanceShimmerAutoresearch;
+
         [LabelArgs(ItemID.ZombieBanner)]
         [DefaultValue(false)]
         public bool UseResearchedBannersBuff;

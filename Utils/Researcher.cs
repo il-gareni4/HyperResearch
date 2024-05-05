@@ -59,6 +59,7 @@ namespace HyperResearch.Utils
         public bool AutoResearchCraftableItems { get; init; } = HyperConfig.Instance.AutoResearchCraftableItems;
         public bool AutoResearchShimmerableItems { get; init; } = ConfigOptions.ResearchShimmerableItems;
         public bool AutoResearchDecraftItems { get; init; } = ConfigOptions.ResearchDecraftItems;
+        public bool BalanceShimmerAutoresearch { get; init; } = ConfigOptions.BalanceShimmerAutoresearch;
 
         public Researcher()
         {
@@ -233,8 +234,11 @@ namespace HyperResearch.Utils
 
         private void AfterResearch(int itemId, ResearchSource source, bool researchQueue = true)
         {
-            if (AutoResearchShimmerableItems) TryResearchShimmeredItem(itemId);
-            if (AutoResearchDecraftItems) ResearchDecraftItems(itemId);
+            if (BalanceShimmerAutoresearch && Main.LocalPlayer.GetModPlayer<HyperPlayer>().WasInAether)
+            {
+                if (AutoResearchShimmerableItems) TryResearchShimmeredItem(itemId);
+                if (AutoResearchDecraftItems) ResearchDecraftItems(itemId);
+            }
             if (AutoResearchCraftableItems)
             {
                 ResearchedQueue.Enqueue(itemId);
