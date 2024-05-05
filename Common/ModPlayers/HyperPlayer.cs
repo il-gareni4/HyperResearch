@@ -94,8 +94,13 @@ namespace HyperResearch.Common.ModPlayers
             {
                 TryAddToResearchedTiles(itemId);
 
-                if (ConfigOptions.ResearchShimmerableItems)
-                    researcher.TryResearchShimmeredItem(itemId);
+                if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether)
+                {
+                    if (ConfigOptions.ResearchShimmerableItems)
+                        researcher.TryResearchShimmeredItem(itemId);
+                    if (ConfigOptions.ResearchDecraftItems)
+                        researcher.ResearchDecraftItems(itemId);
+                }
 
                 if (Researcher.IsResearched(itemId))
                 {
@@ -348,8 +353,13 @@ namespace HyperResearch.Common.ModPlayers
             Researcher researcher = new();
             for (int itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
             {
-                if (ConfigOptions.ResearchShimmerableItems)
-                    researcher.TryResearchShimmeredItem(itemId);
+                if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether)
+                {
+                    if (ConfigOptions.ResearchShimmerableItems)
+                        researcher.TryResearchShimmeredItem(itemId);
+                    if (ConfigOptions.ResearchDecraftItems)
+                        researcher.ResearchDecraftItems(itemId);
+                }
                 if (ConfigOptions.OnlyOneItemNeeded && Researcher.IsResearchable(itemId) &&
                     Researcher.GetResearchedCount(itemId) >= 1) researcher.ResearchItem(itemId);
             }
