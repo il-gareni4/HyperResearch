@@ -42,6 +42,10 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(true)]
         public bool ResearchShimmerableItems;
 
+        [LabelArgs(ItemID.WoodenHammer)]
+        [DefaultValue(true)]
+        public bool ResearchDecraftItems;
+
         [Header("OtherSettingsHeader")]
 
         [LabelArgs(ItemID.HandOfCreation)]
@@ -133,6 +137,9 @@ namespace HyperResearch.Common.Configs
 
         [DefaultValue(true)]
         public bool ShowResearchedShimmeredItems;
+
+        [DefaultValue(true)]
+        public bool ShowResearchedDecraftItems;
 
         [DefaultValue(false)]
         public bool ShowSacrifices;

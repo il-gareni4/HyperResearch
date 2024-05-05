@@ -13,7 +13,8 @@ namespace HyperResearch.Utils
     {
         Default,
         Craft,
-        Shimmer
+        Shimmer,
+        ShimmerDecraft
     }
 
     /// <summary>Utility class that contains all the methods related to the research and sacrification of items</summary>
@@ -48,22 +49,23 @@ namespace HyperResearch.Utils
         public List<int> ResearchedItems;
         public List<int> ResearchedCraftableItems;
         public List<int> ResearchedShimmeredItems;
+        public List<int> ResearchedDecraftItems;
 
         private Dictionary<int, int> _sacrificedItems;
         public Dictionary<int, int> SacrificedItems { get => _sacrificedItems ??= new(); }
         private Queue<int> _researchedQueue;
         public Queue<int> ResearchedQueue { get => _researchedQueue ??= new(); }
 
-        public bool AutoResearchCraftableItems { get; init; }
-        public bool AutoResearchShimmerableItems { get; init; }
+        public bool AutoResearchCraftableItems { get; init; } = HyperConfig.Instance.AutoResearchCraftableItems;
+        public bool AutoResearchShimmerableItems { get; init; } = ConfigOptions.ResearchShimmerableItems;
+        public bool AutoResearchDecraftItems { get; init; } = ConfigOptions.ResearchDecraftItems;
 
         public Researcher()
         {
             ResearchedItems = new();
             ResearchedCraftableItems = new();
             ResearchedShimmeredItems = new();
-            AutoResearchCraftableItems = HyperConfig.Instance.AutoResearchCraftableItems;
-            AutoResearchShimmerableItems = ConfigOptions.ResearchShimmerableItems;
+            ResearchedDecraftItems = new();
         }
 
         public List<int> AllResearchedItems
@@ -185,7 +187,7 @@ namespace HyperResearch.Utils
         public bool ResearchItem(int itemId, ResearchSource source = default, bool researchQueue = true)
         {
             CreativeUI.ItemSacrificeResult result = CreativeUI.ResearchItem(itemId);
-            if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone) AfterResearch(itemId, source);
+            if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone) AfterResearch(itemId, source, researchQueue);
             return result == CreativeUI.ItemSacrificeResult.SacrificedAndDone;
         }
 
@@ -212,6 +214,13 @@ namespace HyperResearch.Utils
             return ResearchItem(shimmerItemId, ResearchSource.Shimmer);
         }
 
+        public void ResearchDecraftItems(int itemId)
+        {
+            List<int> decraftItems = ItemsUtils.GetDecraftItems(itemId);
+            if (decraftItems is null) return;
+            foreach (int decraftItemId in decraftItems) ResearchItem(decraftItemId, ResearchSource.ShimmerDecraft);
+        }
+
         public bool AnyItemResearched()
         {
             return ResearchedItems.Count > 0 || ResearchedCraftableItems.Count > 0 || ResearchedShimmeredItems.Count > 0;
@@ -225,6 +234,7 @@ namespace HyperResearch.Utils
         private void AfterResearch(int itemId, ResearchSource source, bool researchQueue = true)
         {
             if (AutoResearchShimmerableItems) TryResearchShimmeredItem(itemId);
+            if (AutoResearchDecraftItems) ResearchDecraftItems(itemId);
             if (AutoResearchCraftableItems)
             {
                 ResearchedQueue.Enqueue(itemId);
@@ -302,6 +312,7 @@ namespace HyperResearch.Utils
             {
                 ResearchSource.Craft => ResearchedCraftableItems,
                 ResearchSource.Shimmer => ResearchedShimmeredItems,
+                ResearchSource.ShimmerDecraft => ResearchedDecraftItems,
                 _ => ResearchedItems
             };
         }

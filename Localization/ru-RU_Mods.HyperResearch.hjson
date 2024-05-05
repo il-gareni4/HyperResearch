@@ -3,6 +3,7 @@ Messages: {
 	SharedItems: "{0} поделился {1} {^1:новым предметом;новыми предметами;новыми предметами}: {2}"
 	ResearchedCraftableItems: "{^0:Изучен;Изучено;Изучено} {0} {^0:автосозданный предмет;автосозданных предмета;автосозданных предметов}: {1}"
 	ResearchedShimmeredItems: Изучено {0} {^0:мерцающее преобразование;мерцающих преобразования;мерцающих преобразований}: {1}
+	// ResearchedDecraftItems: Researched {0} decrafted {^0:item;items}: {1}
 	Sacrifices: Частично {^0:изучен;изучено;изучено} {0} {^0:предмет;предмета;предметов}: {1}
 	SharedSacrifices: "{0} поделился {1} частично {^1:изученным предметом;изученными предметами;изученными предметами}: {2}"
 	OtherPlayerResearchedItems: "{0} изучил {1} {^1:новый предмет;новых предмета;новых предметов}: {2}"
@@ -93,6 +94,12 @@ Configs: {
 			Name: Изучать Мерцающие превращения
 			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
 			Tooltip: ""
+		}
+
+		ResearchDecraftItems: {
+			// Name: Auto-research items through decrafting in shimmer
+			// Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
+			// Tooltip: ""
 		}
 
 		UseCustomResearchTooltip: {
@@ -212,6 +219,11 @@ Configs: {
 			Tooltip: Этот тип сообщений можно увидеть только если настройка "{$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}" включена
 		}
 
+		ShowResearchedDecraftItems: {
+			// Label: Show researched decrafted items
+			// Tooltip: This type of messages can be seen if "{$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Name}" is enabled
+		}
+
 		ShowOtherPlayersResearchedItems: {
 			Label: Показывать новые изученные предметы участников команды
 			Tooltip: Показываются даже те предметы, что были уже изучены вами
@@ -318,6 +330,11 @@ Configs: {
 		OnlyOneItemNeeded: {
 			Label: "{$Mods.HyperResearch.Configs.HyperConfig.OnlyOneItemNeeded.Label}"
 			Tooltip: ""
+		}
+
+		ResearchDecraftItems: {
+			// Label: Research Decraft Items
+			// Tooltip: ""
 		}
 	}
 }

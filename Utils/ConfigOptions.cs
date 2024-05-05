@@ -20,6 +20,12 @@ namespace HyperResearch.Utils
                 UseServerSettings ? ServerConfig.Instance.ResearchShimmerableItems : HyperConfig.Instance.ResearchShimmerableItems;
         }
 
+        public static bool ResearchDecraftItems
+        {
+            get =>
+                UseServerSettings ? ServerConfig.Instance.ResearchDecraftItems : HyperConfig.Instance.ResearchDecraftItems;
+        }
+
         public static bool UseResearchedBannersBuff
         {
             get =>

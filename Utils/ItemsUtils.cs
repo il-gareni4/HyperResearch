@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
 using Terraria.ID;
@@ -65,6 +66,26 @@ namespace HyperResearch.Utils
             if (ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
                 itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];
             return ItemID.Sets.ShimmerTransformToItem[itemId];
+        }
+
+        public static Recipe GetDecraftRecipe(int itemId)
+        {
+            if (ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
+                itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];
+
+            int recipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(itemId);
+            if (recipeIndex < 0) return null;
+
+            return Main.recipe[recipeIndex];
+        }
+
+        public static List<int> GetDecraftItems(int itemId) => GetDecraftItems(GetDecraftRecipe(itemId));
+
+        public static List<int> GetDecraftItems(Recipe recipe)
+        {
+            if (recipe is null) return null;
+            if (recipe.customShimmerResults is not null) return recipe.customShimmerResults.Select(r => r.type).ToList();
+            else return recipe.requiredItem.Select(r => r.type).ToList();
         }
 
         public static Dictionary<int, int> GetCurrencyItemsAndValues(int currencyId)

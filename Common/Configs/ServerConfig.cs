@@ -39,6 +39,10 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(true)]
         public bool ResearchShimmerableItems;
 
+        [LabelArgs(ItemID.WoodenHammer)]
+        [DefaultValue(true)]
+        public bool ResearchDecraftItems;
+
         [LabelArgs(ItemID.ZombieBanner)]
         [DefaultValue(false)]
         public bool UseResearchedBannersBuff;

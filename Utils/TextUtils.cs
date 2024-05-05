@@ -17,6 +17,8 @@ namespace HyperResearch.Utils
                 MessageSacrifices(researcher.SacrificedItems);
             if (HyperConfig.Instance.ShowNewlyResearchedItems)
                 MessageResearchedItems(researcher.ResearchedItems);
+            if (HyperConfig.Instance.ShowResearchedDecraftItems)
+                MessageDecraftItems(researcher.ResearchedDecraftItems);
             if (HyperConfig.Instance.ShowResearchedShimmeredItems)
                 MessageResearchedShimmeredItems(researcher.ResearchedShimmeredItems);
             if (HyperConfig.Instance.ShowResearchedCraftableItems)
@@ -50,6 +52,15 @@ namespace HyperResearch.Utils
             Main.NewText(
                 Language.GetTextValue("Mods.HyperResearch.Messages.ResearchedShimmeredItems", items.Count(), GetItemsString(items)),
                 Color.Lerp(Colors.JourneyMode, Colors.RarityPurple, 0.4f)
+            );
+        }
+
+        public static void MessageDecraftItems(IEnumerable<int> items)
+        {
+            if (!items.Any()) return;
+            Main.NewText(
+                Language.GetTextValue("Mods.HyperResearch.Messages.ResearchedDecraftItems", items.Count(), GetItemsString(items)),
+                Color.Lerp(Colors.JourneyMode, Color.White, 0.5f)
             );
         }
 

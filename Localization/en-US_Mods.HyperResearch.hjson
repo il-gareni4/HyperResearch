@@ -3,6 +3,7 @@ Messages: {
 	SharedItems: "{0} shared {1} {^1:item;items}: {2}"
 	ResearchedCraftableItems: Researched {0} craftable {^0:item;items}: {1}
 	ResearchedShimmeredItems: Researched {0} shimmered {^0:item;items}: {1}
+	ResearchedDecraftItems: Researched {0} decrafted {^0:item;items}: {1}
 	Sacrifices: Partially researched {0} {^0:item;items}: {1}
 	SharedSacrifices: "{0} shared {1} partially researched {^1:item;items}: {2}"
 	OtherPlayerResearchedItems: "{0} researched {1} new {^1:item;items}: {2}"
@@ -47,12 +48,12 @@ Configs: {
 		}
 
 		AutoTrashResearched: {
-			Label: "[i:{0}] Auto trash picked up researched items"
+			Label: "[i:{0}] Auto-trash picked up researched items"
 			Tooltip: All picked up items that have already been researched will no longer be added to the inventory
 		}
 
 		AutoResearchCraftableItems: {
-			Label: "[i:{0}] Auto research craftable"
+			Label: "[i:{0}] Auto-research craftable"
 			Tooltip:
 				'''
 				After learning a new item, all new items from already researched items will be researched. 
@@ -73,7 +74,7 @@ Configs: {
 		}
 
 		AutoResearchShop: {
-			Label: "[i:{0}] Auto research the content of NPCs shops"
+			Label: "[i:{0}] Auto-research the content of NPCs shops"
 			Tooltip:
 				'''
 				When opening a shop, researches everything that the NPC is currently selling.
@@ -83,9 +84,15 @@ Configs: {
 		}
 
 		ResearchShimmerableItems: {
-			Name: Auto research items that are obtained after shimmer transmutation
+			Name: Auto-research items that are obtained after shimmer transmutation
 			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
 			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
+		}
+
+		ResearchDecraftItems: {
+			Name: Auto-research items through decrafting in shimmer
+			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
+			Tooltip: ""
 		}
 
 		UseCustomResearchTooltip: {
@@ -201,6 +208,11 @@ Configs: {
 			Tooltip: This type of messages can be seen if "{$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}" is enabled
 		}
 
+		ShowResearchedDecraftItems: {
+			Label: Show researched decrafted items
+			Tooltip: This type of messages can be seen if "{$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Name}" is enabled
+		}
+
 		ShowOtherPlayersResearchedItems: {
 			Label: Show messages about new items researched by team players
 			Tooltip: Even those items that you have already researched are shown
@@ -314,6 +326,11 @@ Configs: {
 
 		OnlyOneItemNeeded: {
 			Label: "{$Mods.HyperResearch.Configs.HyperConfig.OnlyOneItemNeeded.Label}"
+			Tooltip: ""
+		}
+
+		ResearchDecraftItems: {
+			Label: Research Decraft Items
 			Tooltip: ""
 		}
 	}
