@@ -13,11 +13,11 @@ namespace HyperResearch.Common.Configs
 
         public override void OnLoaded() => Instance = this;
 
-        public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref string message)
+        public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref NetworkText message)
         {
             if (whoAmI == 0) return true;
 
-            message = Language.GetTextValue("Mods.HyperResearch.Configs.ServerConfig.Messages.OnlyHost");
+            message = NetworkText.FromKey("Mods.HyperResearch.Configs.ServerConfig.Messages.OnlyHost");
             return false;
         }
 
