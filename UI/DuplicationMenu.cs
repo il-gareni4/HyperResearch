@@ -17,6 +17,7 @@ namespace HyperResearch.UI
     class DuplicationMenu : UIState
     {
         private int _lastItemsResearchedCount;
+        private int _lastResearchableItemsCount;
         public int CreativePowerSelected = 0;
 
         private HyperPlayer _hyperPlayer;
@@ -55,13 +56,15 @@ namespace HyperResearch.UI
 
             if (_hyperPlayer is null) return;
 
-            if (_lastItemsResearchedCount != _hyperPlayer.ItemsResearchedCount)
+            if (_lastItemsResearchedCount != _hyperPlayer.ItemsResearchedCount
+                || _lastResearchableItemsCount != ResearchSystem.ResearchableItemsCount)
             {
-                if (_hyperPlayer.ItemsResearchedCount == HyperResearch.ResearchableItemsCount)
+                if (_hyperPlayer.ItemsResearchedCount >= ResearchSystem.ResearchableItemsCount)
                     UITotalResearchedText.TextColor = Colors.CoinGold;
                 else
                     UITotalResearchedText.TextColor = Colors.JourneyMode;
                 _lastItemsResearchedCount = _hyperPlayer.ItemsResearchedCount;
+                _lastResearchableItemsCount = ResearchSystem.ResearchableItemsCount;
                 UITotalResearchedText.SetText(GetTotalResearchedText());
             }
         }
@@ -79,8 +82,8 @@ namespace HyperResearch.UI
 
         private string GetTotalResearchedText()
         {
-            string percentResearched = string.Format("{0:0.00}", (float)_hyperPlayer.ItemsResearchedCount / HyperResearch.ResearchableItemsCount * 100);
-            return _totalResearchedText.Format(percentResearched, _hyperPlayer.ItemsResearchedCount, HyperResearch.ResearchableItemsCount);
+            string percentResearched = string.Format("{0:0.00}", (float)_hyperPlayer.ItemsResearchedCount / ResearchSystem.ResearchableItemsCount * 100);
+            return _totalResearchedText.Format(percentResearched, _hyperPlayer.ItemsResearchedCount, ResearchSystem.ResearchableItemsCount);
         }
 
         private void OnCreativePowerMenuCategoryChanged(On_UICreativePowersMenu.orig_MainCategoryButtonClick orig, UICreativePowersMenu menu, UIMouseEvent evt, UIElement el)

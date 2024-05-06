@@ -1,7 +1,6 @@
 ﻿using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -26,7 +25,8 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
 
     public override void ProcessTriggers(TriggersSet triggersSet)
     {
-        if (Researcher.IsPlayerInJourneyMode) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
+
         if (KeybindSystem.ForgetAllBind.JustPressed)
             ResearchedBanners.Clear();
         if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite

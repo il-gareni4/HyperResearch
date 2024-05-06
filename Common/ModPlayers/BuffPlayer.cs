@@ -2,9 +2,6 @@
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
-using rail;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.GameInput;
@@ -90,7 +87,7 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         else if (BuffUtils.IsAFood(item)) ToggleGroup(item.buffType, BuffID.Sets.IsWellFed);
     }
 
-    private void ToggleGroup(int buffId, bool[] set) 
+    private void ToggleGroup(int buffId, bool[] set)
     {
         if (!Buffs.TryGetValue(Main.HoverItem.buffType, out bool enabled)) return;
 

@@ -296,6 +296,16 @@ Configs: {
 			Label: Use Researched Potions Buff
 			Tooltip: ""
 		}
+
+		UnresearchableItemCount: {
+			Label: Unresearchable Item Count
+			Tooltip: ""
+		}
+
+		ItemResearchCountOverride: {
+			Label: Item Research Count Override
+			Tooltip: ""
+		}
 	}
 
 	ServerConfig: {
@@ -355,6 +365,16 @@ Configs: {
 
 		UseResearchedPotionsBuff: {
 			Label: Use Researched Potions Buff
+			Tooltip: ""
+		}
+
+		UnresearchableItemCount: {
+			Label: Unresearchable Item Count
+			Tooltip: ""
+		}
+
+		ItemResearchCountOverride: {
+			Label: Item Research Count Override
 			Tooltip: ""
 		}
 	}

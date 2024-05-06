@@ -1,5 +1,4 @@
-﻿using Humanizer;
-using HyperResearch.Common.ModPlayers;
+﻿using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using System.Collections.Generic;

@@ -1,6 +1,8 @@
 ﻿using HyperResearch.Common.Configs;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader.Config;
 
 namespace HyperResearch.Utils
 {
@@ -48,6 +50,12 @@ namespace HyperResearch.Utils
         {
             get =>
                 UseServerSettings ? ServerConfig.Instance.OnlyOneItemNeeded : HyperConfig.Instance.OnlyOneItemNeeded;
+        }
+
+        public static Dictionary<ItemDefinition, uint> ItemResearchCountOverride
+        {
+            get =>
+                UseServerSettings ? ServerConfig.Instance.ItemResearchCountOverride : HyperConfig.Instance.ItemResearchCountOverride;
         }
     }
 }

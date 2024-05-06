@@ -178,12 +178,12 @@ public class Researcher
         else return false;
     }
 
-    public static bool IsResearchable(int itemId)
-    {
-        if (ContentSamples.ItemsByType.TryGetValue(itemId, out Item item) && (item.IsAir || item.type != itemId))
-            return false;
-        return CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out _);
-    }
+    public static bool IsValidResearchItem(int itemId) =>
+        ContentSamples.ItemsByType.TryGetValue(itemId, out Item item) && !item.IsAir && item.type == itemId;
+
+    public static bool IsResearchable(int itemId) =>
+        IsValidResearchItem(itemId)
+        && CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out _);
 
     public bool AnyItemResearched => ResearchedItems.Any(list => list.Count > 0);
 

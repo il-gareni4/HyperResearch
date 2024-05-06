@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
@@ -68,13 +69,16 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(false)]
         public bool UseResearchedPotionsBuff;
 
+        [LabelArgs(ItemID.TrashCan)]
+        [DefaultValue(false)]
+        public bool AutoTrashAfterResearching;
+
         [LabelArgs(ItemID.AlphabetStatue1)]
         [DefaultValue(false)]
         public bool OnlyOneItemNeeded;
 
-        [LabelArgs(ItemID.TrashCan)]
-        [DefaultValue(false)]
-        public bool AutoTrashAfterResearching;
+        [LabelArgs(ItemID.DD2EnergyCrystal)]
+        public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
         [Header("SacrificeSettingsHeader")]
 
