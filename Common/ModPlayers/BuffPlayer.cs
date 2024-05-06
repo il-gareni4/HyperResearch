@@ -1,4 +1,5 @@
-﻿using HyperResearch.Common.Systems;
+﻿using HyperResearch.Common.ModPlayers.Interfaces;
+using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using System;
 using System.Linq;
@@ -28,7 +29,7 @@ public static class BuffStateExtension
     public static void Disable(this ref BuffState buffState, BuffState flag) => buffState &= ~flag;
 }
 
-public class BuffPlayer : ModPlayer
+public class BuffPlayer : ModPlayer, IResearchPlayer
 {
     public BuffState[] Buffs { get; private set; } = [];
 
@@ -94,6 +95,8 @@ public class BuffPlayer : ModPlayer
                 Player.AddBuff(i, 1);
             }
     }
+
+    public void OnResearch(Item item) => ResearchItem(item);
 
     public void ResearchItem(Item item, bool enable = true)
     {

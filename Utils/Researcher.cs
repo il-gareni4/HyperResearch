@@ -139,7 +139,7 @@ public class Researcher
     public Researcher()
     {
         ResearchedItems = new(ResearchedItemGroups);
-        for (int i = 0; i < ResearchedItemGroups; i++) 
+        for (int i = 0; i < ResearchedItemGroups; i++)
             ResearchedItems.Add([]);
     }
 

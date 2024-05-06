@@ -1,4 +1,5 @@
 ﻿using HyperResearch.Common.Configs;
+using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using HyperResearch.Utils.Extensions;
@@ -16,15 +17,13 @@ using Terraria.UI;
 
 namespace HyperResearch.Common.ModPlayers
 {
-    public class HyperPlayer : ModPlayer
+    public class HyperPlayer : ModPlayer, IResearchPlayer
     {
         /// <summary>Same as <see cref="Main.HoverItem"/> but not cloned</summary>
         private Item _hoverItem = new();
 
         /// <summary>Dictionary of researched tiles (contains <c>TileId</c> as Keys)</summary> 
         public readonly Dictionary<int, bool> ResearchedTiles = [];
-
-        public List<int> ResearchedBanners = [];
 
         /// <summary>Array of items in current shop</summary>
         /// <seealso cref="KeybindSystem.ResearchShopBind"/>
@@ -42,7 +41,6 @@ namespace HyperResearch.Common.ModPlayers
                 Player.creativeTracker.Reset();
                 ResearchedTiles.Clear();
                 ItemsResearchedCount = 0;
-                ResearchedBanners.Clear();
             }
             if (KeybindSystem.ResearchAllBind.JustPressed)
             {
@@ -99,8 +97,6 @@ namespace HyperResearch.Common.ModPlayers
                 {
                     if (Researcher.GetSharedValue(itemId) == -1)
                         ItemsResearchedCount++;
-                    if (BannerSystem.ItemToBanner.TryGetValue(itemId, out int bannerId))
-                        ResearchedBanners.Add(bannerId);
 
                     if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether || !ConfigOptions.BalanceShimmerAutoresearch)
                     {
@@ -110,10 +106,10 @@ namespace HyperResearch.Common.ModPlayers
                             researcher.ResearchDecraftItems(itemId);
                     }
                 }
-                else
+                else if (ConfigOptions.OnlyOneItemNeeded && Researcher.IsResearchable(itemId) &&
+                        Researcher.GetResearchedCount(itemId) >= 1)
                 {
-                    if (ConfigOptions.OnlyOneItemNeeded && Researcher.IsResearchable(itemId) &&
-                        Researcher.GetResearchedCount(itemId) >= 1) researcher.ResearchItem(itemId);
+                    researcher.ResearchItem(itemId);
                 }
             }
             AfterLocalResearch(researcher);
@@ -224,6 +220,12 @@ namespace HyperResearch.Common.ModPlayers
                 SoundEngine.PlaySound(SoundID.ResearchComplete);
             }
             else if (sacrificesResearcher.AnyItemSacrificed) SoundEngine.PlaySound(SoundID.MenuTick);
+        }
+
+        public void OnResearch(Item item)
+        {
+            TryAddToResearchedTiles(item.type);
+            ItemsResearchedCount++;
         }
 
         /// <summary>

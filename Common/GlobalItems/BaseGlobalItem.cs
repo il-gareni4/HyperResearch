@@ -1,6 +1,5 @@
 ﻿using HyperResearch.Common.Configs;
-using HyperResearch.Common.ModPlayers;
-using HyperResearch.Common.Systems;
+using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Utils;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -89,15 +88,9 @@ namespace HyperResearch.Common.GlobalItems
             if (!Researcher.IsPlayerInJourneyMode || !fullyResearched || item is null || item.IsAir) return;
 
             ItemLoader.OnPickup(item, Main.LocalPlayer); // For ItemChecklist and BossChecklist
-            if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
-            {
-                modPlayer.TryAddToResearchedTiles(item.type);
-                modPlayer.ItemsResearchedCount++;
-                if (BannerSystem.ItemToBanner.TryGetValue(item.type, out var bannerId))
-                    modPlayer.ResearchedBanners.Add(bannerId);
-            }
-            if (Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer))
-                buffPlayer.ResearchItem(item);
+            foreach (ModPlayer modPlayer in Main.LocalPlayer.ModPlayers)
+                if (modPlayer is IResearchPlayer resPlayer)
+                    resPlayer.OnResearch(item);
         }
     }
 }
