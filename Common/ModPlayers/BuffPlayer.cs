@@ -24,11 +24,9 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         if (!Researcher.IsPlayerInJourneyMode) return;
 
         if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite
-            && BuffUtils.IsBuffPotion(Main.HoverItem)
-            && Buffs.TryGetValue(Main.HoverItem.buffType, out bool enabled)
             && KeybindSystem.EnableDisableBuffBind.JustPressed)
         {
-            Buffs[Main.HoverItem.buffType] = !enabled;
+            ToggleBuffItem(Main.HoverItem);
         }
         if (KeybindSystem.ForgetAllBind.JustPressed)
             Buffs.Clear();
@@ -80,6 +78,21 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     {
         if (item.buffType == 0 || Buffs.ContainsKey(item.buffType)) return;
 
-        Buffs[item.buffType] = BuffUtils.IsBuffPotion(item) && enabledIfNotFound;
+        Buffs[item.buffType] = BuffUtils.IsABuffPotion(item) && enabledIfNotFound;
+    }
+
+    private void ToggleBuffItem(Item item)
+    {
+        if (!Buffs.TryGetValue(Main.HoverItem.buffType, out bool enabled)) return;
+
+        if (BuffUtils.IsABuffPotion(item) 
+            || (BuffUtils.IsAFlask(item) && enabled))
+            Buffs[Main.HoverItem.buffType] = !enabled;
+        else if (BuffUtils.IsAFlask(item))
+        {
+            for (int buffId = 1; buffId < BuffID.Sets.IsAFlaskBuff.Length; buffId++)
+                if (BuffID.Sets.IsAFlaskBuff[buffId]) Buffs[buffId] = false;
+            Buffs[item.buffType] = !enabled;
+        }
     }
 }
