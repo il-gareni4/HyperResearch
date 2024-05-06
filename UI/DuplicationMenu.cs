@@ -40,7 +40,7 @@ namespace HyperResearch.UI
 
         public override void Update(GameTime gameTime)
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return;
+            if (!Researcher.IsPlayerInJourneyMode) return;
             if (!HyperConfig.Instance.ShowTotalResearchedItemsCount)
             {
                 if (Children.Any()) RemoveAllChildren();

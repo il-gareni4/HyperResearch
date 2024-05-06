@@ -109,7 +109,7 @@ namespace HyperResearch.Utils
 
         public static List<int> GetAdjTiles(int tileId)
         {
-            List<int> adjTiles = new();
+            List<int> adjTiles = [];
             switch (tileId)
             {
                 case 77:

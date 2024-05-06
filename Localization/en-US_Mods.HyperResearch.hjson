@@ -1,9 +1,9 @@
 Messages: {
 	ResearchedItems: Researched {0} new {^0:item;items}: {1}
 	SharedItems: "{0} shared {1} {^1:item;items}: {2}"
-	ResearchedCraftableItems: Researched {0} craftable {^0:item;items}: {1}
-	ResearchedShimmeredItems: Researched {0} shimmered {^0:item;items}: {1}
-	ResearchedDecraftItems: Researched {0} decrafted {^0:item;items}: {1}
+	CraftResearchedItems: Researched {0} craftable {^0:item;items}: {1}
+	ShimmerResearchedItems: Researched {0} shimmered {^0:item;items}: {1}
+	DecraftResearchedItems: Researched {0} decrafted {^0:item;items}: {1}
 	Sacrifices: Partially researched {0} {^0:item;items}: {1}
 	SharedSacrifices: "{0} shared {1} partially researched {^1:item;items}: {2}"
 	OtherPlayerResearchedItems: "{0} researched {1} new {^1:item;items}: {2}"

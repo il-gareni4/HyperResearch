@@ -16,25 +16,25 @@ namespace HyperResearch.Common.GlobalItems
     {
         public override bool OnPickup(Item item, Player player)
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return base.OnPickup(item, player);
+            if (!Researcher.IsPlayerInJourneyMode) return base.OnPickup(item, player);
             return !(Researcher.IsResearched(item.type) && HyperConfig.Instance.AutoTrashResearched);
         }
 
         public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return base.CanConsumeAmmo(weapon, ammo, player);
+            if (!Researcher.IsPlayerInJourneyMode) return base.CanConsumeAmmo(weapon, ammo, player);
             return HyperConfig.Instance.ConsumeResearchedAmmo || !Researcher.IsResearched(ammo.type);
         }
 
         public override bool? CanConsumeBait(Player player, Item bait)
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return base.CanConsumeBait(player, bait);
+            if (!Researcher.IsPlayerInJourneyMode) return base.CanConsumeBait(player, bait);
             return HyperConfig.Instance.ConsumeResearchedBaits || !Researcher.IsResearched(bait.type);
         }
 
         public override bool ConsumeItem(Item item, Player player)
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return base.ConsumeItem(item, player);
+            if (!Researcher.IsPlayerInJourneyMode) return base.ConsumeItem(item, player);
             if (Researcher.IsResearched(item.type))
             {
                 if (item.createTile >= TileID.Dirt || item.createWall > WallID.None)
@@ -53,7 +53,7 @@ namespace HyperResearch.Common.GlobalItems
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (!Researcher.IsPlayerInJourneyMode() || !Researcher.IsResearchable(item.type)) return;
+            if (!Researcher.IsPlayerInJourneyMode || !Researcher.IsResearchable(item.type)) return;
             if (Researcher.IsResearched(item.type) && HyperConfig.Instance.ShowResearchedTooltip && item.tooltipContext != ItemSlot.Context.CreativeInfinite)
             {
                 TooltipLine researched = new(Mod, "Researched", Language.GetTextValue("Mods.HyperResearch.Tooltips.Researched"))
@@ -86,7 +86,7 @@ namespace HyperResearch.Common.GlobalItems
 
         public override void OnResearched(Item item, bool fullyResearched)
         {
-            if (!Researcher.IsPlayerInJourneyMode() || !fullyResearched || item is null || item.IsAir) return;
+            if (!Researcher.IsPlayerInJourneyMode || !fullyResearched || item is null || item.IsAir) return;
 
             ItemLoader.OnPickup(item, Main.LocalPlayer); // For ItemChecklist and BossChecklist
             if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))

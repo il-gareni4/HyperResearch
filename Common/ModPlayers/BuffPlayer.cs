@@ -31,7 +31,7 @@ public class BuffPlayer : ModPlayer
 
     public override void ProcessTriggers(TriggersSet triggersSet)
     {
-        if (!Researcher.IsPlayerInJourneyMode()) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
 
         if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite
             && Main.HoverItem.buffType != 0
@@ -44,7 +44,7 @@ public class BuffPlayer : ModPlayer
 
     public override void OnEnterWorld()
     {
-        if (!Researcher.IsPlayerInJourneyMode()) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
 
         if (Buffs.Length == 0)
             Buffs = new BuffState[BuffLoader.BuffCount];
@@ -81,7 +81,7 @@ public class BuffPlayer : ModPlayer
 
     public override void PostUpdateBuffs()
     {
-        if (!Researcher.IsPlayerInJourneyMode()) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
         for (int i = 1; i < Buffs.Length; i++)
             if (Buffs[i].HasFlag(BuffState.Researched) && Buffs[i].HasFlag(BuffState.Enabled))
                 Player.AddBuff(i, 1);

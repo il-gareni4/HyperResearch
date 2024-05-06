@@ -13,16 +13,16 @@ namespace HyperResearch.Utils
     {
         public static void MessageResearcherResults(Researcher researcher)
         {
-            if (HyperConfig.Instance.ShowSacrifices && researcher.AnyItemSacrificed())
+            if (HyperConfig.Instance.ShowSacrifices && researcher.AnyItemSacrificed)
                 MessageSacrifices(researcher.SacrificedItems);
             if (HyperConfig.Instance.ShowNewlyResearchedItems)
-                MessageResearchedItems(researcher.ResearchedItems);
+                MessageResearchedItems(researcher.DefaultResearchedItems);
             if (HyperConfig.Instance.ShowResearchedDecraftItems)
-                MessageDecraftItems(researcher.ResearchedDecraftItems);
+                MessageDecraftItems(researcher.DecraftResearchedItems);
             if (HyperConfig.Instance.ShowResearchedShimmeredItems)
-                MessageResearchedShimmeredItems(researcher.ResearchedShimmeredItems);
+                MessageResearchedShimmeredItems(researcher.ShimmerResearchedItems);
             if (HyperConfig.Instance.ShowResearchedCraftableItems)
-                MessageResearchedCraftableItems(researcher.ResearchedCraftableItems);
+                MessageResearchedCraftableItems(researcher.CraftResearchedItems);
         }
 
         /// <summary>Displays information about researched items in the game chat</summary>
@@ -40,7 +40,7 @@ namespace HyperResearch.Utils
         {
             if (!items.Any()) return;
             Main.NewText(
-                Language.GetTextValue("Mods.HyperResearch.Messages.ResearchedCraftableItems", items.Count(), GetItemsString(items)),
+                Language.GetTextValue("Mods.HyperResearch.Messages.CraftResearchedItems", items.Count(), GetItemsString(items)),
                 Color.Lerp(Colors.JourneyMode, Color.Gold, 0.4f)
             );
         }
@@ -50,7 +50,7 @@ namespace HyperResearch.Utils
         {
             if (!items.Any()) return;
             Main.NewText(
-                Language.GetTextValue("Mods.HyperResearch.Messages.ResearchedShimmeredItems", items.Count(), GetItemsString(items)),
+                Language.GetTextValue("Mods.HyperResearch.Messages.ShimmerResearchedItems", items.Count(), GetItemsString(items)),
                 Color.Lerp(Colors.JourneyMode, Colors.RarityPurple, 0.4f)
             );
         }
@@ -59,7 +59,7 @@ namespace HyperResearch.Utils
         {
             if (!items.Any()) return;
             Main.NewText(
-                Language.GetTextValue("Mods.HyperResearch.Messages.ResearchedDecraftItems", items.Count(), GetItemsString(items)),
+                Language.GetTextValue("Mods.HyperResearch.Messages.DecraftResearchedItems", items.Count(), GetItemsString(items)),
                 Color.Lerp(Colors.JourneyMode, Color.White, 0.5f)
             );
         }

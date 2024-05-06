@@ -37,13 +37,13 @@ namespace HyperResearch.UI
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (Researcher.IsPlayerInJourneyMode() && Main.LocalPlayer.TalkNPC is not null && Main.npcShop >= 1)
+            if (Researcher.IsPlayerInJourneyMode && Main.LocalPlayer.TalkNPC is not null && Main.npcShop >= 1)
                 base.Draw(spriteBatch);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (Researcher.IsPlayerInJourneyMode()) base.Update(gameTime);
+            if (Researcher.IsPlayerInJourneyMode) base.Update(gameTime);
         }
 
         public void RebuildButtons()

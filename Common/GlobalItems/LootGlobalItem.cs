@@ -12,7 +12,7 @@ namespace HyperResearch.Common.GlobalItems
     {
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (!Researcher.IsPlayerInJourneyMode() ||
+            if (!Researcher.IsPlayerInJourneyMode ||
                 !Researcher.IsResearched(item.type) ||
                 !ItemLoader.CanRightClick(item) ||
                 !ItemsUtils.IsLootItem(item.type) ||

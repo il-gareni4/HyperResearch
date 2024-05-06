@@ -15,7 +15,7 @@ public class BuffGlobalItem : GlobalItem
 {
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
-        if (!Researcher.IsPlayerInJourneyMode()) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
         if (item.tooltipContext != ItemSlot.Context.CreativeInfinite
             || item.buffType == 0) return;
         if (!Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer)) return;

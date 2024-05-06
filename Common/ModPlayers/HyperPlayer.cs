@@ -26,7 +26,8 @@ namespace HyperResearch.Common.ModPlayers
 
         public List<int> ResearchedBanners = [];
 
-        /// <summary>Array of items in current shop. Used for <see cref="HyperResearch.ResearchShopBind"/></summary>
+        /// <summary>Array of items in current shop</summary>
+        /// <seealso cref="KeybindSystem.ResearchShopBind"/>
         public Item[] CurrentShopItems { get; set; } = [];
         public int ItemsResearchedCount { get; set; }
 
@@ -34,7 +35,7 @@ namespace HyperResearch.Common.ModPlayers
 
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return;
+            if (!Researcher.IsPlayerInJourneyMode) return;
 #if DEBUG
             if (KeybindSystem.ForgetAllBind.JustPressed)
             {
@@ -86,7 +87,7 @@ namespace HyperResearch.Common.ModPlayers
 
         public override void OnEnterWorld()
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return;
+            if (!Researcher.IsPlayerInJourneyMode) return;
 
             ItemsResearchedCount = 0;
             Researcher researcher = new();
@@ -94,7 +95,7 @@ namespace HyperResearch.Common.ModPlayers
             {
                 TryAddToResearchedTiles(itemId);
 
-                if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether)
+                if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether || !ConfigOptions.BalanceShimmerAutoresearch)
                 {
                     if (ConfigOptions.ResearchShimmerableItems)
                         researcher.TryResearchShimmeredItem(itemId);
@@ -120,7 +121,7 @@ namespace HyperResearch.Common.ModPlayers
 
         public override void PostUpdate()
         {
-            if (!Researcher.IsPlayerInJourneyMode() || Player != Main.LocalPlayer) return;
+            if (!Researcher.IsPlayerInJourneyMode || Player != Main.LocalPlayer) return;
 
             if (HyperConfig.Instance.ResearchInventory) ResearchInventory();
 
@@ -156,7 +157,7 @@ namespace HyperResearch.Common.ModPlayers
 
         public override bool HoverSlot(Item[] inventory, int context, int slot)
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return base.HoverSlot(inventory, context, slot);
+            if (!Researcher.IsPlayerInJourneyMode) return base.HoverSlot(inventory, context, slot);
             _hoverItem = inventory[slot];
             return base.HoverSlot(inventory, context, slot);
         }
@@ -189,11 +190,11 @@ namespace HyperResearch.Common.ModPlayers
             bool anyItemResearched = false;
             Researcher sacrificesResearcher = new();
             sacrificesResearcher.SacrificeItems(sacrifices);
-            if (HyperConfig.Instance.ShowSharedSacrifices && sacrificesResearcher.AnyItemSacrificed())
+            if (HyperConfig.Instance.ShowSharedSacrifices && sacrificesResearcher.AnyItemSacrificed)
                 TextUtils.MessageSharedSacrifices(sacrificesResearcher.SacrificedItems, fromPlayer);
-            if (HyperConfig.Instance.ShowNewlyResearchedItems && sacrificesResearcher.AnyItemResearched())
+            if (HyperConfig.Instance.ShowNewlyResearchedItems && sacrificesResearcher.AnyItemResearched)
             {
-                TextUtils.MessageResearchedItems(sacrificesResearcher.ResearchedItems);
+                TextUtils.MessageResearchedItems(sacrificesResearcher.DefaultResearchedItems);
                 anyItemResearched = true;
             }
 
@@ -203,17 +204,17 @@ namespace HyperResearch.Common.ModPlayers
                 researcher.ResearchItems(items);
 
                 if (HyperConfig.Instance.ShowSharedItems)
-                    TextUtils.MessageSharedItems(researcher.ResearchedItems, fromPlayer);
-                anyItemResearched = anyItemResearched || researcher.AnyItemResearched();
+                    TextUtils.MessageSharedItems(researcher.DefaultResearchedItems, fromPlayer);
+                anyItemResearched = anyItemResearched || researcher.AnyItemResearched;
 
-                sacrificesResearcher.ResearchedCraftableItems.AddRange(researcher.ResearchedCraftableItems);
-                sacrificesResearcher.ResearchedShimmeredItems.AddRange(researcher.ResearchedShimmeredItems);
+                sacrificesResearcher.CraftResearchedItems.AddRange(researcher.CraftResearchedItems);
+                sacrificesResearcher.ShimmerResearchedItems.AddRange(researcher.ShimmerResearchedItems);
             }
 
             if (HyperConfig.Instance.ShowResearchedCraftableItems)
-                TextUtils.MessageResearchedCraftableItems(sacrificesResearcher.ResearchedCraftableItems);
+                TextUtils.MessageResearchedCraftableItems(sacrificesResearcher.CraftResearchedItems);
             if (HyperConfig.Instance.ShowResearchedShimmeredItems)
-                TextUtils.MessageResearchedShimmeredItems(sacrificesResearcher.ResearchedShimmeredItems);
+                TextUtils.MessageResearchedShimmeredItems(sacrificesResearcher.ShimmerResearchedItems);
 
             if (anyItemResearched)
             {
@@ -222,7 +223,7 @@ namespace HyperResearch.Common.ModPlayers
                     SyncItemsWithTeam(sacrificesResearcher);
                 SoundEngine.PlaySound(SoundID.ResearchComplete);
             }
-            else if (sacrificesResearcher.AnyItemSacrificed()) SoundEngine.PlaySound(SoundID.MenuTick);
+            else if (sacrificesResearcher.AnyItemSacrificed) SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         /// <summary>
@@ -353,7 +354,7 @@ namespace HyperResearch.Common.ModPlayers
             Researcher researcher = new();
             for (int itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
             {
-                if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether)
+                if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether || !ConfigOptions.BalanceShimmerAutoresearch)
                 {
                     if (ConfigOptions.ResearchShimmerableItems)
                         researcher.TryResearchShimmeredItem(itemId);
@@ -385,7 +386,7 @@ namespace HyperResearch.Common.ModPlayers
 
         public void AfterLocalResearch(Researcher researcher)
         {
-            if (researcher.AnyItemResearched())
+            if (researcher.AnyItemResearched)
             {
                 TextUtils.MessageResearcherResults(researcher);
                 SoundEngine.PlaySound(SoundID.ResearchComplete);
@@ -393,7 +394,7 @@ namespace HyperResearch.Common.ModPlayers
                 if (HyperConfig.Instance.AutoTrashAfterResearching)
                     TrashInventoryItems(researcher.AllResearchedItems);
             }
-            else if (researcher.AnyItemSacrificed())
+            else if (researcher.AnyItemSacrificed)
             {
                 if (HyperConfig.Instance.ShowSacrifices)
                     TextUtils.MessageSacrifices(researcher.SacrificedItems);
@@ -401,8 +402,8 @@ namespace HyperResearch.Common.ModPlayers
             }
 
             if (Main.netMode == NetmodeID.MultiplayerClient &&
-                ServerConfig.Instance.SyncResearchedItemsInOneTeam && researcher.AnyItemResearched() ||
-                ServerConfig.Instance.SyncSacrificesInOneTeam && researcher.AnyItemSacrificed())
+                ServerConfig.Instance.SyncResearchedItemsInOneTeam && researcher.AnyItemResearched ||
+                ServerConfig.Instance.SyncSacrificesInOneTeam && researcher.AnyItemSacrificed)
                 SyncItemsWithTeam(researcher);
         }
     }

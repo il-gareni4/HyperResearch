@@ -10,7 +10,7 @@ namespace HyperResearch.Common
     {
         public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
         {
-            if (!Researcher.IsPlayerInJourneyMode()) return;
+            if (!Researcher.IsPlayerInJourneyMode) return;
 
             if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
             {
