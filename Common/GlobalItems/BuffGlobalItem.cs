@@ -16,16 +16,16 @@ public class BuffGlobalItem : GlobalItem
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
         if (!Researcher.IsPlayerInJourneyMode
-            || !ConfigOptions.UseResearchedPotionsBuff
             || item.tooltipContext != ItemSlot.Context.CreativeInfinite
+            || !ConfigOptions.UseResearchedPotionsBuff
             || !BuffUtils.IsBuffPotion(item)
             || !Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer)) return;
 
         bool buffEnabled = buffPlayer.Buffs[item.buffType].IsEnabled();
         string name = buffEnabled ? "DisableBuff" : "EnableBuff";
         string text = buffEnabled
-            ? Language.GetTextValue("Mods.HyperResearch.Tooltips.DisableBuff").FormatWith(InputUtils.GetKeybindString(KeybindSystem.EnableDisableBuffBind))
-            : Language.GetTextValue("Mods.HyperResearch.Tooltips.EnableBuff").FormatWith(InputUtils.GetKeybindString(KeybindSystem.EnableDisableBuffBind));
+            ? Language.GetTextValue("Mods.HyperResearch.Tooltips.DisableBuff", InputUtils.GetKeybindString(KeybindSystem.EnableDisableBuffBind))
+            : Language.GetTextValue("Mods.HyperResearch.Tooltips.EnableBuff", InputUtils.GetKeybindString(KeybindSystem.EnableDisableBuffBind));
         TooltipLine researched = new(Mod, name, text)
         {
             OverrideColor = buffEnabled ? Colors.RarityGreen : Colors.RarityRed,

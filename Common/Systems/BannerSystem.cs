@@ -39,9 +39,14 @@ namespace HyperResearch.Common.Systems
             if (!Researcher.IsPlayerInJourneyMode || !ConfigOptions.UseResearchedBannersBuff) return;
             if (Main.LocalPlayer.TryGetModPlayer(out BannerPlayer player) && player.ResearchedBanners.Count > 0)
             {
-                foreach (int bannerId in player.ResearchedBanners)
-                    Main.SceneMetrics.NPCBannerBuff[bannerId] = true;
-                Main.SceneMetrics.hasBanner = true;
+                bool anyBannerEnabled = false;
+                foreach ((int bannerId, bool bannerEnabled) in player.ResearchedBanners)
+                    if (bannerEnabled)
+                    {
+                        Main.SceneMetrics.NPCBannerBuff[bannerId] = true;
+                        anyBannerEnabled = true;
+                    }
+                Main.SceneMetrics.hasBanner = anyBannerEnabled;
             }
         }
 
