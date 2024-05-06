@@ -38,6 +38,12 @@ namespace HyperResearch.Utils
                 UseServerSettings ? ServerConfig.Instance.UseResearchedBannersBuff : HyperConfig.Instance.UseResearchedBannersBuff;
         }
 
+        public static bool UseResearchedPotionsBuff
+        {
+            get =>
+                UseServerSettings ? ServerConfig.Instance.UseResearchedPotionsBuff : HyperConfig.Instance.UseResearchedPotionsBuff;
+        }
+
         public static bool OnlyOneItemNeeded
         {
             get =>

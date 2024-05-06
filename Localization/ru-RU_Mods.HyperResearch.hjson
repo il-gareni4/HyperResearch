@@ -292,6 +292,11 @@ Configs: {
 			// Label: Balance Shimmer Autoresearch
 			// Tooltip: ""
 		}
+
+		UseResearchedPotionsBuff: {
+			// Label: Use Researched Potions Buff
+			// Tooltip: ""
+		}
 	}
 
 	ServerConfig: {
@@ -346,6 +351,11 @@ Configs: {
 
 		BalanceShimmerAutoresearch: {
 			// Label: Balance Shimmer Autoresearch
+			// Tooltip: ""
+		}
+
+		UseResearchedPotionsBuff: {
+			// Label: Use Researched Potions Buff
 			// Tooltip: ""
 		}
 	}

@@ -20,6 +20,9 @@ public enum BuffState : byte
 
 public static class BuffStateExtension
 {
+    public static bool IsResearched(this ref BuffState buffState) => buffState.HasFlag(BuffState.Researched);
+    public static bool IsEnabled(this ref BuffState buffState) => buffState.HasFlag(BuffState.Enabled);
+
     public static void Toggle(this ref BuffState buffState, BuffState flag) => buffState ^= flag;
     public static void Enable(this ref BuffState buffState, BuffState flag) => buffState |= flag;
     public static void Disable(this ref BuffState buffState, BuffState flag) => buffState &= ~flag;
@@ -35,7 +38,7 @@ public class BuffPlayer : ModPlayer
 
         if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite
             && BuffUtils.IsBuffPotion(Main.HoverItem)
-            && Buffs[Main.HoverItem.buffType].HasFlag(BuffState.Researched)
+            && Buffs[Main.HoverItem.buffType].IsResearched()
             && KeybindSystem.EnableDisableBuffBind.JustPressed)
         {
             Buffs[Main.HoverItem.buffType].Toggle(BuffState.Enabled);
@@ -85,16 +88,19 @@ public class BuffPlayer : ModPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
         for (int i = 1; i < Buffs.Length; i++)
-            if (Buffs[i].HasFlag(BuffState.Researched) && Buffs[i].HasFlag(BuffState.Enabled))
+            if (ConfigOptions.UseResearchedPotionsBuff
+                && Buffs[i].IsResearched() && Buffs[i].IsEnabled())
+            {
                 Player.AddBuff(i, 1);
+            }
     }
 
-    public void ResearchItem(Item item, bool enabled = true)
+    public void ResearchItem(Item item, bool enable = true)
     {
         if (item.buffType != 0)
         {
             Buffs[item.buffType].Enable(BuffState.Researched);
-            if (enabled && BuffUtils.IsBuffPotion(item)) Buffs[item.buffType].Enable(BuffState.Enabled);
+            if (enable && BuffUtils.IsBuffPotion(item)) Buffs[item.buffType].Enable(BuffState.Enabled);
         }
     }
 }

@@ -15,12 +15,13 @@ public class BuffGlobalItem : GlobalItem
 {
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
-        if (!Researcher.IsPlayerInJourneyMode) return;
-        if (item.tooltipContext != ItemSlot.Context.CreativeInfinite
-            || !BuffUtils.IsBuffPotion(item)) return;
-        if (!Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer)) return;
+        if (!Researcher.IsPlayerInJourneyMode
+            || !ConfigOptions.UseResearchedPotionsBuff
+            || item.tooltipContext != ItemSlot.Context.CreativeInfinite
+            || !BuffUtils.IsBuffPotion(item)
+            || !Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer)) return;
 
-        bool buffEnabled = buffPlayer.Buffs[item.buffType].HasFlag(BuffState.Enabled);
+        bool buffEnabled = buffPlayer.Buffs[item.buffType].IsEnabled();
         string name = buffEnabled ? "DisableBuff" : "EnableBuff";
         string text = buffEnabled
             ? Language.GetTextValue("Mods.HyperResearch.Tooltips.DisableBuff").FormatWith(InputUtils.GetKeybindString(KeybindSystem.EnableDisableBuffBind))

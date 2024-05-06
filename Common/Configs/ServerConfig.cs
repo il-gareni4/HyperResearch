@@ -51,6 +51,10 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(false)]
         public bool UseResearchedBannersBuff;
 
+        [LabelArgs(ItemID.WrathPotion)]
+        [DefaultValue(false)]
+        public bool UseResearchedPotionsBuff;
+
         [LabelArgs(ItemID.AlphabetStatue1)]
         [DefaultValue(false)]
         public bool OnlyOneItemNeeded;
