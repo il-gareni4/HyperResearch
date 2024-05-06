@@ -9,11 +9,11 @@ internal class BaseGlobalBuff : GlobalBuff
 {
     public override bool RightClick(int type, int buffIndex)
     {
-        if (!Researcher.IsPlayerInJourneyMode) return true;
-        if (!Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer)) return true;
-        if (!buffPlayer.Buffs[type].HasFlag(BuffState.Researched)) return true;
+        if (!Researcher.IsPlayerInJourneyMode
+            || !Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer)
+            || !buffPlayer.Buffs.TryGetValue(type, out bool _)) return true;
 
-        buffPlayer.Buffs[type].Disable(BuffState.Enabled);
+        buffPlayer.Buffs[type] = false;
 
         return true;
     }

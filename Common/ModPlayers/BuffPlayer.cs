@@ -1,7 +1,10 @@
 ﻿using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
+using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
+using rail;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.GameInput;
@@ -12,26 +15,9 @@ using Terraria.UI;
 
 namespace HyperResearch.Common.ModPlayers;
 
-[Flags]
-public enum BuffState : byte
-{
-    Researched = 1,
-    Enabled = 2,
-}
-
-public static class BuffStateExtension
-{
-    public static bool IsResearched(this ref BuffState buffState) => buffState.HasFlag(BuffState.Researched);
-    public static bool IsEnabled(this ref BuffState buffState) => buffState.HasFlag(BuffState.Enabled);
-
-    public static void Toggle(this ref BuffState buffState, BuffState flag) => buffState ^= flag;
-    public static void Enable(this ref BuffState buffState, BuffState flag) => buffState |= flag;
-    public static void Disable(this ref BuffState buffState, BuffState flag) => buffState &= ~flag;
-}
-
 public class BuffPlayer : ModPlayer, IResearchPlayer
 {
-    public BuffState[] Buffs { get; private set; } = [];
+    public DictionaryAnalysisData<int, bool> Buffs { get; private set; } = [];
 
     public override void ProcessTriggers(TriggersSet triggersSet)
     {
@@ -39,21 +25,19 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
 
         if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite
             && BuffUtils.IsBuffPotion(Main.HoverItem)
-            && Buffs[Main.HoverItem.buffType].IsResearched()
+            && Buffs.TryGetValue(Main.HoverItem.buffType, out bool enabled)
             && KeybindSystem.EnableDisableBuffBind.JustPressed)
         {
-            Buffs[Main.HoverItem.buffType].Toggle(BuffState.Enabled);
+            Buffs[Main.HoverItem.buffType] = !enabled;
         }
         if (KeybindSystem.ForgetAllBind.JustPressed)
-            Buffs = new BuffState[BuffLoader.BuffCount];
+            Buffs.Clear();
     }
 
     public override void OnEnterWorld()
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
-        if (Buffs.Length == 0)
-            Buffs = new BuffState[BuffLoader.BuffCount];
         for (int itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
         {
             Item item = ContentSamples.ItemsByType[itemId];
@@ -64,46 +48,38 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     public override void SaveData(TagCompound tag)
     {
         if (Main.CurrentPlayer.difficulty != 3) return;
-        tag["buffsEnabled"] = Buffs.Select(f => f.HasFlag(BuffState.Enabled)).ToArray();
+        tag["buffsEnabled"] = Buffs.Where(kv => kv.Value).Select(kv => kv.Key).ToArray();
     }
 
     public override void Unload()
     {
         if (Main.CurrentPlayer.difficulty != 3) return;
-        Buffs = [];
+        Buffs.Clear();
     }
 
     public override void LoadData(TagCompound tag)
     {
         if (Main.CurrentPlayer.difficulty != 3) return;
 
-        Buffs = new BuffState[BuffLoader.BuffCount];
-        if (tag.TryGet("buffsEnabled", out bool[] enabled))
-        {
-            for (int buffId = 0; buffId < Math.Min(enabled.Length, Buffs.Length); buffId++)
-                if (enabled[buffId]) Buffs[buffId].Enable(BuffState.Enabled);
-        }
+        if (tag.TryGet("buffsEnabled", out int[] enabled))
+            foreach (int buffId in enabled)
+                Buffs[buffId] = true;
     }
 
     public override void PostUpdateBuffs()
     {
-        if (!Researcher.IsPlayerInJourneyMode) return;
-        for (int i = 1; i < Buffs.Length; i++)
-            if (ConfigOptions.UseResearchedPotionsBuff
-                && Buffs[i].IsResearched() && Buffs[i].IsEnabled())
-            {
-                Player.AddBuff(i, 1);
-            }
+        if (!Researcher.IsPlayerInJourneyMode || !ConfigOptions.UseResearchedPotionsBuff) return;
+
+        foreach ((int buffId, bool enabled) in Buffs)
+            if (enabled) Player.AddBuff(buffId, 1);
     }
 
     public void OnResearch(Item item) => ResearchItem(item);
 
-    public void ResearchItem(Item item, bool enable = true)
+    public void ResearchItem(Item item, bool enabledIfNotFound = true)
     {
-        if (item.buffType != 0)
-        {
-            Buffs[item.buffType].Enable(BuffState.Researched);
-            if (enable && BuffUtils.IsBuffPotion(item)) Buffs[item.buffType].Enable(BuffState.Enabled);
-        }
+        if (item.buffType == 0 || Buffs.ContainsKey(item.buffType)) return;
+
+        Buffs[item.buffType] = BuffUtils.IsBuffPotion(item) && enabledIfNotFound;
     }
 }

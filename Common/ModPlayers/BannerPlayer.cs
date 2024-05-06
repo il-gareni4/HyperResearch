@@ -14,16 +14,19 @@ namespace HyperResearch.Common.ModPlayers;
 
 public class BannerPlayer : ModPlayer, IResearchPlayer
 {
-    public Dictionary<int, bool> ResearchedBanners = [];
+    public Dictionary<int, bool> ResearchedBanners { get; private set; } = [];
 
     public override void OnEnterWorld()
     {
+        if (!Researcher.IsPlayerInJourneyMode) return;
+
         for (int itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
             if (Researcher.IsResearched(itemId)) TryAddBanner(itemId, false);
     }
 
     public override void ProcessTriggers(TriggersSet triggersSet)
     {
+        if (Researcher.IsPlayerInJourneyMode) return;
         if (KeybindSystem.ForgetAllBind.JustPressed)
             ResearchedBanners.Clear();
         if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite
@@ -62,8 +65,9 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
 
     private void TryAddBanner(int itemId, bool enabledIfNotFound = true)
     {
-        if (BannerSystem.ItemToBanner.TryGetValue(itemId, out var bannerId))
-            if (!ResearchedBanners.ContainsKey(bannerId))
-                ResearchedBanners[bannerId] = enabledIfNotFound;
+        if (!BannerSystem.ItemToBanner.TryGetValue(itemId, out var bannerId)
+            || ResearchedBanners.ContainsKey(bannerId)) return;
+
+        ResearchedBanners[bannerId] = enabledIfNotFound;
     }
 }
