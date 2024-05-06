@@ -34,7 +34,7 @@ public class BuffPlayer : ModPlayer
         if (!Researcher.IsPlayerInJourneyMode) return;
 
         if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite
-            && Main.HoverItem.buffType != 0
+            && BuffUtils.IsBuffPotion(Main.HoverItem)
             && Buffs[Main.HoverItem.buffType].HasFlag(BuffState.Researched)
             && KeybindSystem.EnableDisableBuffBind.JustPressed)
         {
@@ -92,7 +92,7 @@ public class BuffPlayer : ModPlayer
         if (item.buffType != 0)
         {
             Buffs[item.buffType].Enable(BuffState.Researched);
-            if (enabled) Buffs[item.buffType].Enable(BuffState.Enabled);
+            if (enabled && BuffUtils.IsBuffPotion(item)) Buffs[item.buffType].Enable(BuffState.Enabled);
         }
     }
 }

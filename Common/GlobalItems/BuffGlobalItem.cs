@@ -17,7 +17,7 @@ public class BuffGlobalItem : GlobalItem
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
         if (item.tooltipContext != ItemSlot.Context.CreativeInfinite
-            || item.buffType == 0) return;
+            || !BuffUtils.IsBuffPotion(item)) return;
         if (!Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer)) return;
 
         bool buffEnabled = buffPlayer.Buffs[item.buffType].HasFlag(BuffState.Enabled);
