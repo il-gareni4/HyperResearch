@@ -95,20 +95,20 @@ namespace HyperResearch.Common.ModPlayers
             {
                 TryAddToResearchedTiles(itemId);
 
-                if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether || !ConfigOptions.BalanceShimmerAutoresearch)
-                {
-                    if (ConfigOptions.ResearchShimmerableItems)
-                        researcher.TryResearchShimmeredItem(itemId);
-                    if (ConfigOptions.ResearchDecraftItems)
-                        researcher.ResearchDecraftItems(itemId);
-                }
-
                 if (Researcher.IsResearched(itemId))
                 {
                     if (Researcher.GetSharedValue(itemId) == -1)
                         ItemsResearchedCount++;
                     if (BannerSystem.ItemToBanner.TryGetValue(itemId, out int bannerId))
                         ResearchedBanners.Add(bannerId);
+
+                    if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether || !ConfigOptions.BalanceShimmerAutoresearch)
+                    {
+                        if (ConfigOptions.ResearchShimmerableItems)
+                            researcher.TryResearchShimmeredItem(itemId);
+                        if (ConfigOptions.ResearchDecraftItems)
+                            researcher.ResearchDecraftItems(itemId);
+                    }
                 }
                 else
                 {
@@ -354,14 +354,17 @@ namespace HyperResearch.Common.ModPlayers
             Researcher researcher = new();
             for (int itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
             {
-                if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether || !ConfigOptions.BalanceShimmerAutoresearch)
+                if (Researcher.IsResearched(itemId))
                 {
-                    if (ConfigOptions.ResearchShimmerableItems)
-                        researcher.TryResearchShimmeredItem(itemId);
-                    if (ConfigOptions.ResearchDecraftItems)
-                        researcher.ResearchDecraftItems(itemId);
+                    if (ConfigOptions.BalanceShimmerAutoresearch && WasInAether || !ConfigOptions.BalanceShimmerAutoresearch)
+                    {
+                        if (ConfigOptions.ResearchShimmerableItems)
+                            researcher.TryResearchShimmeredItem(itemId);
+                        if (ConfigOptions.ResearchDecraftItems)
+                            researcher.ResearchDecraftItems(itemId);
+                    }
                 }
-                if (ConfigOptions.OnlyOneItemNeeded && Researcher.IsResearchable(itemId) &&
+                else if (ConfigOptions.OnlyOneItemNeeded && Researcher.IsResearchable(itemId) &&
                     Researcher.GetResearchedCount(itemId) >= 1) researcher.ResearchItem(itemId);
             }
             AfterLocalResearch(researcher);

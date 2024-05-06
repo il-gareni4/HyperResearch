@@ -40,6 +40,8 @@ public class BuffPlayer : ModPlayer
         {
             Buffs[Main.HoverItem.buffType].Toggle(BuffState.Enabled);
         }
+        if (KeybindSystem.ForgetAllBind.JustPressed)
+            Buffs = new BuffState[BuffLoader.BuffCount];
     }
 
     public override void OnEnterWorld()
