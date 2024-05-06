@@ -85,14 +85,20 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     {
         if (!Buffs.TryGetValue(Main.HoverItem.buffType, out bool enabled)) return;
 
-        if (BuffUtils.IsABuffPotion(item) 
-            || (BuffUtils.IsAFlask(item) && enabled))
-            Buffs[Main.HoverItem.buffType] = !enabled;
-        else if (BuffUtils.IsAFlask(item))
+        if (BuffUtils.IsABuffPotion(item)) Buffs[Main.HoverItem.buffType] = !enabled;
+        else if (BuffUtils.IsAFlask(item)) ToggleGroup(item.buffType, BuffID.Sets.IsAFlaskBuff);
+        else if (BuffUtils.IsAFood(item)) ToggleGroup(item.buffType, BuffID.Sets.IsWellFed);
+    }
+
+    private void ToggleGroup(int buffId, bool[] set) 
+    {
+        if (!Buffs.TryGetValue(Main.HoverItem.buffType, out bool enabled)) return;
+
+        if (!enabled)
         {
-            for (int buffId = 1; buffId < BuffID.Sets.IsAFlaskBuff.Length; buffId++)
-                if (BuffID.Sets.IsAFlaskBuff[buffId]) Buffs[buffId] = false;
-            Buffs[item.buffType] = !enabled;
+            for (int id = 1; id < set.Length; id++)
+                if (set[id]) Buffs[id] = false;
         }
+        Buffs[buffId] = !enabled;
     }
 }

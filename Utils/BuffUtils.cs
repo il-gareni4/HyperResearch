@@ -12,4 +12,8 @@ public static class BuffUtils
     public static bool IsAFlask(Item item) =>
         item.buffType > 0
         && BuffID.Sets.IsAFlaskBuff[item.buffType];
+
+    public static bool IsAFood(Item item) =>
+        item.buffType > 0
+        && BuffID.Sets.IsWellFed[item.buffType];
 }

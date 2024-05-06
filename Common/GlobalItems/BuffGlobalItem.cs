@@ -18,7 +18,7 @@ public class BuffGlobalItem : GlobalItem
         if (!Researcher.IsPlayerInJourneyMode
             || item.tooltipContext != ItemSlot.Context.CreativeInfinite
             || !ConfigOptions.UseResearchedPotionsBuff
-            || (!BuffUtils.IsABuffPotion(item) && !BuffUtils.IsAFlask(item))
+            || (!BuffUtils.IsABuffPotion(item) && !BuffUtils.IsAFlask(item) && !BuffUtils.IsAFood(item))
             || !Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer)
             || !buffPlayer.Buffs.TryGetValue(item.buffType, out bool enabled)) return;
 
