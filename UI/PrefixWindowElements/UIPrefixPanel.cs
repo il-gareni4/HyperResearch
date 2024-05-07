@@ -42,7 +42,6 @@ public class UIPrefixPanel : UIPanel, IComparable
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
-        base.DrawSelf(spriteBatch);
         if (IsMouseHovering)
         {
             Main.HoverItem = _item.Clone();
@@ -51,6 +50,7 @@ public class UIPrefixPanel : UIPanel, IComparable
             if (PlayerInput.GetPressedKeys().Contains(Keys.LeftShift))
                 Main.cursorOverride = CursorOverrideID.BackInventory;
         }
+        base.DrawSelf(spriteBatch);
     }
 
     public override void LeftMouseDown(UIMouseEvent evt)

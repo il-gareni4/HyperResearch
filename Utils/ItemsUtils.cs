@@ -142,11 +142,16 @@ public static class ItemsUtils
     public static bool IsInItemGroup(Item item, ContentSamples.CreativeHelper.ItemGroup group) =>
         ContentSamples.CreativeHelper.GetItemGroup(item, out int _) == group;
 
-    public static int[] GetPossiblePrefixes(Item item)
+    public static int[] GetAllPrefixes(Item item)
     {
         PrefixCategory? category = item.GetPrefixCategory();
         if (category == null) return [];
         return Item.GetVanillaPrefixes((PrefixCategory)category);
+    }
+
+    public static int[] GetPossiblePrefixes(Item item)
+    {
+        return GetAllPrefixes(item).Where(p => item.CanApplyPrefix(p)).ToArray();
     }
 
     public static Color GetRarityColor(Item item)

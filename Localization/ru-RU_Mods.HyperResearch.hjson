@@ -18,6 +18,7 @@ Tooltips: {
 	DisableBuff: Нажмите {0}, чтобы выключить бафф
 	EnableBanner: Нажмите {0}, чтобы включить эффект баннера
 	DisableBanner: Нажмите {0}, чтобы выключить эффект баннера
+	// ChoosePrefix: Press {0} to select the desired modifier
 }
 
 UI: {

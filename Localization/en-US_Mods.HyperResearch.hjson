@@ -18,6 +18,7 @@ Tooltips: {
 	DisableBuff: Press {0} to disable buff
 	EnableBanner: Press {0} to enable banner buff
 	DisableBanner: Press {0} to disable banner buff
+	ChoosePrefix: Press {0} to select the desired modifier
 }
 
 UI: {

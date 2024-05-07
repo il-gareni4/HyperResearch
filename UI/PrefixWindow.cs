@@ -58,7 +58,6 @@ public class PrefixWindow : UIState
         item.tooltipContext = ItemSlot.Context.PrefixItem;
         foreach (int prefix in ItemsUtils.GetPossiblePrefixes(item))
         {
-            if (!item.CanApplyPrefix(prefix)) continue;
             Item prefixItem = item.Clone();
             prefixItem.Prefix(prefix);
 
@@ -91,7 +90,7 @@ public class PrefixWindow : UIState
 
     public override void MiddleClick(UIMouseEvent evt)
     {
-        if (Main.HoverItem.IsAir
+        if (!Main.HoverItem.CanHavePrefixes()
             || Main.HoverItem.tooltipContext != ItemSlot.Context.CreativeInfinite) return;
 
         MainPanel.MaxHeight.Pixels = MathHelper.Clamp(Main.screenHeight - 352f - 64f, 150f, 300f);
