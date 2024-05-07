@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using HyperResearch.Utils;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -10,7 +11,7 @@ public class PrefixableGlobalItem : GlobalItem
 {
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
-        if (!item.CanHavePrefixes() || item.tooltipContext != ItemSlot.Context.CreativeInfinite)
+        if (!ItemsUtils.CanHavePrifixes(item) || item.tooltipContext != ItemSlot.Context.CreativeInfinite)
             return;
 
         TooltipLine tooltipLine = new(Mod, "ChoosePrefix", Language.GetText("Mods.HyperResearch.Tooltips.ChoosePrefix").Format("Mouse3"))

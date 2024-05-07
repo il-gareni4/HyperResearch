@@ -90,7 +90,7 @@ public class PrefixWindow : UIState
 
     public override void MiddleClick(UIMouseEvent evt)
     {
-        if (!Main.HoverItem.CanHavePrefixes()
+        if (!ItemsUtils.CanHavePrifixes(Main.HoverItem)
             || Main.HoverItem.tooltipContext != ItemSlot.Context.CreativeInfinite) return;
 
         MainPanel.MaxHeight.Pixels = MathHelper.Clamp(Main.screenHeight - 352f - 64f, 150f, 300f);

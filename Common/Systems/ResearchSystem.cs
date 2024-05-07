@@ -18,22 +18,9 @@ public class ResearchSystem : ModSystem
         CalculateResearchable();
     }
 
-    public override void Load()
-    {
-        HyperConfig.Changed += OnClientConfigChanged;
-        ServerConfig.Changed += OnServerConfigChanged;
-    }
-
-    public override void Unload()
-    {
-        HyperConfig.Changed -= OnClientConfigChanged;
-        ServerConfig.Changed -= OnServerConfigChanged;
-    }
-
     private void OverrideDefaultResearchCount()
     {
         CountOverride.Clear();
-        CreativeItemSacrificesCatalog.Instance.Initialize();
         foreach ((ItemDefinition def, uint count) in ConfigOptions.ItemResearchCountOverride)
         {
             if (def.Type == 0 || def.IsUnloaded) continue;
@@ -45,7 +32,6 @@ public class ResearchSystem : ModSystem
             CountOverride[def.Type] = (int)count;
         }
     }
-
 
     private void CalculateResearchable()
     {
@@ -60,19 +46,5 @@ public class ResearchSystem : ModSystem
             }
         }
         ResearchableItemsCount = totalResearchable;
-    }
-
-    private void OnClientConfigChanged()
-    {
-        if (ConfigOptions.UseServerSettings) return;
-        OverrideDefaultResearchCount();
-        CalculateResearchable();
-    }
-
-    private void OnServerConfigChanged()
-    {
-        if (!ConfigOptions.UseServerSettings) return;
-        OverrideDefaultResearchCount();
-        CalculateResearchable();
     }
 }

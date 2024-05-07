@@ -146,7 +146,8 @@ public static class ItemsUtils
     {
         PrefixCategory? category = item.GetPrefixCategory();
         if (category == null) return [];
-        return Item.GetVanillaPrefixes((PrefixCategory)category);
+        var modPrefixes = PrefixLoader.GetPrefixesInCategory((PrefixCategory)category);
+        return [..Item.GetVanillaPrefixes((PrefixCategory)category), ..modPrefixes.Select(p => p.Type)];
     }
 
     public static int[] GetPossiblePrefixes(Item item)
@@ -175,4 +176,7 @@ public static class ItemsUtils
             _ => RarityLoader.GetRarity(item.rare)?.RarityColor ?? Colors.RarityNormal
         };
     }
+
+    public static bool CanHavePrifixes(Item item) =>
+        item.CanHavePrefixes() && (item.ModItem?.CanReforge() ?? true) && GetPossiblePrefixes(item).Length > 0;
 }
