@@ -71,9 +71,11 @@ public static class ItemsUtils
 
     public static Recipe GetDecraftRecipe(int itemId)
     {
+        if (GetShimmeredItemId(itemId) > 0 || ContentSamples.ItemsByType[itemId].createTile == TileID.MusicBoxes) return null;
         if (ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
             itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];
 
+        if (ShimmerTransforms.IsItemTransformLocked(itemId)) return null;
         int recipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(itemId);
         if (recipeIndex < 0) return null;
 
