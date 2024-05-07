@@ -2,13 +2,11 @@
 using HyperResearch.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Markup;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.UI;
 
 namespace HyperResearch.UI;
@@ -58,20 +56,12 @@ public class PrefixWindow : UIState
     {
         PrefixesList.Clear();
         item.tooltipContext = ItemSlot.Context.PrefixItem;
-
-        var prefixes = from p in ItemsUtils.GetPossiblePrefixes(item)
-                          where item.CanApplyPrefix(p) select p;
-
-        List<Item> prefixItems = [];
-        foreach (int prefix in prefixes)
+        foreach (int prefix in ItemsUtils.GetPossiblePrefixes(item))
         {
+            if (!item.CanApplyPrefix(prefix)) continue;
             Item prefixItem = item.Clone();
             prefixItem.Prefix(prefix);
-            prefixItems.Add(prefixItem);
-        }
 
-        foreach (Item prefixItem in prefixItems)
-        {
             UIPrefixPanel prefixPanel = new(prefixItem);
             PrefixesList.Add(prefixPanel);
         }
@@ -92,11 +82,11 @@ public class PrefixWindow : UIState
         if (Enabled) base.Update(gameTime);
     }
 
-    public override void LeftClick(UIMouseEvent evt)
+    public override void LeftMouseDown(UIMouseEvent evt)
     {
         if (Enabled && (evt.Target == this || evt.Target is UIPrefixPanel || evt.Target.Parent is UIPrefixPanel))
             PrefixesList.Clear();
-        base.LeftClick(evt);
+        base.LeftMouseDown(evt);
     }
 
     public override void MiddleClick(UIMouseEvent evt)
@@ -109,6 +99,7 @@ public class PrefixWindow : UIState
         MainPanel.Top.Pixels = MathHelper.Clamp(evt.MousePosition.Y - dim.Height / 2, 352f, Main.screenHeight - dim.Height - 64f);
 
         SetPrefixes(Main.HoverItem.Clone());
+        SoundEngine.PlaySound(SoundID.MenuTick);
         base.MiddleClick(evt);
-    } 
+    }
 }

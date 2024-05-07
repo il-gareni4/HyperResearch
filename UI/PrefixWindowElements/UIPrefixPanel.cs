@@ -1,10 +1,13 @@
 ﻿using HyperResearch.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.UI;
 
@@ -44,19 +47,30 @@ public class UIPrefixPanel : UIPanel, IComparable
         {
             Main.HoverItem = _item.Clone();
             Main.hoverItemName = Main.HoverItem.Name;
+
+            if (PlayerInput.GetPressedKeys().Contains(Keys.LeftShift))
+                Main.cursorOverride = CursorOverrideID.BackInventory;
         }
     }
 
-    public override void LeftClick(UIMouseEvent evt)
+    public override void LeftMouseDown(UIMouseEvent evt)
     {
         if (!Main.playerInventory || !Main.CreativeMenu.Enabled) return;
-        Main.mouseItem = _item.Clone();
-        base.LeftClick(evt);
+        if (PlayerInput.GetPressedKeys().Contains(Keys.LeftShift))
+        {
+            Main.LocalPlayer.GetItem(Main.LocalPlayer.whoAmI, _item.Clone(), new GetItemSettings());
+        }
+        else
+        {
+            Main.mouseItem = _item.Clone();
+            SoundEngine.PlaySound(SoundID.Grab);
+            base.LeftMouseDown(evt);
+        }
     }
 
     public override void MouseOver(UIMouseEvent evt)
     {
-        BackgroundColor = new Color(133, 152, 221)  * 0.7f;
+        BackgroundColor = new Color(133, 152, 221) * 0.7f;
         base.MouseOver(evt);
     }
 
