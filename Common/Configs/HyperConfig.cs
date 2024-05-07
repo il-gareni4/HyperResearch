@@ -82,8 +82,6 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(false)]
         public bool OnlyOneItemNeeded;
 
-        [LabelArgs(ItemID.DD2EnergyCrystal)]
-        [Range(0, 9999)]
         public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
 

@@ -147,7 +147,7 @@ public static class ItemsUtils
         PrefixCategory? category = item.GetPrefixCategory();
         if (category == null) return [];
         var modPrefixes = PrefixLoader.GetPrefixesInCategory((PrefixCategory)category);
-        return [..Item.GetVanillaPrefixes((PrefixCategory)category), ..modPrefixes.Select(p => p.Type)];
+        return [.. Item.GetVanillaPrefixes((PrefixCategory)category), .. modPrefixes.Select(p => p.Type)];
     }
 
     public static int[] GetPossiblePrefixes(Item item)

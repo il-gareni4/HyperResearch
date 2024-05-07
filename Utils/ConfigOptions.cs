@@ -34,6 +34,12 @@ namespace HyperResearch.Utils
                 UseServerSettings ? ServerConfig.Instance.BalanceShimmerAutoresearch : HyperConfig.Instance.BalanceShimmerAutoresearch;
         }
 
+        public static bool BalancePrefixPicker
+        {
+            get =>
+                UseServerSettings ? ServerConfig.Instance.BalancePrefixPicker : HyperConfig.Instance.BalancePrefixPicker;
+        }
+
         public static bool UseResearchedBannersBuff
         {
             get =>

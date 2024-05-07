@@ -247,7 +247,7 @@ Configs: {
 
 		ConsumeResearchedPotions: {
 			Label: "[i:{0}] Consume researched potions"
-			Tooltip: 
+			Tooltip:
 				'''
 				Only [i:{0}]buff, [i:{1}]heal, and [i:{2}]mana potions are included in this category. 
 				Potions like [i:{3}]Recall Potion will not be infinite.
@@ -328,7 +328,7 @@ Configs: {
 				'''
 				Shows a chat message when a player from one team shares a researched item with you.
 				You need to enable the [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncResearchedItemsInOneTeam.Label}] option in the {$Configs.ServerConfig.DisplayName}
-				
+
 				For example:
 				[c/FFC0CB:PlayerName shared 3 items:] [i:1][i:2][i:3]
 				'''
@@ -340,7 +340,7 @@ Configs: {
 				'''
 				Shows a chat message when a player from one team shares a partially reserched item with you.
 				You need to enable the [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncSacrificesInOneTeam.Label}] option in the {$Configs.ServerConfig.DisplayName}
-				
+
 				For example:
 				[c/FFC0CB:PlayerName shared 2 partially researched items:] [i/s2:2][i/s99:3]
 				'''
@@ -349,7 +349,7 @@ Configs: {
 		ShowOtherPlayersResearchedItems: {
 			Label: Show messages about new items researched by team players
 			Tooltip:
-				''' 
+				'''
 				Even those items that you have already researched are shown
 
 				For example:
@@ -420,51 +420,6 @@ Configs: {
 				Applies the settings below to all server players. 
 				The local settings in the client config will be replaced by server ones.
 				'''
-		}
-
-		IgnoreCraftingConditions: {
-			Label: "{$Configs.HyperConfig.IgnoreCraftingConditions.Label}"
-			Tooltip: ""
-		}
-
-		ResearchShimmerableItems: {
-			Label: "{$Configs.HyperConfig.ResearchShimmerableItems.Label}"
-			Tooltip: ""
-		}
-
-		UseResearchedBannersBuff: {
-			Label: "{$Configs.HyperConfig.UseResearchedBannersBuff.Label}"
-			Tooltip: ""
-		}
-
-		OnlyOneItemNeeded: {
-			Label: "{$Configs.HyperConfig.OnlyOneItemNeeded.Label}"
-			Tooltip: ""
-		}
-
-		ResearchDecraftItems: {
-			Label: Research Decraft Items
-			Tooltip: ""
-		}
-
-		BalanceShimmerAutoresearch: {
-			Label: Balance Shimmer Autoresearch
-			Tooltip: ""
-		}
-
-		UseResearchedPotionsBuff: {
-			Label: Use Researched Potions Buff
-			Tooltip: ""
-		}
-
-		UnresearchableItemCount: {
-			Label: Unresearchable Item Count
-			Tooltip: ""
-		}
-
-		ItemResearchCountOverride: {
-			Label: Item Research Count Override
-			Tooltip: ""
 		}
 	}
 }

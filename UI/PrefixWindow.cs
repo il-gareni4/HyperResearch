@@ -18,8 +18,8 @@ public class PrefixWindow : UIState
     public UIScrollbar ScrollBar;
 
     public bool Enabled =>
-        Condition.DownedGoblinArmy.IsMet()
-        && Main.playerInventory
+        //Condition.DownedGoblinArmy.IsMet()
+        Main.playerInventory
         && Main.CreativeMenu.Enabled
         && PrefixesList.Count > 0;
 

@@ -1,5 +1,4 @@
-﻿using HyperResearch.Common.Configs;
-using HyperResearch.Utils;
+﻿using HyperResearch.Utils;
 using System.Collections.Generic;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
