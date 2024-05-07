@@ -1,3 +1,11 @@
+Colors: {
+	Warning: FF666D
+	Condition: FFE582
+	UsefulNote: FE95FF
+	Note: 8FCBFF
+	Mention: FFAB65
+}
+
 Messages: {
 	ResearchedItems: Researched {0} new {^0:item;items}: {1}
 	SharedItems: "{0} shared {1} {^1:item;items}: {2}"
@@ -23,12 +31,12 @@ Tooltips: {
 
 UI: {
 	InventoryButtons: {
-		ResearchButtonHoverText: "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"
-		ClearButtonHoverText: "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"
-		AutoCraftHoverText: "{$Mods.HyperResearch.Keybinds.ResearchCraftableItems.DisplayName}"
+		ResearchButtonHoverText: "{$Keybinds.ResearchInventoryItems.DisplayName}"
+		ClearButtonHoverText: "{$Keybinds.ClearResearchedItems.DisplayName}"
+		AutoCraftHoverText: "{$Keybinds.ResearchCraftableItems.DisplayName}"
 	}
 
-	ShopButtons.ResearchButtonHoverText: "{$Mods.HyperResearch.Keybinds.ResearchShop.DisplayName}"
+	ShopButtons.ResearchButtonHoverText: "{$Keybinds.ResearchShop.DisplayName}"
 	DuplicationMenu.TotalResearched: "{0}% researched ({1}/{2} items)"
 }
 
@@ -37,24 +45,24 @@ Configs: {
 		DisplayName: Client Config
 
 		Headers: {
+			AutoResearchSettingsHeader: Auto-research Settings
+			BuffsSettingsHeader: Buffs Settings
+			AutoTrashSettingsHeader: Auto-trash Settings
+			BalanceSettingsHeader: Balance Settings
+			TooltipsSettingsHeader: Tooltips Settings
 			ResearchSettingsHeader: Item Research Settings
 			ClearSettingsHeader: Clear Settings
-			MessagesSettingsHeader: Messages Settings
 			ConsumptionSettingsHeader: Consumption Settings
+			MessagesSettingsHeader: Messages Settings
 			SacrificeSettingsHeader: Research Settings
-			UISettingsHeader: UI Settings
-			OtherSettingsHeader: Other Settings
 			MutiplayerMessagesSettingsHeader: Mutiplayer Messages Settings
+			UISettingsHeader: UI Settings
 		}
 
+		# === AUTO-RESEARCH SETTINGS ===
 		ResearchInventory: {
-			Label: "[i:{0}] Research items in the inventory"
+			Label: "[i:{0}] Auto-research items in the inventory"
 			Tooltip: Automatically research items in the inventory if the total amount is equal to or more than required for research
-		}
-
-		AutoTrashResearched: {
-			Label: "[i:{0}] Auto-trash picked up researched items"
-			Tooltip: All picked up items that have already been researched will no longer be added to the inventory
 		}
 
 		AutoResearchCraftableItems: {
@@ -62,20 +70,21 @@ Configs: {
 			Tooltip:
 				'''
 				After learning a new item, all new items from already researched items will be researched. 
-				Requires researched crafting stations and compliance with custom conditions (only if "{$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Name}" is disabled).
+				[c/{$Colors.Condition}:Requires researched crafting stations and compliance with conditions] [c/{$Colors.Mention}:(check "{$Configs.HyperConfig.IgnoreCraftingConditions.Name}" option).]
+				[c/{$Colors.Note}:Alternatively, you can assign a keybind to research craftable items, or use the UI button under the inventory interface]
 				'''
 		}
 
-		IgnoreCraftingConditions: {
-			Name: Ignore some crafting conditions
-			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Name}"
-			Tooltip:
-				'''
-				For autocrafting items, the following types of conditions are ignored: conditions of being near a liquid,
-				conditions of time, events and moons, conditions of being in a biome.
-				This means that the conditions of a certain world seed and boss kills will not be ignored anyway.
-				All custom mod conditions won't be ignored.
-				'''
+		ResearchShimmerableItems: {
+			Name: Auto-research shimmer transmutations
+			Label: "[i:{0}] {$Configs.HyperConfig.ResearchShimmerableItems.Name}"
+			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
+		}
+
+		ResearchDecraftItems: {
+			Name: Auto-research shimmer decrafts
+			Label: "[i:{0}] {$Configs.HyperConfig.ResearchDecraftItems.Name}"
+			Tooltip: Automatically researches items that can be obtained by decrafting it in shimmer
 		}
 
 		AutoResearchShop: {
@@ -83,86 +92,139 @@ Configs: {
 			Tooltip:
 				'''
 				When opening a shop, researches everything that the NPC is currently selling.
-				To research some items, you need to research the corresponding currency (for example, [i:{0}]Defender Medals).
-				By default, the shop is researched by pressing the key specified in the control settings
+				[c/{$Colors.Condition}:To research some items, you need to research the corresponding currency (for example, ][i:{0}][c/{$Colors.Condition}:Defender Medals).]
+				[c/{$Colors.Note}:Alternatively, you can assign a keybind to research the contents of the shop, or use the UI button under the shop interface]
 				'''
 		}
 
-		ResearchShimmerableItems: {
-			Name: Auto-research items that are obtained after shimmer transmutation
-			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
-			Tooltip: Automatically researches an item that is obtained after throwing an original item at shimmer
-		}
-
-		ResearchDecraftItems: {
-			Name: Auto-research items through decrafting in shimmer
-			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
-			Tooltip: ""
-		}
-
-		UseCustomResearchTooltip: {
-			Label: "[i:{0}] Use custom research tooltip"
-			Tooltip: Unlike the vanilla tooltip, the custom tooltip will show up everywhere when hovering over an item (include other mods)
-		}
-
-		ShowResearchedTooltip: {
-			Label: '''[i:{0}] Show "{$Tooltips.Researched}" tooltip'''
-			Tooltip: ""
-		}
-
+		# === BUFFS SETTINGS ===
 		UseResearchedBannersBuff: {
-			Label: "[i:{0}] Use the buff of researched banners"
+			Label: "[i:{0}] Use buff of researched banners"
 			Tooltip:
 				'''
-				If you have researched an NPC banner, the effect of the banner
-				will affect you even if you did not place the banner
+				If you have researched an NPC banner, the effect of the banner will affect you even if you did not place the banner
+				[c/{$Colors.UsefulNote}:Within the game, banners can be selectively disabled in the duplication menu.]
 				'''
 		}
 
-		OnlyOneItemNeeded: {
-			Label: "[i:{0}] Only one item is required for full research"
-			Tooltip: ""
+		UseResearchedPotionsBuff: {
+			Name: Use buff of researched potions
+			Label: "[i:{0}] {$Configs.HyperConfig.UseResearchedPotionsBuff.Name}"
+			Tooltip:
+				'''
+				Applies buffs from researched potions, food and flasks.
+				[c/{$Colors.UsefulNote}:Within the game, potions can be selectively disabled by right-clicking on the buff or in the duplication menu.]
+				'''
+		}
+
+		# === AUTO-TRASH SETTINGS ===
+		AutoTrashResearched: {
+			Name: Auto-trash picked up researched items
+			Label: "[i:{0}] {$Configs.HyperConfig.AutoTrashResearched.Name}"
+			Tooltip: All picked up items that have already been researched will no longer be added to the inventory
 		}
 
 		AutoTrashAfterResearching: {
 			Label: "[i:{0}] Auto-trash an item after researching"
 			Tooltip:
 				'''
-				Unlike the setting "Auto trash picked up researched items"
+				Unlike the setting "[c/{$Colors.Mention}:{$Configs.HyperConfig.AutoTrashResearched.Name}]"
 				removes the item from the inventory after researching the item
 				'''
 		}
 
-		SacrificeHotbarSlots: {
-			Label: "[i:{0}] Research hotbar slots on Research Inventory Items key"
+		# === BALANCE SETTINGS ===
+		IgnoreCraftingConditions: {
+			Name: Ignore some crafting conditions
+			Label: "[i:{0}] {$Configs.HyperConfig.IgnoreCraftingConditions.Name}"
+			Tooltip:
+				'''
+				For autocrafting items, the following types of conditions are ignored: conditions of being near a liquid,
+				conditions of time, events and moons, conditions of being in a biome.
+				[c/{$Colors.Note}:This means that the conditions of a certain world seed and boss kills will not be ignored anyway.]
+				[c/{$Colors.Warning}:All custom mod conditions won't be ignored.]
+				'''
+		}
+
+		BalanceShimmerAutoresearch: {
+			Name: Balance a shimmer auto-researches
+			Label: "[i:{0}] {$Configs.HyperConfig.BalanceShimmerAutoresearch.Name}"
+			Tooltip:
+				'''
+				In order for the options [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchShimmerableItems.Name}] and [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchDecraftItems.Name}] to work,
+				you must visit the Aether biome at least once.
+				'''
+		}
+
+		BalancePrefixPicker: {
+			Name: Balance the prefix selector
+			Label: "[i:{0}] {$Configs.HyperConfig.BalancePrefixPicker.Name}"
+			Tooltip:
+				'''
+				In order for you to be able to select a modifier for an item in the duplicate menu,
+				you must first complete the Goblin Army event.
+				'''
+		}
+
+		OnlyOneItemNeeded: {
+			Label: "[i:{0}] Only one item is required for full research"
+			Tooltip: Unresearchable items will still remain unresearchable.
+		}
+
+		ItemResearchCountOverride: {
+			Label: Override quantity to research
+			Tooltip:
+				'''
+				Allows you to overwrite the number of items required to research for each individual item in the game.
+				[c/{$Colors.UsefulNote}:Allows you to make unresearchable items researchable and vice versa.]
+				[c/{$Colors.Warning}:Important: for this setting to work, you must reload all mods! Nothing will be changed during the game.]
+				'''
+		}
+
+		# === TOOLTIPS SETTINGS ===
+		UseCustomResearchTooltip: {
+			Label: "[i:{0}] Use custom research tooltip"
+			Tooltip: Shows additional information and research status in any item slot (mods included)
+		}
+
+		ShowResearchedTooltip: {
+			Label: "[i:{0}] Show [c/FFE745:{$Tooltips.Researched}] tooltip"
 			Tooltip: ""
+		}
+
+		# === RESEARCH SETTIGNS ===
+		SacrificeHotbarSlots: {
+			Label: "[i:{0}] Include hotbar slots on Research action"
+			Tooltip: Research action is a [c/{$Colors.Mention}:{$Keybinds.ResearchInventoryItems.DisplayName}] keybind or eponymous UI button
 		}
 
 		SacrificeCoinsSlots: {
-			Label: "[i:{0}] Research coins slots on Research Inventory Items key"
-			Tooltip: ""
+			Label: "[i:{0}] Include coins slots on Research action"
+			Tooltip: "{$Configs.HyperConfig.SacrificeHotbarSlots.Tooltip}"
 		}
 
 		SacrificeAmmoSlots: {
-			Label: "[i:{0}] Research ammo slots on Research Inventory Items key"
-			Tooltip: ""
+			Label: "[i:{0}] Include ammo slots on Research action"
+			Tooltip: "{$Configs.HyperConfig.SacrificeHotbarSlots.Tooltip}"
 		}
 
+		# === CLEAR SETTINGS ===
 		ClearHotbarSlots: {
-			Label: "[i:{0}] Clear hotbar slots on Clear Researched Items key"
-			Tooltip: ""
+			Label: "[i:{0}] Include hotbar slots on Clear action"
+			Tooltip: Research action is a [c/{$Colors.Mention}:{$Keybinds.ClearResearchedItems.DisplayName}] keybind or eponymous UI button
 		}
 
 		ClearCoinsSlots: {
-			Label: "[i:{0}] Clear coins slots on Clear Researched Items key"
-			Tooltip: ""
+			Label: "[i:{0}] Include coins slots on Clear action"
+			Tooltip: "{$Configs.HyperConfig.ClearHotbarSlots.Tooltip}"
 		}
 
 		ClearAmmoSlots: {
-			Label: "[i:{0}] Clear ammo slots on Clear Researched Items key"
-			Tooltip: ""
+			Label: "[i:{0}] Include ammo slots on Clear action"
+			Tooltip: "{$Configs.HyperConfig.ClearHotbarSlots.Tooltip}"
 		}
 
+		# === CONSUMPTION SETTINGS ===
 		ConsumeResearchedAmmo: {
 			Label: "[i:{0}] Consume researched ammo"
 			Tooltip: ""
@@ -185,7 +247,11 @@ Configs: {
 
 		ConsumeResearchedPotions: {
 			Label: "[i:{0}] Consume researched potions"
-			Tooltip: Only [i:{0}]buff, [i:{1}]heal, and [i:{2}]mana potions are included in this category. Potions like [i:{3}]Recall Potion will not be infinite
+			Tooltip: 
+				'''
+				Only [i:{0}]buff, [i:{1}]heal, and [i:{2}]mana potions are included in this category. 
+				Potions like [i:{3}]Recall Potion will not be infinite.
+				'''
 		}
 
 		ConsumeResearchedLootItems: {
@@ -195,46 +261,115 @@ Configs: {
 
 		ConsumeOtherResearchedItems: {
 			Label: "[i:{0}] Consume other researched items"
-			Tooltip: Other items that do not fit into any of the categories above but are consumable will not be consumed once researched
+			Tooltip:
+				'''
+				Other items that do not fit into any of the categories above but are consumable will not be consumed once researched
+				[c/{$Colors.Warning}:It is recommended not to disable this option]
+				'''
 		}
 
+		# === MESSAGES SETTINGS ===
 		ShowNewlyResearchedItems: {
 			Label: Show newly researched items
-			Tooltip: ""
+			Tooltip:
+				'''
+				For example:
+				[c/FF78BB:Researched 3 new items:] [i:1][i:2][i:3]
+				'''
 		}
 
 		ShowResearchedCraftableItems: {
 			Label: Show researched craftable items
-			Tooltip: ""
+			Tooltip:
+				'''
+				For example:
+				[c/FF9E70:Researched 3 craftable items] [i:1][i:2][i:3]
+				'''
 		}
 
 		ShowResearchedShimmeredItems: {
 			Label: Show researched shimmered items
-			Tooltip: This type of messages can be seen if "{$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}" is enabled
+			Tooltip:
+				'''
+				This type of messages can be seen if "[c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchShimmerableItems.Name}]" is enabled
+
+				For example:
+				[c/ED88D6:Researched 3 shimmered items] [i:1][i:2][i:3]
+				'''
 		}
 
 		ShowResearchedDecraftItems: {
 			Label: Show researched decrafted items
-			Tooltip: This type of messages can be seen if "{$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Name}" is enabled
+			Tooltip:
+				'''
+				This type of messages can be seen if "[c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchDecraftItems.Name}]" is enabled
+
+				For example:
+				[c/FFBBDD:Researched 3 decrafted items] [i:1][i:2][i:3]
+				'''
+		}
+
+		ShowSacrifices: {
+			Label: Show partially researched items
+			Tooltip:
+				'''
+				When performing a Research action
+				the chat will display which items have been partially researched
+
+				For example:
+				[c/F1A0BF:Partially researched 2 items] [i/s2:2][i/s99:3]
+				'''
+		}
+
+		# === MULTIPLAYER MESSAGES SETTGINGS ===
+		ShowSharedItems: {
+			Label: Show shared items
+			Tooltip:
+				'''
+				Shows a chat message when a player from one team shares a researched item with you.
+				You need to enable the [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncResearchedItemsInOneTeam.Label}] option in the {$Configs.ServerConfig.DisplayName}
+				
+				For example:
+				[c/FFC0CB:PlayerName shared 3 items:] [i:1][i:2][i:3]
+				'''
+		}
+
+		ShowSharedSacrifices: {
+			Label: Show shared partially researched items
+			Tooltip:
+				'''
+				Shows a chat message when a player from one team shares a partially reserched item with you.
+				You need to enable the [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncSacrificesInOneTeam.Label}] option in the {$Configs.ServerConfig.DisplayName}
+				
+				For example:
+				[c/FFC0CB:PlayerName shared 2 partially researched items:] [i/s2:2][i/s99:3]
+				'''
 		}
 
 		ShowOtherPlayersResearchedItems: {
 			Label: Show messages about new items researched by team players
-			Tooltip: Even those items that you have already researched are shown
+			Tooltip:
+				''' 
+				Even those items that you have already researched are shown
+
+				For example:
+				[c/FFC0CB:PlayerName researched 3 new items:] [i:1][i:2][i:3]
+				'''
 		}
 
+		# === UI SETTINGS ===
 		ShowResearchInventoryButton: {
-			Label: Show "{$Mods.HyperResearch.UI.InventoryButtons.ResearchButtonHoverText}" button
+			Label: Show "{$UI.InventoryButtons.ResearchButtonHoverText}" button
 			Tooltip: ""
 		}
 
 		ShowClearInventoryButton: {
-			Label: Show "{$Mods.HyperResearch.UI.InventoryButtons.ClearButtonHoverText}" button
+			Label: Show "{$UI.InventoryButtons.ClearButtonHoverText}" button
 			Tooltip: ""
 		}
 
 		ShowAutoCraftButton: {
-			Label: Show "{$Mods.HyperResearch.UI.InventoryButtons.AutoCraftHoverText}" button
+			Label: Show "{$UI.InventoryButtons.AutoCraftHoverText}" button
 			Tooltip: ""
 		}
 
@@ -248,7 +383,7 @@ Configs: {
 		}
 
 		ShowResearchShopButton: {
-			Label: Show "{$Mods.HyperResearch.UI.ShopButtons.ResearchButtonHoverText}" button in the shop menu
+			Label: Show "{$UI.ShopButtons.ResearchButtonHoverText}" button in the shop menu
 			Tooltip: ""
 		}
 
@@ -259,53 +394,6 @@ Configs: {
 				In the item duplication menu it shows the number of items researched and
 				the percentage of the total number of items that can be researched
 				'''
-		}
-
-		ShowSacrifices: {
-			Label: Show partially researched items when using keybind
-			Tooltip:
-				'''
-				When using the keybind "Research Inventory Items"
-				the chat will display which items have been partially researched
-				'''
-		}
-
-		ShowSharedItems: {
-			Label: Show shared items
-			Tooltip:
-				'''
-				Shows a chat message when a player from one team shares a researched item with you.
-				You need to enable the "{$Mods.HyperResearch.Configs.ServerConfig.SyncResearchedItemsInOneTeam.Label}" parameter in the server config
-				'''
-		}
-
-		ShowSharedSacrifices: {
-			Label: Show shared partially researched items
-			Tooltip:
-				'''
-				Shows a chat message when a player from one team shares a partially reserched item with you.
-				You need to enable the "{$Mods.HyperResearch.Configs.ServerConfig.SyncSacrificesInOneTeam.Label}" parameter in the server config
-				'''
-		}
-
-		BalanceShimmerAutoresearch: {
-			Label: Balance Shimmer Autoresearch
-			Tooltip: ""
-		}
-
-		UseResearchedPotionsBuff: {
-			Label: Use Researched Potions Buff
-			Tooltip: ""
-		}
-
-		UnresearchableItemCount: {
-			Label: Unresearchable Item Count
-			Tooltip: ""
-		}
-
-		ItemResearchCountOverride: {
-			Label: Item Research Count Override
-			Tooltip: ""
 		}
 	}
 
@@ -335,22 +423,22 @@ Configs: {
 		}
 
 		IgnoreCraftingConditions: {
-			Label: "{$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Label}"
+			Label: "{$Configs.HyperConfig.IgnoreCraftingConditions.Label}"
 			Tooltip: ""
 		}
 
 		ResearchShimmerableItems: {
-			Label: "{$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Label}"
+			Label: "{$Configs.HyperConfig.ResearchShimmerableItems.Label}"
 			Tooltip: ""
 		}
 
 		UseResearchedBannersBuff: {
-			Label: "{$Mods.HyperResearch.Configs.HyperConfig.UseResearchedBannersBuff.Label}"
+			Label: "{$Configs.HyperConfig.UseResearchedBannersBuff.Label}"
 			Tooltip: ""
 		}
 
 		OnlyOneItemNeeded: {
-			Label: "{$Mods.HyperResearch.Configs.HyperConfig.OnlyOneItemNeeded.Label}"
+			Label: "{$Configs.HyperConfig.OnlyOneItemNeeded.Label}"
 			Tooltip: ""
 		}
 
@@ -391,5 +479,5 @@ Keybinds: {
 	ResearchBagContents.DisplayName: Research Bag/Crate Contents
 	ResearchShop.DisplayName: Research Shop
 	ShareAllResearched.DisplayName: Share Items With Team
-	EnableDisableBuff.DisplayName: Enable Disable Buff
+	EnableDisableBuff.DisplayName: Enable/Disable Buff
 }

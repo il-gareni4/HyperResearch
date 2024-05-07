@@ -1,3 +1,11 @@
+Colors: {
+	// Warning: FF666D
+	// Condition: FFE582
+	// UsefulNote: FE95FF
+	// Note: 8FCBFF
+	// Mention: FFAB65
+}
+
 Messages: {
 	ResearchedItems: "{^0:Изучен;Изучено;Изучено} {0} {^0:новый предмет;новых предмета;новых предметов}: {1}"
 	SharedItems: "{0} поделился {1} {^1:новым предметом;новыми предметами;новыми предметами}: {2}"
@@ -37,16 +45,21 @@ Configs: {
 		DisplayName: Конфиг клиента
 
 		Headers: {
+			// AutoResearchSettingsHeader: Auto-research Settings
+			// BuffsSettingsHeader: Buffs Settings
+			// AutoTrashSettingsHeader: Auto-trash Settings
+			// BalanceSettingsHeader: Balance Settings
+			// TooltipsSettingsHeader: Tooltips Settings
 			ResearchSettingsHeader: Настройки изучения предметов
 			ClearSettingsHeader: Найстроки очищения
-			MessagesSettingsHeader: Настройки сообщений
 			ConsumptionSettingsHeader: Настройки расходуемых предметов
+			MessagesSettingsHeader: Настройки сообщений
 			SacrificeSettingsHeader: Настройки изучений
-			UISettingsHeader: Настройки пользовательского интерфейса
-			OtherSettingsHeader: Прочие настройки
 			MutiplayerMessagesSettingsHeader: Настройки сообщений мультиплеера
+			UISettingsHeader: Настройки пользовательского интерфейса
 		}
 
+		# === AUTO-RESEARCH SETTINGS ===
 		ResearchInventory: {
 			Label: "[i:{0}] Изучать предметы в инвентаре"
 			Tooltip:
@@ -54,11 +67,6 @@ Configs: {
 				Автоматичеки изучает предметы в инвентаре, если общее количество
 				одного предмета больше или равно необходимого количества для изучения
 				'''
-		}
-
-		AutoTrashResearched: {
-			Label: "[i:{0}] Не подбирать изученные предметы"
-			Tooltip: Все подобранные предметы, которые уже изучены, больше не будут добавляться в инвентарь
 		}
 
 		AutoResearchCraftableItems: {
@@ -72,6 +80,61 @@ Configs: {
 				'''
 		}
 
+		ResearchShimmerableItems: {
+			Name: Изучать Мерцающие превращения
+			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
+			Tooltip: ""
+		}
+
+		ResearchDecraftItems: {
+			// Name: Auto-research shimmer decrafts
+			// Label: "[i:{0}] {$Configs.HyperConfig.ResearchDecraftItems.Name}"
+			// Tooltip: Automatically researches items that can be obtained by decrafting it in shimmer
+		}
+
+		AutoResearchShop: {
+			Label: "[i:{0}] Изучать содержимое магазинов"
+			Tooltip:
+				'''
+				При открытии магазина изучается все, что NPC в данный момент продает.
+				Чтобы изучить некоторые предметы, необходимо изучить
+				соответвующую валюту (например, [i:{0}]Медали защитника)
+				'''
+		}
+
+		# === BUFFS SETTINGS ===
+		UseResearchedBannersBuff: {
+			Label: "[i:{0}] Использовать бафф изученных баннеров"
+			Tooltip:
+				'''
+				Если изучен баннер NPC, то эффект баннера будет действовать
+				даже если сам баннер не поставлен
+				'''
+		}
+
+		UseResearchedPotionsBuff: {
+			// Name: Use buff of researched potions
+			// Label: "[i:{0}] {$Configs.HyperConfig.UseResearchedPotionsBuff.Name}"
+			/* Tooltip:
+				'''
+				Applies buffs from researched potions, food and flasks.
+				[c/{$Colors.UsefulNote}:Within the game, potions can be selectively disabled by right-clicking on the buff or in the duplication menu.]
+				''' */
+		}
+
+		# === AUTO-TRASH SETTINGS ===
+		AutoTrashResearched: {
+			// Name: Auto-trash picked up researched items
+			Label: "[i:{0}] Не подбирать изученные предметы"
+			Tooltip: Все подобранные предметы, которые уже изучены, больше не будут добавляться в инвентарь
+		}
+
+		AutoTrashAfterResearching: {
+			Label: "[i:{0}] Убирать предмет после изучения"
+			Tooltip: ""
+		}
+
+		# === BALANCE SETTINGS ===
 		IgnoreCraftingConditions: {
 			Name: Игнорировать некоторые условия создания
 			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Name}"
@@ -85,28 +148,41 @@ Configs: {
 				'''
 		}
 
-		AutoResearchShop: {
-			Label: "[i:{0}] Изучать содержимое магазинов"
-			Tooltip:
+		BalanceShimmerAutoresearch: {
+			// Name: Balance a shimmer auto-researches
+			// Label: "[i:{0}] {$Configs.HyperConfig.BalanceShimmerAutoresearch.Name}"
+			/* Tooltip:
 				'''
-				При открытии магазина изучается все, что NPC в данный момент продает.
-				Чтобы изучить некоторые предметы, необходимо изучить
-				соответвующую валюту (например, [i:{0}]Медали защитника)
-				'''
+				In order for the options [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchShimmerableItems.Name}] and [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchDecraftItems.Name}] to work,
+				you must visit the Aether biome at least once.
+				''' */
 		}
 
-		ResearchShimmerableItems: {
-			Name: Изучать Мерцающие превращения
-			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
+		BalancePrefixPicker: {
+			// Name: Balance the prefix selector
+			// Label: "[i:{0}] {$Configs.HyperConfig.BalancePrefixPicker.Name}"
+			/* Tooltip:
+				'''
+				In order for you to be able to select a modifier for an item in the duplicate menu,
+				you must first complete the Goblin Army event.
+				''' */
+		}
+
+		OnlyOneItemNeeded: {
+			Label: "[i:{0}] Только одна единица предмета необходима для изучения"
 			Tooltip: ""
 		}
 
-		ResearchDecraftItems: {
-			// Name: Auto-research items through decrafting in shimmer
-			// Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
-			// Tooltip: ""
+		ItemResearchCountOverride: {
+			// Label: Override quantity to research
+			/* Tooltip:
+				'''
+				Allows you to overwrite the number of items required to research for each individual item in the game.
+				[c/{$Colors.Warning}:Important: for this setting to work, you must reload all mods! Nothing will be changed during the game.]
+				''' */
 		}
 
+		# === TOOLTIPS SETTINGS ===
 		UseCustomResearchTooltip: {
 			Label: "[i:{0}] Использовать пользовательскую подсказку прогресса изучения"
 			Tooltip:
@@ -121,25 +197,7 @@ Configs: {
 			Tooltip: ""
 		}
 
-		UseResearchedBannersBuff: {
-			Label: "[i:{0}] Использовать бафф изученных баннеров"
-			Tooltip:
-				'''
-				Если изучен баннер NPC, то эффект баннера будет действовать
-				даже если сам баннер не поставлен
-				'''
-		}
-
-		OnlyOneItemNeeded: {
-			Label: "[i:{0}] Только одна единица предмета необходима для изучения"
-			Tooltip: ""
-		}
-
-		AutoTrashAfterResearching: {
-			Label: "[i:{0}] Убирать предмет после изучения"
-			Tooltip: ""
-		}
-
+		# === RESEARCH SETTIGNS ===
 		SacrificeHotbarSlots: {
 			Label: '''[i:{0}] Изучать слоты хотбара при нажатии на "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"'''
 			Tooltip: ""
@@ -155,6 +213,7 @@ Configs: {
 			Tooltip: ""
 		}
 
+		# === CLEAR SETTINGS ===
 		ClearHotbarSlots: {
 			Label: '''[i:{0}] Очищать слоты хотбара при нажатии на "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"'''
 			Tooltip: ""
@@ -170,6 +229,7 @@ Configs: {
 			Tooltip: ""
 		}
 
+		# === CONSUMPTION SETTINGS ===
 		ConsumeResearchedAmmo: {
 			Label: "[i:{0}] Расходовать изученные патроны"
 			Tooltip: ""
@@ -209,6 +269,7 @@ Configs: {
 			Tooltip: Другие предметы, которые не попали под категории выше, будут расходоваться
 		}
 
+		# === MESSAGES SETTINGS ===
 		ShowNewlyResearchedItems: {
 			Label: Показывать изученные предметы
 			Tooltip: ""
@@ -226,7 +287,37 @@ Configs: {
 
 		ShowResearchedDecraftItems: {
 			// Label: Show researched decrafted items
-			// Tooltip: This type of messages can be seen if "{$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Name}" is enabled
+			/* Tooltip:
+				'''
+				This type of messages can be seen if "[c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchDecraftItems.Name}]" is enabled
+
+				For example:
+				[c/FFBBDD:Researched 3 decrafted items] [i:1][i:2][i:3]
+				''' */
+		}
+
+		ShowSacrifices: {
+			Label: Показывать частично изученные предметы
+			Tooltip: ""
+		}
+
+		# === MULTIPLAYER MESSAGES SETTGINGS ===
+		ShowSharedItems: {
+			Label: Показывать предметы, которыми с вами поделились
+			Tooltip:
+				'''
+				Показывает сообщение в чат, когда игрок из одной команды поделился с вами изученным предметом.
+				Нужен включенный параметр "{$Mods.HyperResearch.Configs.ServerConfig.SyncResearchedItemsInOneTeam.Label}" в конфиге сервера
+				'''
+		}
+
+		ShowSharedSacrifices: {
+			Label: Показывать частично изученные предметы, которыми с вами поделились
+			Tooltip:
+				'''
+				Показывает сообщение в чат, когда игрок из одной команды поделился с вами частично изученным предметом.
+				Нужен включенный параметр "{$Mods.HyperResearch.Configs.ServerConfig.SyncSacrificesInOneTeam.Label}" в конфиге сервера
+				'''
 		}
 
 		ShowOtherPlayersResearchedItems: {
@@ -234,6 +325,7 @@ Configs: {
 			Tooltip: Показываются даже те предметы, что были уже изучены вами
 		}
 
+		# === UI SETTINGS ===
 		ShowResearchInventoryButton: {
 			Label: Показывать кнопку "{$Mods.HyperResearch.UI.InventoryButtons.ResearchButtonHoverText}"
 			Tooltip: ""
@@ -266,49 +358,6 @@ Configs: {
 		ShowTotalResearchedItemsCount: {
 			Label: Показывать общее количество изученных предметов
 			Tooltip: Показывается под меню дубликации
-		}
-
-		ShowSacrifices: {
-			Label: Показывать частично изученные предметы
-			Tooltip: ""
-		}
-
-		ShowSharedItems: {
-			Label: Показывать предметы, которыми с вами поделились
-			Tooltip:
-				'''
-				Показывает сообщение в чат, когда игрок из одной команды поделился с вами изученным предметом.
-				Нужен включенный параметр "{$Mods.HyperResearch.Configs.ServerConfig.SyncResearchedItemsInOneTeam.Label}" в конфиге сервера
-				'''
-		}
-
-		ShowSharedSacrifices: {
-			Label: Показывать частично изученные предметы, которыми с вами поделились
-			Tooltip:
-				'''
-				Показывает сообщение в чат, когда игрок из одной команды поделился с вами частично изученным предметом.
-				Нужен включенный параметр "{$Mods.HyperResearch.Configs.ServerConfig.SyncSacrificesInOneTeam.Label}" в конфиге сервера
-				'''
-		}
-
-		BalanceShimmerAutoresearch: {
-			// Label: Balance Shimmer Autoresearch
-			// Tooltip: ""
-		}
-
-		UseResearchedPotionsBuff: {
-			// Label: Use Researched Potions Buff
-			// Tooltip: ""
-		}
-
-		UnresearchableItemCount: {
-			// Label: Unresearchable Item Count
-			// Tooltip: ""
-		}
-
-		ItemResearchCountOverride: {
-			// Label: Item Research Count Override
-			// Tooltip: ""
 		}
 	}
 
@@ -394,5 +443,5 @@ Keybinds: {
 	ResearchBagContents.DisplayName: Изучить содержимое мешка/ящика
 	ResearchShop.DisplayName: Изучить магазин
 	ShareAllResearched.DisplayName: Поделиться предметами с командой
-	// EnableDisableBuff.DisplayName: Enable Disable Buff
+	// EnableDisableBuff.DisplayName: Enable/Disable Buff
 }

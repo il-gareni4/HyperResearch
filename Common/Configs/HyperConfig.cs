@@ -18,40 +18,76 @@ namespace HyperResearch.Common.Configs
 
         public override void OnChanged() => Changed?.Invoke();
 
+        [Header("AutoResearchSettingsHeader")]
+
         [LabelArgs(ItemID.YoyoBag)]
         [DefaultValue(true)]
         public bool ResearchInventory;
-
-        [LabelArgs(ItemID.TrashCan)]
-        [DefaultValue(false)]
-        public bool AutoTrashResearched;
 
         [LabelArgs(ItemID.WorkBench)]
         [DefaultValue(true)]
         public bool AutoResearchCraftableItems;
 
-        [LabelArgs(ItemID.BottledWater)]
+        [LabelArgs(ItemID.BottomlessShimmerBucket)]
         [DefaultValue(true)]
-        public bool IgnoreCraftingConditions;
+        public bool ResearchShimmerableItems;
+
+        [LabelArgs(ItemID.IronBar)]
+        [DefaultValue(true)]
+        public bool ResearchDecraftItems;
 
         [LabelArgs(ItemID.PlatinumCoin)]
         [TooltipArgs(ItemID.DefenderMedal)]
         [DefaultValue(true)]
         public bool AutoResearchShop;
 
+
+        [Header("BuffsSettingsHeader")]
+
+        [LabelArgs(ItemID.ZombieBanner)]
+        [DefaultValue(true)]
+        public bool UseResearchedBannersBuff;
+
+        [LabelArgs(ItemID.WrathPotion)]
+        [DefaultValue(true)]
+        public bool UseResearchedPotionsBuff;
+
+
+        [Header("AutoTrashSettingsHeader")]
+
+        [LabelArgs(ItemID.TrashCan)]
+        [DefaultValue(false)]
+        public bool AutoTrashResearched;
+
+        [LabelArgs(ItemID.TrashCan)]
+        [DefaultValue(false)]
+        public bool AutoTrashAfterResearching;
+
+
+        [Header("BalanceSettingsHeader")]
+
+        [LabelArgs(ItemID.BottledWater)]
+        [DefaultValue(true)]
+        public bool IgnoreCraftingConditions;
+
         [LabelArgs(ItemID.BottomlessShimmerBucket)]
-        [DefaultValue(true)]
-        public bool ResearchShimmerableItems;
-
-        [LabelArgs(ItemID.WoodenHammer)]
-        [DefaultValue(true)]
-        public bool ResearchDecraftItems;
-
-        [LabelArgs(ItemID.Shimmerfly)]
         [DefaultValue(true)]
         public bool BalanceShimmerAutoresearch;
 
-        [Header("OtherSettingsHeader")]
+        [LabelArgs(ItemID.TinkerersWorkshop)]
+        [DefaultValue(false)]
+        public bool BalancePrefixPicker;
+
+        [LabelArgs(ItemID.AlphabetStatue1)]
+        [DefaultValue(false)]
+        public bool OnlyOneItemNeeded;
+
+        [LabelArgs(ItemID.DD2EnergyCrystal)]
+        [Range(0, 9999)]
+        public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
+
+
+        [Header("TooltipsSettingsHeader")]
 
         [LabelArgs(ItemID.HandOfCreation)]
         [DefaultValue(true)]
@@ -61,24 +97,6 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(false)]
         public bool ShowResearchedTooltip;
 
-        [LabelArgs(ItemID.ZombieBanner)]
-        [DefaultValue(false)]
-        public bool UseResearchedBannersBuff;
-
-        [LabelArgs(ItemID.WrathPotion)]
-        [DefaultValue(false)]
-        public bool UseResearchedPotionsBuff;
-
-        [LabelArgs(ItemID.TrashCan)]
-        [DefaultValue(false)]
-        public bool AutoTrashAfterResearching;
-
-        [LabelArgs(ItemID.AlphabetStatue1)]
-        [DefaultValue(false)]
-        public bool OnlyOneItemNeeded;
-
-        [LabelArgs(ItemID.DD2EnergyCrystal)]
-        public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
         [Header("SacrificeSettingsHeader")]
 
@@ -94,6 +112,7 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(true)]
         public bool SacrificeAmmoSlots;
 
+
         [Header("ClearSettingsHeader")]
 
         [LabelArgs(ItemID.LockBox)]
@@ -107,6 +126,7 @@ namespace HyperResearch.Common.Configs
         [LabelArgs(ItemID.WoodenArrow)]
         [DefaultValue(true)]
         public bool ClearAmmoSlots;
+
 
         [Header("ConsumptionSettingsHeader")]
 
@@ -139,6 +159,7 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(true)]
         public bool ConsumeOtherResearchedItems;
 
+
         [Header("MessagesSettingsHeader")]
 
         [DefaultValue(true)]
@@ -156,6 +177,7 @@ namespace HyperResearch.Common.Configs
         [DefaultValue(false)]
         public bool ShowSacrifices;
 
+
         [Header("MutiplayerMessagesSettingsHeader")]
 
         [DefaultValue(true)]
@@ -166,6 +188,7 @@ namespace HyperResearch.Common.Configs
 
         [DefaultValue(false)]
         public bool ShowOtherPlayersResearchedItems;
+
 
         [Header("UISettingsHeader")]
 
