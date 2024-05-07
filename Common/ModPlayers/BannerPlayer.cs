@@ -59,7 +59,8 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
         if (tag.TryGet("bannersEnabled", out int[] enabledBanners))
         {
             foreach (int bannerId in enabledBanners)
-                ResearchedBanners[bannerId] = true;
+                if (bannerId < Main.SceneMetrics.NPCBannerBuff.Length)
+                    ResearchedBanners[bannerId] = true;
         }
     }
 

@@ -52,7 +52,7 @@ namespace HyperResearch.Common.Systems
 
         public override void Unload()
         {
-            ItemToBanner = null;
+            ItemToBanner.Clear();
         }
     }
 }

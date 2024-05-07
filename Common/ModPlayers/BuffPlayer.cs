@@ -59,8 +59,11 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         if (Main.CurrentPlayer.difficulty != 3) return;
 
         if (tag.TryGet("buffsEnabled", out int[] enabled))
+        {
             foreach (int buffId in enabled)
-                Buffs[buffId] = true;
+                if (buffId < BuffID.Count)
+                    Buffs[buffId] = true;
+        }
     }
 
     public override void PostUpdateBuffs()
