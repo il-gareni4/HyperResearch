@@ -25,8 +25,10 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         {
             ToggleBuffItem(Main.HoverItem);
         }
+#if DEBUG
         if (KeybindSystem.ForgetAllBind.JustPressed)
             Buffs.Clear();
+#endif
     }
 
     public override void OnEnterWorld()

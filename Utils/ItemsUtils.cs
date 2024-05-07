@@ -1,6 +1,9 @@
+using Microsoft.Xna.Framework;
+using ReLogic.Content;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
@@ -140,4 +143,33 @@ public static class ItemsUtils
 
     public static bool IsInItemGroup(Item item, ContentSamples.CreativeHelper.ItemGroup group) =>
         ContentSamples.CreativeHelper.GetItemGroup(item, out int _) == group;
+
+    public static int[] GetPossiblePrefixes(Item item)
+    {
+        PrefixCategory? category = item.GetPrefixCategory();
+        if (category == null) return [];
+        return Item.GetVanillaPrefixes((PrefixCategory)category);
+    }
+
+    public static Color GetRarityColor(Item item)
+    {
+        return item.rare switch
+        {
+            ItemRarityID.Quest => Colors.RarityAmber,
+            ItemRarityID.Gray => Colors.RarityTrash,
+            ItemRarityID.White => Colors.RarityNormal,
+            ItemRarityID.Blue => Colors.RarityBlue,
+            ItemRarityID.Green => Colors.RarityGreen,
+            ItemRarityID.Orange => Colors.RarityOrange,
+            ItemRarityID.LightRed => Colors.RarityRed,
+            ItemRarityID.Pink => Colors.RarityPink,
+            ItemRarityID.LightPurple => Colors.RarityPurple,
+            ItemRarityID.Lime => Colors.RarityLime,
+            ItemRarityID.Yellow => Colors.RarityYellow,
+            ItemRarityID.Cyan => Colors.RarityCyan,
+            ItemRarityID.Red => new Color(255, 40, 100),
+            ItemRarityID.Purple => new Color(180, 40, 255),
+            _ => RarityLoader.GetRarity(item.rare)?.RarityColor ?? Colors.RarityNormal
+        };
+    }
 }

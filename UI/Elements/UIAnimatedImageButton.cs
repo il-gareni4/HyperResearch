@@ -29,12 +29,6 @@ namespace HyperResearch.UI.Components
 
         public override void Update(GameTime gameTime)
         {
-            if (IsMouseHovering && HoverText is not null && CanInteract())
-            {
-                Main.LocalPlayer.creativeInterface = true;
-                Main.LocalPlayer.mouseInterface = true;
-                Main.instance.MouseText(HoverText.Value);
-            }
             if (CurrentFrame == 0 || CurrentFrame == HoverFrame)
             {
                 if (CurrentFrame == 0 && IsMouseHovering)
@@ -60,6 +54,12 @@ namespace HyperResearch.UI.Components
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
+            if (IsMouseHovering && HoverText is not null && CanInteract())
+            {
+                Main.LocalPlayer.mouseInterface = true;
+                Main.instance.MouseText(HoverText.Value);
+            }
+
             CalculatedStyle innerDim = GetInnerDimensions();
             Vector2 pos = new(innerDim.X, innerDim.Y);
             spriteBatch.Draw(SpriteSheet.Value, pos, GetFrameRect(CurrentFrame), Color.White);

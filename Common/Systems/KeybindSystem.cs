@@ -28,7 +28,7 @@ namespace HyperResearch.Common.Systems
             ClearResearchedBind = KeybindLoader.RegisterKeybind(Mod, "ClearResearchedItems", Keys.OemPeriod);
             ResearchCraftableBind = KeybindLoader.RegisterKeybind(Mod, "ResearchCraftableItems", Keys.OemQuestion);
             MaxStackBind = KeybindLoader.RegisterKeybind(Mod, "MaxStack", Keys.OemTilde);
-            EnableDisableBuffBind = KeybindLoader.RegisterKeybind(Mod, "EnableDisableBuff", Keys.OemSemicolon);
+            EnableDisableBuffBind = KeybindLoader.RegisterKeybind(Mod, "EnableDisableBuff", Keys.OemTilde);
             ResearchLootBind = KeybindLoader.RegisterKeybind(Mod, "ResearchBagContents", Keys.OemQuotes);
             ResearchShopBind = KeybindLoader.RegisterKeybind(Mod, "ResearchShop", Keys.OemSemicolon);
             ShareAllResearched = KeybindLoader.RegisterKeybind(Mod, "ShareAllResearched", Keys.OemPipe);

@@ -27,8 +27,10 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
+#if DEBUG
         if (KeybindSystem.ForgetAllBind.JustPressed)
             ResearchedBanners.Clear();
+#endif
         if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite
             && BannerSystem.ItemToBanner.TryGetValue(Main.HoverItem.type, out int bannerId)
             && ResearchedBanners.TryGetValue(bannerId, out bool enabled)
