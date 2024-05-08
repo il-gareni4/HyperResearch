@@ -84,7 +84,7 @@ Configs: {
 		ResearchDecraftItems: {
 			Name: Auto-research shimmer decrafts
 			Label: "[i:{0}] {$Configs.HyperConfig.ResearchDecraftItems.Name}"
-			Tooltip: Automatically researches items that can be obtained by decrafting it in shimmer
+			Tooltip: Automatically researches items that can be obtained by decrafting an original item in shimmer
 		}
 
 		AutoResearchShop: {
@@ -211,7 +211,7 @@ Configs: {
 		# === CLEAR SETTINGS ===
 		ClearHotbarSlots: {
 			Label: "[i:{0}] Include hotbar slots on Clear action"
-			Tooltip: Research action is a [c/{$Colors.Mention}:{$Keybinds.ClearResearchedItems.DisplayName}] keybind or eponymous UI button
+			Tooltip: Clear action is a [c/{$Colors.Mention}:{$Keybinds.ClearResearchedItems.DisplayName}] keybind or eponymous UI button
 		}
 
 		ClearCoinsSlots: {
@@ -283,7 +283,7 @@ Configs: {
 			Tooltip:
 				'''
 				For example:
-				[c/FF9E70:Researched 3 craftable items] [i:1][i:2][i:3]
+				[c/FF9E70:Researched 3 craftable items:] [i:1][i:2][i:3]
 				'''
 		}
 
@@ -294,7 +294,7 @@ Configs: {
 				This type of messages can be seen if "[c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchShimmerableItems.Name}]" is enabled
 
 				For example:
-				[c/ED88D6:Researched 3 shimmered items] [i:1][i:2][i:3]
+				[c/ED88D6:Researched 3 shimmered items:] [i:1][i:2][i:3]
 				'''
 		}
 
@@ -305,7 +305,7 @@ Configs: {
 				This type of messages can be seen if "[c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchDecraftItems.Name}]" is enabled
 
 				For example:
-				[c/FFBBDD:Researched 3 decrafted items] [i:1][i:2][i:3]
+				[c/FFBBDD:Researched 3 decrafted items:] [i:1][i:2][i:3]
 				'''
 		}
 
@@ -317,7 +317,7 @@ Configs: {
 				the chat will display which items have been partially researched
 
 				For example:
-				[c/F1A0BF:Partially researched 2 items] [i/s2:2][i/s99:3]
+				[c/F1A0BF:Partially researched 2 items:] [i/s2:2][i/s99:3]
 				'''
 		}
 

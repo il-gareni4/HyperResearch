@@ -49,7 +49,7 @@ namespace HyperResearch.Common.Configs
 
         [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Label")]
         [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Tooltip")]
-        [LabelArgs(ItemID.WoodenHammer)]
+        [LabelArgs(ItemID.IronBar)]
         [DefaultValue(true)]
         public bool ResearchDecraftItems;
 
@@ -59,13 +59,13 @@ namespace HyperResearch.Common.Configs
         [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.UseResearchedBannersBuff.Label")]
         [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.UseResearchedBannersBuff.Tooltip")]
         [LabelArgs(ItemID.ZombieBanner)]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         public bool UseResearchedBannersBuff;
 
         [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.UseResearchedPotionsBuff.Label")]
         [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.UseResearchedPotionsBuff.Tooltip")]
         [LabelArgs(ItemID.WrathPotion)]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         public bool UseResearchedPotionsBuff;
 
 
