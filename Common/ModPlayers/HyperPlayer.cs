@@ -44,37 +44,48 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         }
         if (KeybindSystem.ResearchAllBind.JustPressed)
         {
-            Researcher researcher = new() { AutoResearchCraftableItems = false };
+            Researcher researcher = new()
+            {
+                AutoResearchCraftableItems = false,
+                AutoResearchShimmerableItems = false,
+                AutoResearchDecraftItems = false
+            };
             researcher.ResearchItems(Enumerable.Range(1, ItemLoader.ItemCount - 1));
-            TextUtils.MessageResearchedItems(researcher.AllResearchedItems);
+            TextUtils.MessageResearchedItems(researcher.DefaultResearchedItems);
         }
 #endif
         if (KeybindSystem.SacrificeInventoryBind.JustPressed) SacrificeInventory();
         if (KeybindSystem.ClearResearchedBind.JustPressed) ClearResearched();
         if (KeybindSystem.ResearchCraftableBind.JustPressed) ResearchAndMessageCraftable();
-        if (KeybindSystem.MaxStackBind.JustPressed && !Main.HoverItem.IsAir &&
-            (Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryItem ||
-            Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryCoin ||
-            Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryAmmo) &&
-            Researcher.IsResearched(Main.HoverItem.type))
+        if (KeybindSystem.MaxStackBind.JustPressed 
+            && !Main.HoverItem.IsAir 
+            && (Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryItem 
+            || Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryCoin 
+            || Main.HoverItem.tooltipContext == ItemSlot.Context.InventoryAmmo)
+            && Researcher.IsResearched(Main.HoverItem.type))
         {
             _hoverItem.stack = Main.HoverItem.maxStack;
             SoundEngine.PlaySound(SoundID.Grab);
         }
-        if (KeybindSystem.ResearchLootBind.JustPressed && !Main.HoverItem.IsAir &&
-            Researcher.IsResearched(Main.HoverItem.type) && ItemsUtils.CanOpenLootItem(Main.HoverItem.type))
+        if (KeybindSystem.ResearchLootBind.JustPressed
+            && !Main.HoverItem.IsAir
+            && Researcher.IsResearched(Main.HoverItem.type)
+            && ItemsUtils.CanOpenLootItem(Main.HoverItem.type))
         {
             ResearchAndMessageLoot(Main.HoverItem.type);
         }
 
-        if (KeybindSystem.ResearchShopBind.JustPressed && Player.TalkNPC is not null &&
-            Main.npcShop > 0 && CurrentShopItems.Length > 0)
+        if (KeybindSystem.ResearchShopBind.JustPressed
+            && Player.TalkNPC is not null
+            && Main.npcShop > 0
+            && CurrentShopItems.Length > 0)
         {
             ResearchShop(CurrentShopItems);
         }
 
-        if (KeybindSystem.ShareAllResearched.JustPressed && Main.LocalPlayer.team >= 1 &&
-            MainUtils.GetTeamMembers(Main.LocalPlayer.team, Main.myPlayer).Any())
+        if (KeybindSystem.ShareAllResearched.JustPressed
+            && Main.LocalPlayer.team >= 1
+            && MainUtils.GetTeamMembers(Main.LocalPlayer.team, Main.myPlayer).Any())
         {
             IEnumerable<int> itemsToShare = Enumerable.Range(1, ItemLoader.ItemCount - 1).Where(Researcher.IsResearched);
             SyncItemsWithTeam(itemsToShare, new Dictionary<int, int>());
@@ -158,11 +169,16 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         return base.HoverSlot(inventory, context, slot);
     }
 
-    public void SyncItemsWithTeam(Researcher researcher) => SyncItemsWithTeam(researcher.AllResearchedItems, researcher.SacrificedItems);
+    public void SyncItemsWithTeam(Researcher researcher) =>
+        SyncItemsWithTeam(researcher.AllNonSharedItems, researcher.DefaultSacrifices);
 
     public void SyncItemsWithTeam(IEnumerable<int> items, IDictionary<int, int> sacrifices)
     {
-        if (Main.LocalPlayer.team == 0) return;
+        if (Main.netMode != NetmodeID.MultiplayerClient
+            || Main.LocalPlayer.team == 0
+            || (!items.Any() && !sacrifices.Any())
+            || (!ServerConfig.Instance.SyncResearchedItemsInOneTeam
+            && !ServerConfig.Instance.SyncSacrificesInOneTeam)) return;
 
         ModPacket packet = Mod.GetPacket();
         packet.Write((byte)NetMessageType.ShareItemsWithTeam);
@@ -180,46 +196,16 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     public void SharedItems(int fromPlayer, IEnumerable<int> items, IDictionary<int, int> sacrifices)
     {
-        if (HyperConfig.Instance.ShowOtherPlayersResearchedItems)
-            TextUtils.MessageOtherPlayerResearchedItems(items, fromPlayer);
+        TextUtils.MessageOtherPlayerResearchedItems(items, fromPlayer);
 
-        bool anyItemResearched = false;
-        Researcher sacrificesResearcher = new();
-        sacrificesResearcher.SacrificeItems(sacrifices);
-        if (HyperConfig.Instance.ShowSharedSacrifices && sacrificesResearcher.AnyItemSacrificed)
-            TextUtils.MessageSharedSacrifices(sacrificesResearcher.SacrificedItems, fromPlayer);
-        if (HyperConfig.Instance.ShowNewlyResearchedItems && sacrificesResearcher.AnyItemResearched)
-        {
-            TextUtils.MessageResearchedItems(sacrificesResearcher.DefaultResearchedItems);
-            anyItemResearched = true;
-        }
+        Researcher researcher = new();
+        researcher.SacrificeItems(sacrifices, SacrificeSource.Shared);
+        researcher.ResearchItems(items, ResearchSource.Shared);
 
-        if (items.Any())
-        {
-            Researcher researcher = new();
-            researcher.ResearchItems(items);
+        researcher.SacrificedItems[(int)SacrificeSource.Shared] = null;
+        SyncItemsWithTeam(researcher);
 
-            if (HyperConfig.Instance.ShowSharedItems)
-                TextUtils.MessageSharedItems(researcher.DefaultResearchedItems, fromPlayer);
-            anyItemResearched = anyItemResearched || researcher.AnyItemResearched;
-
-            sacrificesResearcher.CraftResearchedItems.AddRange(researcher.CraftResearchedItems);
-            sacrificesResearcher.ShimmerResearchedItems.AddRange(researcher.ShimmerResearchedItems);
-        }
-
-        if (HyperConfig.Instance.ShowResearchedCraftableItems)
-            TextUtils.MessageResearchedCraftableItems(sacrificesResearcher.CraftResearchedItems);
-        if (HyperConfig.Instance.ShowResearchedShimmeredItems)
-            TextUtils.MessageResearchedShimmeredItems(sacrificesResearcher.ShimmerResearchedItems);
-
-        if (anyItemResearched)
-        {
-            sacrificesResearcher.SacrificedItems.Clear();
-            if (ServerConfig.Instance.SyncResearchedItemsInOneTeam || ServerConfig.Instance.SyncSacrificesInOneTeam)
-                SyncItemsWithTeam(sacrificesResearcher);
-            SoundEngine.PlaySound(SoundID.ResearchComplete);
-        }
-        else if (sacrificesResearcher.AnyItemSacrificed) SoundEngine.PlaySound(SoundID.MenuTick);
+        AfterLocalResearch(researcher, fromPlayer);
     }
 
     public void OnResearch(Item item)
@@ -259,12 +245,10 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         {
             Item item = Player.inventory[slot];
 
-            if (item.IsAir || item.favorited ||
-                !HyperConfig.Instance.SacrificeHotbarSlots && slot >= 0 && slot <= 9 ||
-                !HyperConfig.Instance.SacrificeCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
-                slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount ||
-                !HyperConfig.Instance.SacrificeAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
-                slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount)
+            if (item.IsAir || item.favorited
+                || (!HyperConfig.Instance.SacrificeHotbarSlots && IsHotbarSlot(slot))
+                || (!HyperConfig.Instance.SacrificeCoinsSlots && IsCoinSlot(slot))
+                || (!HyperConfig.Instance.SacrificeAmmoSlots && IsAmmoSlot(slot)))
             {
                 continue;
             }
@@ -282,16 +266,10 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
             Item item = Player.inventory[slot];
-            if (item.favorited || item.IsAir || !Researcher.IsResearched(item.type)) continue;
-            if (!HyperConfig.Instance.ClearHotbarSlots && slot >= 0 && slot <= 9) continue;
-            if (!HyperConfig.Instance.ClearCoinsSlots && slot >= Main.InventoryCoinSlotsStart &&
-                slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount)
-            {
-                continue;
-            }
-
-            if (!HyperConfig.Instance.ClearAmmoSlots && slot >= Main.InventoryAmmoSlotsStart &&
-                slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount)
+            if (item.favorited || item.IsAir || !Researcher.IsResearched(item.type)
+                || (!HyperConfig.Instance.ClearHotbarSlots && IsHotbarSlot(slot))
+                || (!HyperConfig.Instance.ClearCoinsSlots && IsCoinSlot(slot))
+                || (!HyperConfig.Instance.ClearAmmoSlots && IsAmmoSlot(slot)))
             {
                 continue;
             }
@@ -304,6 +282,8 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     public void TrashInventoryItems(IEnumerable<int> items)
     {
+        if (!HyperConfig.Instance.AutoTrashAfterResearching) return;
+
         for (int slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
             Item item = Player.inventory[slot];
@@ -318,8 +298,9 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     /// <returns>Has any tile been added to the <see cref="ResearchedTiles"/></returns>
     public bool TryAddToResearchedTiles(int itemId)
     {
-        if (!ContentSamples.ItemsByType.TryGetValue(itemId, out Item item) ||
-            item.createTile < TileID.Dirt || !Researcher.IsResearched(itemId))
+        if (!ContentSamples.ItemsByType.TryGetValue(itemId, out Item item)
+            || item.createTile < TileID.Dirt
+            || !Researcher.IsResearched(itemId))
         {
             return false;
         }
@@ -389,26 +370,28 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         AfterLocalResearch(researcher);
     }
 
-    public void AfterLocalResearch(Researcher researcher)
+    public void AfterLocalResearch(Researcher researcher, int playerShared = -1)
     {
+        TextUtils.MessageResearcherResults(researcher, playerShared);
         if (researcher.AnyItemResearched)
         {
-            TextUtils.MessageResearcherResults(researcher);
             SoundEngine.PlaySound(SoundID.ResearchComplete);
-
-            if (HyperConfig.Instance.AutoTrashAfterResearching)
-                TrashInventoryItems(researcher.AllResearchedItems);
+            TrashInventoryItems(researcher.AllResearchedItems);
         }
-        else if (researcher.AnyItemSacrificed)
-        {
-            if (HyperConfig.Instance.ShowSacrifices)
-                TextUtils.MessageSacrifices(researcher.SacrificedItems);
+        else if (researcher.DefaultSacrifices != null && researcher.DefaultSacrifices.Count > 0)
             SoundEngine.PlaySound(SoundID.Research);
-        }
+        else if (researcher.SharedSacrifices != null && researcher.SharedSacrifices.Count > 0)
+            SoundEngine.PlaySound(SoundID.MenuTick);
 
-        if (Main.netMode == NetmodeID.MultiplayerClient &&
-            ServerConfig.Instance.SyncResearchedItemsInOneTeam && researcher.AnyItemResearched ||
-            ServerConfig.Instance.SyncSacrificesInOneTeam && researcher.AnyItemSacrificed)
-            SyncItemsWithTeam(researcher);
+        SyncItemsWithTeam(researcher);
     }
+
+    private static bool IsHotbarSlot(int slot) => slot >= 0 && slot <= 9;
+    private static bool IsCoinSlot(int slot) =>
+        slot >= Main.InventoryCoinSlotsStart
+        && slot < Main.InventoryCoinSlotsStart + Main.InventoryAmmoSlotsCount;
+
+    private static bool IsAmmoSlot(int slot) =>
+        slot >= Main.InventoryAmmoSlotsStart
+        && slot < Main.InventoryAmmoSlotsStart + Main.InventoryAmmoSlotsCount;
 }
