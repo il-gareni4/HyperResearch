@@ -61,11 +61,25 @@ Configs: {
 
 		# === AUTO-RESEARCH SETTINGS ===
 		ResearchInventory: {
-			Label: "[i:{0}] Изучать предметы в инвентаре"
+			Name: Изучать предметы в инвентаре
+			Label: "[i:{0}] {$Configs.HyperConfig.ResearchInventory.Name}"
 			Tooltip:
 				'''
 				Автоматичеки изучает предметы в инвентаре, если общее количество
 				одного предмета больше или равно необходимого количества для изучения
+				'''
+		}
+
+		AutoSacrifice: {
+			Name: Автоматическое частичное изучение
+			Label: "[i:{0}] {$Configs.HyperConfig.AutoSacrifice.Name}"
+			Tooltip:
+				'''
+				В отличие от [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchInventory.Name}], 
+				предмет не копится в инвентаре, пока необходимое количество не собрано,
+				а сразу частично изучает предмет.
+				[c/{$Colors.Warning}:Выключите] [c/{$Colors.Mention}:{$Configs.HyperConfig.ShowSacrifices.Label}] [c/{$Colors.Warning}:, чтобы не заполнять чат множеством сообщений.]
+				[c/{$Colors.Warning}:Не рекомендуется использовать с] [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncSacrificesInOneTeam.Label}]
 				'''
 		}
 
@@ -350,7 +364,7 @@ Configs: {
 		}
 
 		ShowSharedSacrifices: {
-			Label: Show shared partially researched items
+			Label: Показывать частично изученные предметы, которыми с вами поделились
 			Tooltip:
 				'''
 				Показывает сообщение в чат, когда игрок из одной команды поделился с вами частично изученным предметом.

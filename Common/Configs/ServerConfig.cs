@@ -35,7 +35,7 @@ public class ServerConfig : ModConfig
 
         [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Label")]
         [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Tooltip")]
-        [LabelArgs(ItemID.IronBar)]
+        [LabelArgs(ItemID.IronOre)]
         [DefaultValue(true)]
         public bool ResearchDecraftItems;
 

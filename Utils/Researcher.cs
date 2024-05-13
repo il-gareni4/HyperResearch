@@ -178,7 +178,7 @@ public class Researcher
             SacrificeItem(item, sacrificeSource);
     }
 
-    private void SacrificeItem(Item item, SacrificeSource source = default)
+    public void SacrificeItem(Item item, SacrificeSource source = default)
     {
         if (item.stack == 0) return;
 
@@ -361,7 +361,7 @@ public class Researcher
         if (SacrificedItems[(int)source] == null)
             SacrificedItems[(int)source] = new Dictionary<int, int> { [itemId] = amount };
         else
-            SacrificedItems[(int)source]![itemId] += amount;
+            SacrificedItems[(int)source]![itemId] = SacrificedItems[(int)source]!.GetValueOrDefault(itemId, 0) + amount;
     }
 
     #region StaticMethods

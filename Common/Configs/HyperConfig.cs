@@ -17,6 +17,10 @@ public class HyperConfig : ModConfig
     [DefaultValue(true)]
     public bool ResearchInventory;
 
+    [LabelArgs(ItemID.Toolbelt)]
+    [DefaultValue(false)]
+    public bool AutoSacrifice;
+
     [LabelArgs(ItemID.WorkBench)]
     [DefaultValue(true)]
     public bool AutoResearchCraftableItems;
@@ -25,7 +29,7 @@ public class HyperConfig : ModConfig
     [DefaultValue(true)]
     public bool ResearchShimmerableItems;
 
-    [LabelArgs(ItemID.IronBar)]
+    [LabelArgs(ItemID.IronOre)]
     [DefaultValue(true)]
     public bool ResearchDecraftItems;
 

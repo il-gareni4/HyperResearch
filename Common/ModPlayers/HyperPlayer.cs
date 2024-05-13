@@ -213,7 +213,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         researcher.SacrificeItems(sacrifices, SacrificeSource.Shared);
         researcher.ResearchItems(items, ResearchSource.Shared);
 
-        AfterLocalResearch(researcher, fromPlayer);
+        AfterLocalResearch(researcher, playerShared: fromPlayer);
 
         researcher.SacrificedItems[(int)SacrificeSource.Shared] = null;
         SyncItemsWithTeam(researcher);
@@ -374,7 +374,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         AfterLocalResearch(researcher);
     }
 
-    private void AfterLocalResearch(Researcher researcher, int playerShared = -1)
+    internal void AfterLocalResearch(Researcher researcher, bool playSacrificeSounds = true, int playerShared = -1)
     {
         TextUtils.MessageResearcherResults(researcher, playerShared);
         if (researcher.AnyItemResearched)
@@ -382,7 +382,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             SoundEngine.PlaySound(SoundID.ResearchComplete);
             TrashInventoryItems(researcher.AllResearchedItems.ToArray());
         }
-        else if (researcher.DefaultSacrifices is { Count: > 0 })
+        else if (researcher.DefaultSacrifices is { Count: > 0 } && playSacrificeSounds)
             SoundEngine.PlaySound(SoundID.Research);
         else if (researcher.SharedSacrifices is { Count: > 0 }) SoundEngine.PlaySound(SoundID.MenuTick);
 

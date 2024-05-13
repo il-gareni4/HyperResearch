@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using HyperResearch.Common.Configs;
+using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Utils;
 using Terraria;
@@ -17,8 +18,17 @@ public partial class BaseGlobalItem : GlobalItem
 {
     public override bool OnPickup(Item item, Player player)
     {
-        if (!Researcher.IsPlayerInJourneyMode) return base.OnPickup(item, player);
-        return !(Researcher.IsResearched(item.type) && HyperConfig.Instance.AutoTrashResearched);
+        if (!Researcher.IsPlayerInJourneyMode) return true;
+        if (Researcher.IsResearched(item.type))
+            return !HyperConfig.Instance.AutoTrashResearched;
+
+        if (!HyperConfig.Instance.AutoSacrifice) return true;
+
+        Researcher researcher = new();
+        researcher.SacrificeItem(item);
+        if (player.TryGetModPlayer(out HyperPlayer hyperPlayer))
+            hyperPlayer.AfterLocalResearch(researcher, false);
+        return true;
     }
 
     public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)

@@ -61,8 +61,23 @@ Configs: {
 
 		# === AUTO-RESEARCH SETTINGS ===
 		ResearchInventory: {
-			Label: "[i:{0}] Auto-research items in the inventory"
+			Name: Auto-research items in the inventory
+			Label: "[i:{0}] {$Configs.HyperConfig.ResearchInventory.Name}"
 			Tooltip: Automatically research items in the inventory if the total amount is equal to or more than required for research
+		}
+
+		AutoSacrifice: {
+			Name: Auto-partial research
+			Label: "[i:{0}] {$Configs.HyperConfig.AutoSacrifice.Name}"
+			Tooltip:
+				'''
+				Automatically partially researches the items. 
+				Unlike [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchInventory.Name}], 
+				the item does not accumulate in the inventory until the required amount is collected,
+				but immediately partially researches the item upon pick-up.
+				[c/{$Colors.Warning}:Disable] [c/{$Colors.Mention}:{$Configs.HyperConfig.ShowSacrifices.Label}] [c/{$Colors.Warning}:to avoid filling up the chat with a lot of messages]
+				[c/{$Colors.Warning}:Not recommended for use with] [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncSacrificesInOneTeam.Label}]
+				'''
 		}
 
 		AutoResearchCraftableItems: {
@@ -128,7 +143,7 @@ Configs: {
 			Label: "[i:{0}] Auto-trash an item after researching"
 			Tooltip:
 				'''
-				Unlike the setting "[c/{$Colors.Mention}:{$Configs.HyperConfig.AutoTrashResearched.Name}]"
+				Unlike the setting [c/{$Colors.Mention}:{$Configs.HyperConfig.AutoTrashResearched.Name}]
 				removes the item from the inventory after researching the item
 				'''
 		}
