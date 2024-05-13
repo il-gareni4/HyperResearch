@@ -1,5 +1,5 @@
-﻿using HyperResearch.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using HyperResearch.Utils;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
@@ -8,8 +8,8 @@ namespace HyperResearch.Common.Systems;
 
 public class ResearchSystem : ModSystem
 {
-    private Dictionary<int, int> CountOverride { get; set; } = [];
-    public static int ResearchableItemsCount { get; private set; } = 0;
+    private Dictionary<int, int> CountOverride { get; } = [];
+    public static int ResearchableItemsCount { get; private set; }
 
     public override void PostSetupContent()
     {
@@ -26,24 +26,23 @@ public class ResearchSystem : ModSystem
 
             if (count > 0)
                 CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[def.Type] = (int)count;
-            else if (CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId.TryGetValue(def.Type, out int _))
-                CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId.Remove(def.Type);
+            else
+                CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId.Remove(def.Type, out int _);
             CountOverride[def.Type] = (int)count;
         }
     }
 
     private void CalculateResearchable()
     {
-        int totalResearchable = 0;
-        for (int itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
+        var totalResearchable = 0;
+        for (var itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
         {
             if (Researcher.GetSharedValue(itemId) != -1) continue;
             if (Researcher.IsResearchable(itemId)
                 || (!CountOverride.TryGetValue(itemId, out int count) && count > 0))
-            {
                 totalResearchable++;
-            }
         }
+
         ResearchableItemsCount = totalResearchable;
     }
 }

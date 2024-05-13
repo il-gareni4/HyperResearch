@@ -1,7 +1,7 @@
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
@@ -12,10 +12,10 @@ using Terraria.ModLoader;
 namespace HyperResearch.Utils;
 
 /// <summary>A utility class whose functions are directly related to items in the game</summary>
-/// <seealso cref="Item"/>
+/// <seealso cref="Item" />
 public static class ItemsUtils
 {
-    private static readonly Dictionary<int, int> _coinsCurrency = new()
+    private static readonly Dictionary<int, int> CoinsCurrency = new()
     {
         { ItemID.CopperCoin, 1 },
         { ItemID.SilverCoin, 100 },
@@ -24,7 +24,7 @@ public static class ItemsUtils
     };
 
     /// <summary>
-    /// More readable variant of <code>Main.ItemDropsDB.GetRulesForItemID(itemId).Count == 0</code>
+    ///     More readable variant of <code>Main.ItemDropsDB.GetRulesForItemID(itemId).Count == 0</code>
     /// </summary>
     public static bool IsLootItem(int itemId)
     {
@@ -34,11 +34,13 @@ public static class ItemsUtils
 
     public static bool CanOpenLootItem(int itemId)
     {
-        if (itemId == ItemID.LockBox)
-            return Researcher.IsResearched(ItemID.GoldenKey);
-        else if (itemId == ItemID.ObsidianLockbox)
-            return Researcher.IsResearched(ItemID.ShadowKey) || Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(ItemID.ShadowKey);
-        return true;
+        return itemId switch
+        {
+            ItemID.LockBox => Researcher.IsResearched(ItemID.GoldenKey),
+            ItemID.ObsidianLockbox => Researcher.IsResearched(ItemID.ShadowKey) ||
+                                      Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(ItemID.ShadowKey),
+            _ => true
+        };
     }
 
     public static IEnumerable<int> GetItemLoot(int itemId)
@@ -56,7 +58,7 @@ public static class ItemsUtils
         attemptInfo.rng = Main.rand;
 
         return dropRateInfos.Where(info => info.conditions?.All(c => c.CanDrop(attemptInfo)) ?? true)
-                            .Select(info => info.itemId);
+            .Select(info => info.itemId);
     }
 
     public static int GetShimmeredItemId(int itemId)
@@ -69,48 +71,47 @@ public static class ItemsUtils
         return ItemID.Sets.ShimmerTransformToItem[itemId];
     }
 
-    public static Recipe GetDecraftRecipe(int itemId)
+    private static Recipe? GetDecraftRecipe(int itemId)
     {
-        if (GetShimmeredItemId(itemId) > 0 || ContentSamples.ItemsByType[itemId].createTile == TileID.MusicBoxes) return null;
+        if (GetShimmeredItemId(itemId) > 0 ||
+            ContentSamples.ItemsByType[itemId].createTile == TileID.MusicBoxes) return null;
         if (ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
             itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];
 
         if (ShimmerTransforms.IsItemTransformLocked(itemId)) return null;
         int recipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(itemId);
-        if (recipeIndex < 0) return null;
 
-        return Main.recipe[recipeIndex];
+        return recipeIndex < 0 ? null : Main.recipe[recipeIndex];
     }
 
     public static List<int> GetDecraftItems(int itemId) => GetDecraftItems(GetDecraftRecipe(itemId));
 
-    public static List<int> GetDecraftItems(Recipe recipe)
+    private static List<int> GetDecraftItems(Recipe? recipe)
     {
-        if (recipe is null) return null;
-        if (recipe.customShimmerResults is not null) return recipe.customShimmerResults.Select(r => r.type).ToList();
-        else return recipe.requiredItem.Select(r => r.type).ToList();
+        if (recipe is null) return [];
+        return recipe.customShimmerResults != null
+            ? recipe.customShimmerResults.Select(r => r.type).ToList()
+            : recipe.requiredItem.Select(r => r.type).ToList();
     }
 
-    public static Dictionary<int, int> GetCurrencyItemsAndValues(int currencyId)
+    public static Dictionary<int, int>? GetCurrencyItemsAndValues(int currencyId)
     {
         if (currencyId == -1)
-            return _coinsCurrency;
+            return CoinsCurrency;
 
         if (CustomCurrencyManager.TryGetCurrencySystem(currencyId, out CustomCurrencySystem system))
         {
-            return (Dictionary<int, int>)system.GetType()
+            return (Dictionary<int, int>?)system.GetType()
                 .GetField("_valuePerUnit", BindingFlags.NonPublic | BindingFlags.Instance)
                 ?.GetValue(system);
         }
-        else return null;
+
+        return null;
     }
 
-    public static List<int> GetAllAdjTiles(int tileId)
-    {
-        return [tileId, .. GetAdjTiles(tileId)];
-    }
+    public static List<int> GetAllAdjTiles(int tileId) => [tileId, .. GetAdjTiles(tileId)];
 
-    public static List<int> GetAdjTiles(int tileId)
+    private static List<int> GetAdjTiles(int tileId)
     {
         List<int> adjTiles = [];
         switch (tileId)
@@ -136,6 +137,7 @@ public static class ItemsUtils
                 adjTiles.Add(14);
                 break;
         }
+
         ModTile t = TileLoader.GetTile(tileId);
         if (t is not null) adjTiles.AddRange(t.AdjTiles);
         return adjTiles;
@@ -144,18 +146,15 @@ public static class ItemsUtils
     public static bool IsInItemGroup(Item item, ContentSamples.CreativeHelper.ItemGroup group) =>
         ContentSamples.CreativeHelper.GetItemGroup(item, out int _) == group;
 
-    public static int[] GetAllPrefixes(Item item)
+    private static int[] GetAllPrefixes(Item item)
     {
         PrefixCategory? category = item.GetPrefixCategory();
         if (category == null) return [];
-        var modPrefixes = PrefixLoader.GetPrefixesInCategory((PrefixCategory)category);
+        IReadOnlyList<ModPrefix>? modPrefixes = PrefixLoader.GetPrefixesInCategory((PrefixCategory)category);
         return [.. Item.GetVanillaPrefixes((PrefixCategory)category), .. modPrefixes.Select(p => p.Type)];
     }
 
-    public static int[] GetPossiblePrefixes(Item item)
-    {
-        return GetAllPrefixes(item).Where(p => item.CanApplyPrefix(p)).ToArray();
-    }
+    public static int[] GetPossiblePrefixes(Item item) => GetAllPrefixes(item).Where(item.CanApplyPrefix).ToArray();
 
     public static Color GetRarityColor(Item item)
     {
@@ -179,6 +178,6 @@ public static class ItemsUtils
         };
     }
 
-    public static bool CanHavePrifixes(Item item) =>
+    public static bool CanHavePrefixes(Item item) =>
         item.CanHavePrefixes() && (item.ModItem?.CanReforge() ?? true) && GetPossiblePrefixes(item).Length > 0;
 }

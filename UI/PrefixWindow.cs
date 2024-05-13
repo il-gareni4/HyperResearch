@@ -13,19 +13,20 @@ namespace HyperResearch.UI;
 
 public class PrefixWindow : UIState
 {
-    public UIPanel MainPanel;
-    public UIList PrefixesList;
-    public UIScrollbar ScrollBar;
+    private UIPanel _mainPanel = null!;
+    private UIList _prefixesList = null!;
+    private UIScrollbar _scrollBar = null!;
 
-    public bool Enabled =>
-        //Condition.DownedGoblinArmy.IsMet()
-        Main.playerInventory
-        && Main.CreativeMenu.Enabled
-        && PrefixesList.Count > 0;
+    public static bool CanBeShown =>
+        (!ConfigOptions.BalancePrefixPicker || Condition.DownedGoblinArmy.IsMet())
+        && Main.playerInventory
+        && Main.CreativeMenu.Enabled;
+
+    public bool Enabled => CanBeShown && _prefixesList.Count > 0;
 
     public override void OnInitialize()
     {
-        MainPanel = new()
+        _mainPanel = new UIPanel
         {
             MinWidth = StyleDimension.FromPixels(200f),
             MinHeight = StyleDimension.FromPixels(150f),
@@ -33,32 +34,32 @@ public class PrefixWindow : UIState
             Height = StyleDimension.Fill,
             Left = StyleDimension.FromPixels(564f)
         };
-        MainPanel.SetPadding(4f);
+        _mainPanel.SetPadding(4f);
 
-        ScrollBar = new()
+        _scrollBar = new UIScrollbar
         {
             Top = StyleDimension.FromPixels(4f),
             Left = StyleDimension.FromPixelsAndPercent(-20f, 1f),
             Width = StyleDimension.FromPixels(20f),
             Height = StyleDimension.FromPixelsAndPercent(-8f, 1f)
         };
-        MainPanel.Append(ScrollBar);
+        _mainPanel.Append(_scrollBar);
 
-        PrefixesList = new()
+        _prefixesList = new UIList
         {
-            Width = StyleDimension.FromPixelsAndPercent(-ScrollBar.Width.Pixels - MainPanel.PaddingRight, 1f),
+            Width = StyleDimension.FromPixelsAndPercent(-_scrollBar.Width.Pixels - _mainPanel.PaddingRight, 1f),
             Height = StyleDimension.Fill,
             ListPadding = 2f
         };
-        MainPanel.Append(PrefixesList);
-        PrefixesList.SetScrollbar(ScrollBar);
+        _mainPanel.Append(_prefixesList);
+        _prefixesList.SetScrollbar(_scrollBar);
 
-        Append(MainPanel);
+        Append(_mainPanel);
     }
 
-    public void SetPrefixes(Item item)
+    private void SetPrefixes(Item item)
     {
-        PrefixesList.Clear();
+        _prefixesList.Clear();
         item.tooltipContext = ItemSlot.Context.PrefixItem;
         foreach (int prefix in ItemsUtils.GetPossiblePrefixes(item))
         {
@@ -66,14 +67,14 @@ public class PrefixWindow : UIState
             prefixItem.Prefix(prefix);
 
             UIPrefixPanel prefixPanel = new(prefixItem);
-            PrefixesList.Add(prefixPanel);
+            _prefixesList.Add(prefixPanel);
         }
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
         base.DrawSelf(spriteBatch);
-        if (MainPanel.IsMouseHovering)
+        if (_mainPanel.IsMouseHovering)
         {
             Main.LocalPlayer.mouseInterface = true;
             PlayerInput.LockVanillaMouseScroll("HyperResearch/PrefixWindow");
@@ -88,18 +89,20 @@ public class PrefixWindow : UIState
     public override void LeftMouseDown(UIMouseEvent evt)
     {
         if (Enabled && (evt.Target == this || evt.Target is UIPrefixPanel || evt.Target.Parent is UIPrefixPanel))
-            PrefixesList.Clear();
+            _prefixesList.Clear();
         base.LeftMouseDown(evt);
     }
 
     public override void MiddleClick(UIMouseEvent evt)
     {
-        if (!ItemsUtils.CanHavePrifixes(Main.HoverItem)
+        if (!CanBeShown
+            || !ItemsUtils.CanHavePrefixes(Main.HoverItem)
             || Main.HoverItem.tooltipContext != ItemSlot.Context.CreativeInfinite) return;
 
-        MainPanel.MaxHeight.Pixels = MathHelper.Clamp(Main.screenHeight - 352f - 64f, 150f, 300f);
-        CalculatedStyle dim = MainPanel.GetDimensions();
-        MainPanel.Top.Pixels = MathHelper.Clamp(evt.MousePosition.Y - dim.Height / 2, 352f, Main.screenHeight - dim.Height - 64f);
+        _mainPanel.MaxHeight.Pixels = MathHelper.Clamp(Main.screenHeight - 352f - 64f, 150f, 300f);
+        CalculatedStyle dim = _mainPanel.GetDimensions();
+        _mainPanel.Top.Pixels =
+            MathHelper.Clamp(evt.MousePosition.Y - dim.Height / 2, 352f, Main.screenHeight - dim.Height - 64f);
 
         SetPrefixes(Main.HoverItem.Clone());
         SoundEngine.PlaySound(SoundID.MenuTick);

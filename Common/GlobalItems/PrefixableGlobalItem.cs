@@ -1,22 +1,32 @@
-﻿using HyperResearch.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using HyperResearch.UI;
+using HyperResearch.Utils;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace HyperResearch.Common.GlobalItems;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class PrefixableGlobalItem : GlobalItem
 {
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
-        if (!ItemsUtils.CanHavePrifixes(item) || item.tooltipContext != ItemSlot.Context.CreativeInfinite)
+        if (!ItemsUtils.CanHavePrefixes(item)
+            || item.tooltipContext != ItemSlot.Context.CreativeInfinite
+            || !PrefixWindow.CanBeShown)
             return;
 
-        TooltipLine tooltipLine = new(Mod, "ChoosePrefix", Language.GetText("Mods.HyperResearch.Tooltips.ChoosePrefix").Format("Mouse3"))
+        TooltipLine tooltipLine = new(
+            Mod,
+            "ChoosePrefix",
+            Language.GetText("Mods.HyperResearch.Tooltips.ChoosePrefix").Format("Mouse3")
+        )
         {
-            OverrideColor = Terraria.ID.Colors.CoinSilver
+            OverrideColor = Colors.CoinSilver
         };
         tooltips.Add(tooltipLine);
     }

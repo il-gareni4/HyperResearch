@@ -1,8 +1,8 @@
-﻿using HyperResearch.Common.ModPlayers.Interfaces;
+﻿using System.Linq;
+using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
-using System.Linq;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -14,19 +14,19 @@ namespace HyperResearch.Common.ModPlayers;
 
 public class BuffPlayer : ModPlayer, IResearchPlayer
 {
-    public DictionaryAnalysisData<int, bool> Buffs { get; private set; } = [];
+    public DictionaryAnalysisData<int, bool> Buffs { get; } = [];
+
+    public void OnResearch(Item item) => ResearchItem(item);
 
     public override void ProcessTriggers(TriggersSet triggersSet)
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
         if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite
-            && KeybindSystem.EnableDisableBuffBind.JustPressed)
-        {
+            && KeybindSystem.EnableDisableBuffBind!.JustPressed)
             ToggleBuffItem(Main.HoverItem);
-        }
 #if DEBUG
-        if (KeybindSystem.ForgetAllBind.JustPressed)
+        if (KeybindSystem.ForgetAllBind!.JustPressed)
             Buffs.Clear();
 #endif
     }
@@ -35,7 +35,7 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
-        for (int itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
+        for (var itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
         {
             Item item = ContentSamples.ItemsByType[itemId];
             if (Researcher.IsResearched(item.type)) ResearchItem(item, false);
@@ -61,8 +61,10 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         if (tag.TryGet("buffsEnabled", out int[] enabled))
         {
             foreach (int buffId in enabled)
+            {
                 if (buffId < BuffID.Count)
                     Buffs[buffId] = true;
+            }
         }
     }
 
@@ -71,12 +73,13 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         if (!Researcher.IsPlayerInJourneyMode || !ConfigOptions.UseResearchedPotionsBuff) return;
 
         foreach ((int buffId, bool enabled) in Buffs)
-            if (enabled) Player.AddBuff(buffId, 1);
+        {
+            if (enabled)
+                Player.AddBuff(buffId, 1);
+        }
     }
 
-    public void OnResearch(Item item) => ResearchItem(item);
-
-    public void ResearchItem(Item item, bool enabledIfNotFound = true)
+    private void ResearchItem(Item item, bool enabledIfNotFound = true)
     {
         if (item.buffType == 0 || Buffs.ContainsKey(item.buffType)) return;
 
@@ -98,9 +101,13 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
 
         if (!enabled)
         {
-            for (int id = 1; id < set.Length; id++)
-                if (set[id]) Buffs[id] = false;
+            for (var id = 1; id < set.Length; id++)
+            {
+                if (set[id])
+                    Buffs[id] = false;
+            }
         }
+
         Buffs[buffId] = !enabled;
     }
 }

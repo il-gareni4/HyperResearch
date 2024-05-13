@@ -1,31 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config;
 
-namespace HyperResearch.Common.Configs
+namespace HyperResearch.Common.Configs;
+
+[SuppressMessage("ReSharper", "UnassignedField.Global")]
+[SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
+public class ServerConfig : ModConfig
 {
-    public class ServerConfig : ModConfig
-    {
-        public static event Action Changed;
-        public static ServerConfig Instance { get; set; }
-
-        public override ConfigScope Mode => ConfigScope.ServerSide;
-
-        public override void OnLoaded() => Instance = this;
-        public override void OnChanged() => Changed?.Invoke();
-
-        public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref NetworkText message)
-        {
-            if (whoAmI == 0) return true;
-
-            message = NetworkText.FromKey("Mods.HyperResearch.Configs.ServerConfig.Messages.OnlyHost");
-            return false;
-        }
-
-        [DefaultValue(false)]
+    [DefaultValue(false)]
         public bool SyncResearchedItemsInOneTeam;
 
         [DefaultValue(false)]
@@ -99,5 +85,18 @@ namespace HyperResearch.Common.Configs
         [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.ItemResearchCountOverride.Label")]
         [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.ItemResearchCountOverride.Tooltip")]
         public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
+
+    public static ServerConfig Instance { get; private set; } = null!;
+
+    public override ConfigScope Mode => ConfigScope.ServerSide;
+
+    public override void OnLoaded() => Instance = this;
+
+    public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref NetworkText message)
+    {
+        if (whoAmI == 0) return true;
+
+        message = NetworkText.FromKey("Mods.HyperResearch.Configs.ServerConfig.Messages.OnlyHost");
+        return false;
     }
 }

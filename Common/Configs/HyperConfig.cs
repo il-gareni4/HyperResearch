@@ -1,213 +1,215 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
 
-namespace HyperResearch.Common.Configs
+namespace HyperResearch.Common.Configs;
+
+[SuppressMessage("ReSharper", "UnassignedField.Global")]
+[SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
+public class HyperConfig : ModConfig
 {
-    public class HyperConfig : ModConfig
-    {
-        public static event Action Changed;
+    [Header("AutoResearchSettingsHeader")]
 
-        public static HyperConfig Instance;
+    [LabelArgs(ItemID.YoyoBag)]
+    [DefaultValue(true)]
+    public bool ResearchInventory;
 
-        public override ConfigScope Mode => ConfigScope.ClientSide;
+    [LabelArgs(ItemID.WorkBench)]
+    [DefaultValue(true)]
+    public bool AutoResearchCraftableItems;
 
-        public override void OnLoaded() => Instance = this;
+    [LabelArgs(ItemID.BottomlessShimmerBucket)]
+    [DefaultValue(true)]
+    public bool ResearchShimmerableItems;
 
-        public override void OnChanged() => Changed?.Invoke();
+    [LabelArgs(ItemID.IronBar)]
+    [DefaultValue(true)]
+    public bool ResearchDecraftItems;
 
-        [Header("AutoResearchSettingsHeader")]
+    [LabelArgs(ItemID.PlatinumCoin)]
+    [TooltipArgs(ItemID.DefenderMedal)]
+    [DefaultValue(true)]
+    public bool AutoResearchShop;
 
-        [LabelArgs(ItemID.YoyoBag)]
-        [DefaultValue(true)]
-        public bool ResearchInventory;
 
-        [LabelArgs(ItemID.WorkBench)]
-        [DefaultValue(true)]
-        public bool AutoResearchCraftableItems;
+    [Header("BuffsSettingsHeader")]
 
-        [LabelArgs(ItemID.BottomlessShimmerBucket)]
-        [DefaultValue(true)]
-        public bool ResearchShimmerableItems;
+    [LabelArgs(ItemID.ZombieBanner)]
+    [DefaultValue(true)]
+    public bool UseResearchedBannersBuff;
 
-        [LabelArgs(ItemID.IronBar)]
-        [DefaultValue(true)]
-        public bool ResearchDecraftItems;
+    [LabelArgs(ItemID.WrathPotion)]
+    [DefaultValue(true)]
+    public bool UseResearchedPotionsBuff;
 
-        [LabelArgs(ItemID.PlatinumCoin)]
-        [TooltipArgs(ItemID.DefenderMedal)]
-        [DefaultValue(true)]
-        public bool AutoResearchShop;
 
+    [Header("AutoTrashSettingsHeader")]
 
-        [Header("BuffsSettingsHeader")]
+    [LabelArgs(ItemID.TrashCan)]
+    [DefaultValue(false)]
+    public bool AutoTrashResearched;
 
-        [LabelArgs(ItemID.ZombieBanner)]
-        [DefaultValue(true)]
-        public bool UseResearchedBannersBuff;
+    [LabelArgs(ItemID.TrashCan)]
+    [DefaultValue(false)]
+    public bool AutoTrashAfterResearching;
 
-        [LabelArgs(ItemID.WrathPotion)]
-        [DefaultValue(true)]
-        public bool UseResearchedPotionsBuff;
 
+    [Header("BalanceSettingsHeader")]
 
-        [Header("AutoTrashSettingsHeader")]
+    [LabelArgs(ItemID.BottledWater)]
+    [DefaultValue(true)]
+    public bool IgnoreCraftingConditions;
 
-        [LabelArgs(ItemID.TrashCan)]
-        [DefaultValue(false)]
-        public bool AutoTrashResearched;
+    [LabelArgs(ItemID.BottomlessShimmerBucket)]
+    [DefaultValue(true)]
+    public bool BalanceShimmerAutoresearch;
 
-        [LabelArgs(ItemID.TrashCan)]
-        [DefaultValue(false)]
-        public bool AutoTrashAfterResearching;
+    [LabelArgs(ItemID.TinkerersWorkshop)]
+    [DefaultValue(false)]
+    public bool BalancePrefixPicker;
 
+    [LabelArgs(ItemID.AlphabetStatue1)]
+    [DefaultValue(false)]
+    public bool OnlyOneItemNeeded;
 
-        [Header("BalanceSettingsHeader")]
+    public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
-        [LabelArgs(ItemID.BottledWater)]
-        [DefaultValue(true)]
-        public bool IgnoreCraftingConditions;
 
-        [LabelArgs(ItemID.BottomlessShimmerBucket)]
-        [DefaultValue(true)]
-        public bool BalanceShimmerAutoresearch;
+    [Header("TooltipsSettingsHeader")]
 
-        [LabelArgs(ItemID.TinkerersWorkshop)]
-        [DefaultValue(false)]
-        public bool BalancePrefixPicker;
+    [LabelArgs(ItemID.HandOfCreation)]
+    [DefaultValue(true)]
+    public bool UseCustomResearchTooltip;
 
-        [LabelArgs(ItemID.AlphabetStatue1)]
-        [DefaultValue(false)]
-        public bool OnlyOneItemNeeded;
+    [LabelArgs(ItemID.Sign)]
+    [DefaultValue(false)]
+    public bool ShowResearchedTooltip;
 
-        public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
+    [Header("SacrificeSettingsHeader")]
 
-        [Header("TooltipsSettingsHeader")]
+    [LabelArgs(ItemID.LockBox)]
+    [DefaultValue(false)]
+    public bool SacrificeHotbarSlots;
 
-        [LabelArgs(ItemID.HandOfCreation)]
-        [DefaultValue(true)]
-        public bool UseCustomResearchTooltip;
+    [LabelArgs(ItemID.GoldCoin)]
+    [DefaultValue(true)]
+    public bool SacrificeCoinsSlots;
 
-        [LabelArgs(ItemID.Sign)]
-        [DefaultValue(false)]
-        public bool ShowResearchedTooltip;
+    [LabelArgs(ItemID.WoodenArrow)]
+    [DefaultValue(true)]
+    public bool SacrificeAmmoSlots;
 
 
-        [Header("SacrificeSettingsHeader")]
+    [Header("ClearSettingsHeader")]
 
-        [LabelArgs(ItemID.LockBox)]
-        [DefaultValue(false)]
-        public bool SacrificeHotbarSlots;
+    [LabelArgs(ItemID.LockBox)]
+    [DefaultValue(false)]
+    public bool ClearHotbarSlots;
 
-        [LabelArgs(ItemID.GoldCoin)]
-        [DefaultValue(true)]
-        public bool SacrificeCoinsSlots;
+    [LabelArgs(ItemID.GoldCoin)]
+    [DefaultValue(false)]
+    public bool ClearCoinsSlots;
 
-        [LabelArgs(ItemID.WoodenArrow)]
-        [DefaultValue(true)]
-        public bool SacrificeAmmoSlots;
+    [LabelArgs(ItemID.WoodenArrow)]
+    [DefaultValue(true)]
+    public bool ClearAmmoSlots;
 
 
-        [Header("ClearSettingsHeader")]
+    [Header("ConsumptionSettingsHeader")]
 
-        [LabelArgs(ItemID.LockBox)]
-        [DefaultValue(false)]
-        public bool ClearHotbarSlots;
+    [LabelArgs(ItemID.EndlessMusketPouch)]
+    [DefaultValue(false)]
+    public bool ConsumeResearchedAmmo;
 
-        [LabelArgs(ItemID.GoldCoin)]
-        [DefaultValue(false)]
-        public bool ClearCoinsSlots;
+    [LabelArgs(ItemID.GoldWorm)]
+    [DefaultValue(false)]
+    public bool ConsumeResearchedBaits;
 
-        [LabelArgs(ItemID.WoodenArrow)]
-        [DefaultValue(true)]
-        public bool ClearAmmoSlots;
+    [LabelArgs(ItemID.StoneSlab)]
+    [DefaultValue(false)]
+    public bool ConsumeResearchedBlocks;
 
+    [LabelArgs(ItemID.Shuriken)]
+    [DefaultValue(false)]
+    public bool ConsumeResearchedThrowingWeapons;
 
-        [Header("ConsumptionSettingsHeader")]
+    [LabelArgs(ItemID.RegenerationPotion)]
+    [TooltipArgs(ItemID.IronskinPotion, ItemID.HealingPotion, ItemID.ManaPotion, ItemID.RecallPotion)]
+    [DefaultValue(false)]
+    public bool ConsumeResearchedPotions;
 
-        [LabelArgs(ItemID.EndlessMusketPouch)]
-        [DefaultValue(false)]
-        public bool ConsumeResearchedAmmo;
+    [LabelArgs(ItemID.EyeOfCthulhuBossBag)]
+    [DefaultValue(false)]
+    public bool ConsumeResearchedLootItems;
 
-        [LabelArgs(ItemID.GoldWorm)]
-        [DefaultValue(false)]
-        public bool ConsumeResearchedBaits;
+    [LabelArgs(ItemID.SuspiciousLookingEye)]
+    [DefaultValue(true)]
+    public bool ConsumeOtherResearchedItems;
 
-        [LabelArgs(ItemID.StoneSlab)]
-        [DefaultValue(false)]
-        public bool ConsumeResearchedBlocks;
 
-        [LabelArgs(ItemID.Shuriken)]
-        [DefaultValue(false)]
-        public bool ConsumeResearchedThrowingWeapons;
+    [Header("MessagesSettingsHeader")]
 
-        [LabelArgs(ItemID.RegenerationPotion)]
-        [TooltipArgs(ItemID.IronskinPotion, ItemID.HealingPotion, ItemID.ManaPotion, ItemID.RecallPotion)]
-        [DefaultValue(false)]
-        public bool ConsumeResearchedPotions;
+    [DefaultValue(true)]
+    public bool ShowNewlyResearchedItems;
 
-        [LabelArgs(ItemID.EyeOfCthulhuBossBag)]
-        [DefaultValue(false)]
-        public bool ConsumeResearchedLootItems;
+    [DefaultValue(true)]
+    public bool ShowResearchedCraftableItems;
 
-        [LabelArgs(ItemID.SuspiciousLookingEye)]
-        [DefaultValue(true)]
-        public bool ConsumeOtherResearchedItems;
+    [DefaultValue(true)]
+    public bool ShowResearchedShimmeredItems;
 
+    [DefaultValue(true)]
+    public bool ShowResearchedDecraftItems;
 
-        [Header("MessagesSettingsHeader")]
+    [DefaultValue(false)]
+    public bool ShowSacrifices;
 
-        [DefaultValue(true)]
-        public bool ShowNewlyResearchedItems;
 
-        [DefaultValue(true)]
-        public bool ShowResearchedCraftableItems;
+    [Header("MutiplayerMessagesSettingsHeader")]
 
-        [DefaultValue(true)]
-        public bool ShowResearchedShimmeredItems;
+    [DefaultValue(true)]
+    public bool ShowSharedItems;
 
-        [DefaultValue(true)]
-        public bool ShowResearchedDecraftItems;
+    [DefaultValue(true)]
+    public bool ShowSharedSacrifices;
 
-        [DefaultValue(false)]
-        public bool ShowSacrifices;
+    [DefaultValue(false)]
+    public bool ShowOtherPlayersResearchedItems;
 
 
-        [Header("MutiplayerMessagesSettingsHeader")]
+    [Header("UISettingsHeader")]
 
-        [DefaultValue(true)]
-        public bool ShowSharedItems;
+    [DefaultValue(true)]
+    public bool ShowResearchInventoryButton;
 
-        [DefaultValue(true)]
-        public bool ShowSharedSacrifices;
+    [DefaultValue(true)]
+    public bool ShowClearInventoryButton;
 
-        [DefaultValue(false)]
-        public bool ShowOtherPlayersResearchedItems;
+    [DefaultValue(true)]
+    public bool ShowAutoCraftButton;
 
+    [Range(2, 9)]
+    [Slider()]
+    [DefaultValue(2)]
+    public int InventoryButtonsSlotOffset;
 
-        [Header("UISettingsHeader")]
+    [DefaultValue(true)]
+    public bool ShowResearchShopButton;
 
-        [DefaultValue(true)]
-        public bool ShowResearchInventoryButton;
+    [DefaultValue(true)]
+    public bool ShowTotalResearchedItemsCount;
+        
 
-        [DefaultValue(true)]
-        public bool ShowClearInventoryButton;
+    public static HyperConfig Instance { get; private set; } = null!;
 
-        [DefaultValue(true)]
-        public bool ShowAutoCraftButton;
+    public override ConfigScope Mode => ConfigScope.ClientSide;
+    public static event Action? Changed;
 
-        [Range(2, 9)]
-        [Slider()]
-        [DefaultValue(2)]
-        public int InventoryButtonsSlotOffset;
+    public override void OnLoaded() => Instance = this;
 
-        [DefaultValue(true)]
-        public bool ShowResearchShopButton;
-
-        [DefaultValue(true)]
-        public bool ShowTotalResearchedItemsCount;
-    }
+    public override void OnChanged() => Changed?.Invoke();
 }

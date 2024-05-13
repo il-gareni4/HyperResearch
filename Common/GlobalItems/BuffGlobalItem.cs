@@ -1,7 +1,8 @@
-﻿using HyperResearch.Common.ModPlayers;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -10,6 +11,7 @@ using Terraria.UI;
 
 namespace HyperResearch.Common.GlobalItems;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class BuffGlobalItem : GlobalItem
 {
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -23,11 +25,13 @@ public class BuffGlobalItem : GlobalItem
 
         string name = enabled ? "DisableBuff" : "EnableBuff";
         string text = enabled
-            ? Language.GetTextValue("Mods.HyperResearch.Tooltips.DisableBuff", InputUtils.GetKeybindString(KeybindSystem.EnableDisableBuffBind))
-            : Language.GetTextValue("Mods.HyperResearch.Tooltips.EnableBuff", InputUtils.GetKeybindString(KeybindSystem.EnableDisableBuffBind));
+            ? Language.GetTextValue("Mods.HyperResearch.Tooltips.DisableBuff",
+                InputUtils.GetKeybindString(KeybindSystem.EnableDisableBuffBind))
+            : Language.GetTextValue("Mods.HyperResearch.Tooltips.EnableBuff",
+                InputUtils.GetKeybindString(KeybindSystem.EnableDisableBuffBind));
         TooltipLine researched = new(Mod, name, text)
         {
-            OverrideColor = enabled ? Colors.RarityGreen : Colors.RarityRed,
+            OverrideColor = enabled ? Colors.RarityGreen : Colors.RarityRed
         };
         tooltips.Add(researched);
     }

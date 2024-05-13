@@ -1,9 +1,9 @@
-﻿using HyperResearch.Common.Configs;
-using HyperResearch.Common.ModPlayers;
-using HyperResearch.Common.Systems;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using HyperResearch.Common.Configs;
+using HyperResearch.Common.ModPlayers;
+using HyperResearch.Common.Systems;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -29,7 +29,8 @@ public enum SacrificeSource
 public class Researcher
 {
     #region IgnoringCraftConditions
-    public static readonly List<Condition> IgnoringCraftConditions =
+
+    private static readonly List<Condition> IgnoringCraftConditions =
     [
         // Liqiuds
         Condition.NearWater,
@@ -121,94 +122,50 @@ public class Researcher
         Condition.MoonPhases04,
         Condition.MoonPhases15,
         Condition.MoonPhases26,
-        Condition.MoonPhases37,
+        Condition.MoonPhases37
     ];
+
     #endregion
 
-    public static readonly int ResearchedItemGroups = Enum.GetValues(typeof(ResearchSource)).Length;
-    public static readonly int SacrificeGroups = Enum.GetValues(typeof(SacrificeSource)).Length;
+    private static readonly int ResearchedItemGroups = Enum.GetValues(typeof(ResearchSource)).Length;
+    private static readonly int SacrificeGroups = Enum.GetValues(typeof(SacrificeSource)).Length;
+
+    private Queue<int>? _researchedQueue;
+
+    private Queue<int> ResearchedQueue => _researchedQueue ??= new Queue<int>();
 
     public static bool IsPlayerInJourneyMode => Main.LocalPlayer.difficulty == 3;
 
-    #region StaticMethods
-    public static int GetSharedValue(int itemId)
-    {
-        if (ContentSamples.CreativeResearchItemPersistentIdOverride.TryGetValue(itemId, out int value))
-            return value;
-        else return -1;
-    }
 
-    public static int GetTotalNeeded(int itemId)
-    {
-        if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out int amountNeeded))
-            return ConfigOptions.OnlyOneItemNeeded ? 1 : amountNeeded;
-        return 0;
-    }
+    private List<int>?[] ResearchedItems { get; } = new List<int>?[ResearchedItemGroups];
+    public List<int>? DefaultResearchedItems => ResearchedItems[(int)ResearchSource.Default];
+    public List<int>? CraftResearchedItems => ResearchedItems[(int)ResearchSource.Craft];
+    public List<int>? ShimmerResearchedItems => ResearchedItems[(int)ResearchSource.Shimmer];
+    public List<int>? DecraftResearchedItems => ResearchedItems[(int)ResearchSource.ShimmerDecraft];
+    public List<int>? SharedItems => ResearchedItems[(int)ResearchSource.Shared];
 
-    public static int GetResearchedCount(int itemId)
-    {
-        return Main.LocalPlayerCreativeTracker.ItemSacrifices.GetSacrificeCount(itemId);
-    }
-
-    public static int GetRemaining(int itemId) => GetTotalNeeded(itemId) - GetResearchedCount(itemId);
-
-    public static bool IsResearched(int itemId)
-    {
-        if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out int amountNeeded))
-        {
-            int researched = Main.LocalPlayerCreativeTracker.ItemSacrifices.GetSacrificeCount(itemId);
-            return amountNeeded <= researched;
-        }
-        else return false;
-    }
-
-    public static bool IsValidResearchItem(int itemId) =>
-        ContentSamples.ItemsByType.TryGetValue(itemId, out Item item) && !item.IsAir && item.type == itemId;
-
-    public static bool IsResearchable(int itemId) =>
-        IsValidResearchItem(itemId)
-        && CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out _);
-    #endregion
-
-
-    public List<int>[] ResearchedItems { get; private set; }
-    public List<int> DefaultResearchedItems => ResearchedItems[(int)ResearchSource.Default];
-    public List<int> CraftResearchedItems => ResearchedItems[(int)ResearchSource.Craft];
-    public List<int> ShimmerResearchedItems => ResearchedItems[(int)ResearchSource.Shimmer];
-    public List<int> DecraftResearchedItems => ResearchedItems[(int)ResearchSource.ShimmerDecraft];
-    public List<int> SharedItems => ResearchedItems[(int)ResearchSource.Shared];
-
-    public Dictionary<int, int>[] SacrificedItems { get; private set; }
-    public Dictionary<int, int> DefaultSacrifices => SacrificedItems[(int)SacrificeSource.Default];
-    public Dictionary<int, int> SharedSacrifices => SacrificedItems[(int)SacrificeSource.Shared];
-
-    private Queue<int> _researchedQueue;
-    public Queue<int> ResearchedQueue => _researchedQueue ??= new();
+    public Dictionary<int, int>?[] SacrificedItems { get; } = new Dictionary<int, int>?[SacrificeGroups];
+    public Dictionary<int, int>? DefaultSacrifices => SacrificedItems[(int)SacrificeSource.Default];
+    public Dictionary<int, int>? SharedSacrifices => SacrificedItems[(int)SacrificeSource.Shared];
 
     public bool AutoResearchCraftableItems { get; init; } = HyperConfig.Instance.AutoResearchCraftableItems;
     public bool AutoResearchShimmerableItems { get; init; } = ConfigOptions.ResearchShimmerableItems;
     public bool AutoResearchDecraftItems { get; init; } = ConfigOptions.ResearchDecraftItems;
-    public bool BalanceShimmerAutoresearch { get; init; } = ConfigOptions.BalanceShimmerAutoresearch;
-
-    public Researcher()
-    {
-        ResearchedItems = new List<int>[ResearchedItemGroups];
-        SacrificedItems = new Dictionary<int, int>[SacrificeGroups];
-    }
+    private bool BalanceShimmerAutoresearch { get; } = ConfigOptions.BalanceShimmerAutoresearch;
 
     public IEnumerable<int> AllResearchedItems =>
-        ResearchedItems.Where(list => list != null && list.Count > 0)
-        .SelectMany(list => list)
-        .Distinct();
+        ResearchedItems.Where(list => list is { Count: > 0 })
+            .SelectMany(list => list!)
+            .Distinct();
 
     public IEnumerable<int> AllNonSharedItems =>
         ResearchedItems.Take((int)ResearchSource.Shared)
-        .Where(list => list != null && list.Count > 0)
-        .SelectMany(list => list)
-        .Distinct();
+            .Where(list => list is { Count: > 0 })
+            .SelectMany(list => list!)
+            .Distinct();
 
-    public bool AnyItemResearched => ResearchedItems.Any(list => list != null && list.Count > 0);
-    public bool AnyItemSacrificed => SacrificedItems.Any(list => list != null && list.Count > 0);
+    public bool AnyItemResearched => ResearchedItems.Any(list => list is { Count: > 0 });
+    public bool AnyItemSacrificed => SacrificedItems.Any(list => list is { Count: > 0 });
 
     public void SacrificeItems(IDictionary<int, int> itemCount, SacrificeSource sacrificeSource = default)
     {
@@ -221,52 +178,46 @@ public class Researcher
             SacrificeItem(item, sacrificeSource);
     }
 
-    public CreativeUI.ItemSacrificeResult SacrificeItem(Item item, SacrificeSource source = default)
+    private void SacrificeItem(Item item, SacrificeSource source = default)
     {
-        if (item.stack == 0) return 0;
+        if (item.stack == 0) return;
 
-        int itemId = item.type; // Save the ID becase sacrfice can turn item into air
-        CreativeUI.ItemSacrificeResult result;
+        int itemId = item.type; // Save the ID because sacrifice can turn item into air
         ResearchSource researchSource = source == SacrificeSource.Shared ? ResearchSource.Shared : default;
 
         if (ConfigOptions.OnlyOneItemNeeded && ResearchItem(itemId, researchSource))
         {
-            result = CreativeUI.ItemSacrificeResult.SacrificedAndDone;
             if (item.stack == 1) item.TurnToAir();
         }
         else
         {
-            result = CreativeUI.SacrificeItem(item, out int amountSacrificed);
+            CreativeUI.ItemSacrificeResult result = CreativeUI.SacrificeItem(item, out int amountSacrificed);
             if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone)
                 AfterResearch(itemId, researchSource);
             AddOrRemoveSacrifice(itemId, amountSacrificed, source);
         }
-        return result;
     }
 
-    public void ResearchItems(IEnumerable<int> items, ResearchSource source = default)
+    public void ResearchItems(IEnumerable<int>? items, ResearchSource source = default)
     {
+        if (items == null) return;
         foreach (int itemId in items)
             ResearchItem(itemId, source);
     }
 
-    public void ResearchItems(IDictionary<int, int> items, ResearchSource source = default)
+    public void TryResearchItems(IDictionary<int, int> items, ResearchSource source = default)
     {
         foreach ((int itemId, int itemCount) in items)
-            if (IsResearchable(itemId) && itemCount >= GetRemaining(itemId))
-                ResearchItem(itemId, source);
+            TryResearchItem(itemId, itemCount, source);
     }
 
-    public bool TryResearchItem(int itemId, int itemCount, ResearchSource source = default)
+    private void TryResearchItem(int itemId, int itemCount, ResearchSource source = default)
     {
-        if (ConfigOptions.OnlyOneItemNeeded && itemCount >= 1)
-            return ResearchItem(itemId, source);
-
-        if (itemCount >= GetRemaining(itemId)) return ResearchItem(itemId, source);
-        else return false;
+        if (IsResearchable(itemId) && itemCount >= GetRemaining(itemId))
+            ResearchItem(itemId, source);
     }
 
-    /// <returns><c>false</c> if have already been researched or item is unresearchable</returns>
+    /// <returns><c>false</c> if you have already been researched or item is unresearchable</returns>
     public bool ResearchItem(int itemId, ResearchSource source = default, bool researchQueue = true)
     {
         CreativeUI.ItemSacrificeResult result = CreativeUI.ResearchItem(itemId);
@@ -274,7 +225,7 @@ public class Researcher
         return result == CreativeUI.ItemSacrificeResult.SacrificedAndDone;
     }
 
-    public void ResearchQueue()
+    private void ResearchQueue()
     {
         while (ResearchedQueue.TryDequeue(out int itemId))
             ResearchItemOccurrences(itemId);
@@ -286,33 +237,36 @@ public class Researcher
         {
             if (IsRecipeResearchable(recipe))
                 ResearchItem(recipe.createItem.type, ResearchSource.Craft);
-        };
+        }
     }
 
-    public bool TryResearchShimmeredItem(int itemId)
+    public void TryResearchShimmeredItem(int itemId)
     {
-        if (!AutoResearchShimmerableItems) return false;
+        if (!AutoResearchShimmerableItems || !IsResearched(itemId)) return;
 
         int shimmerItemId = ItemsUtils.GetShimmeredItemId(itemId);
-        if (shimmerItemId <= 0 || !IsResearched(itemId)) return false;
-
-        return ResearchItem(shimmerItemId, ResearchSource.Shimmer);
+        if (shimmerItemId > 0)
+            ResearchItem(shimmerItemId, ResearchSource.Shimmer);
     }
 
     public void ResearchDecraftItems(int itemId)
     {
+        if (!AutoResearchDecraftItems || !IsResearched(itemId)) return;
+
         List<int> decraftItems = ItemsUtils.GetDecraftItems(itemId);
-        if (decraftItems is null) return;
+        if (decraftItems.Count == 0) return;
         foreach (int decraftItemId in decraftItems) ResearchItem(decraftItemId, ResearchSource.ShimmerDecraft);
     }
 
     private void AfterResearch(int itemId, ResearchSource source = default, bool researchQueue = true)
     {
-        if (BalanceShimmerAutoresearch && Main.LocalPlayer.GetModPlayer<HyperPlayer>().WasInAether || !BalanceShimmerAutoresearch)
+        if ((BalanceShimmerAutoresearch && Main.LocalPlayer.GetModPlayer<HyperPlayer>().WasInAether) ||
+            !BalanceShimmerAutoresearch)
         {
-            if (AutoResearchShimmerableItems) TryResearchShimmeredItem(itemId);
-            if (AutoResearchDecraftItems) ResearchDecraftItems(itemId);
+            TryResearchShimmeredItem(itemId);
+            ResearchDecraftItems(itemId);
         }
+
         if (AutoResearchCraftableItems)
         {
             ResearchedQueue.Enqueue(itemId);
@@ -333,16 +287,13 @@ public class Researcher
 
     private void ResearchItemRecipesOccurrences(Item item)
     {
-        if (!RecipesSystem.ItemRecipesOccurrences.TryGetValue(item.type, out List<int> itemRecipeIds))
+        if (!RecipesSystem.ItemRecipesOccurrences.TryGetValue(item.type, out List<int>? itemRecipeIds))
             return;
 
-        foreach (int recipeId in itemRecipeIds)
-        {
-            Recipe recipe = Main.recipe[recipeId];
-            if (!IsRecipeResearchable(recipe)) continue;
-
+        foreach (Recipe recipe in itemRecipeIds
+                     .Select(recipeId => Main.recipe[recipeId])
+                     .Where(IsRecipeResearchable))
             ResearchItem(recipe.createItem.type, ResearchSource.Craft, false);
-        }
     }
 
     private void ResearchTileRecipesOccurrences(Item item)
@@ -352,16 +303,13 @@ public class Researcher
 
         foreach (int adjTile in ItemsUtils.GetAllAdjTiles(item.createTile))
         {
-            if (!RecipesSystem.TileRecipesOccurrences.TryGetValue(adjTile, out List<int> tileRecipeIds))
+            if (!RecipesSystem.TileRecipesOccurrences.TryGetValue(adjTile, out List<int>? tileRecipeIds))
                 continue;
 
-            foreach (int recipeId in tileRecipeIds)
-            {
-                Recipe recipe = Main.recipe[recipeId];
-                if (!IsRecipeResearchable(recipe)) continue;
-
+            foreach (Recipe recipe in tileRecipeIds
+                         .Select(recipeId => Main.recipe[recipeId])
+                         .Where(IsRecipeResearchable))
                 ResearchItem(recipe.createItem.type, ResearchSource.Craft, false);
-            }
         }
     }
 
@@ -369,38 +317,36 @@ public class Researcher
     {
         if (!IsResearchable(recipe.createItem.type) || IsResearched(recipe.createItem.type)) return false;
 
-        Dictionary<int, IEnumerable<int>> iconicAndOthers = [];
-        foreach (int recipeGroupId in recipe.acceptedGroups)
-        {
-            RecipeGroup recipeGroup = RecipeGroup.recipeGroups[recipeGroupId];
+        Dictionary<int, IEnumerable<int>?> iconicAndOthers = [];
+        foreach (RecipeGroup recipeGroup in recipe.acceptedGroups
+                     .Select(recipeGroupId => RecipeGroup.recipeGroups[recipeGroupId]))
             iconicAndOthers[recipeGroup.IconicItemId] = recipeGroup.ValidItems;
-        }
 
         bool allItemsResearched = recipe.requiredItem.All(item =>
         {
-            if (iconicAndOthers.TryGetValue(item.type, out IEnumerable<int> validItems))
+            if (iconicAndOthers.TryGetValue(item.type, out IEnumerable<int>? validItems) && validItems != null)
                 return validItems.Any(IsResearched);
-            else return IsResearched(item.type);
+            return IsResearched(item.type);
         });
         if (!allItemsResearched) return false;
 
-        HyperPlayer hyperPlayer = Main.LocalPlayer.GetModPlayer<HyperPlayer>();
+        var hyperPlayer = Main.LocalPlayer.GetModPlayer<HyperPlayer>();
         bool allTilesResearched = recipe.requiredTile.All(
             tileId => hyperPlayer.ResearchedTiles.GetValueOrDefault(tileId, false) || Main.LocalPlayer.adjTile[tileId]);
         if (!allTilesResearched) return false;
 
         bool allConditionsAreMet = recipe.Conditions.All(condition =>
-            ConfigOptions.IgnoreCraftingConditions && IgnoringCraftConditions.Contains(condition) || condition.IsMet()
+            (ConfigOptions.IgnoreCraftingConditions && IgnoringCraftConditions.Contains(condition)) || condition.IsMet()
         );
-        if (!allConditionsAreMet) return false;
-        return true;
+        return allConditionsAreMet;
     }
 
     private void AddToResearched(int itemId, ResearchSource source)
     {
         if (ResearchedItems[(int)source] == null)
-            ResearchedItems[(int)source] = [];
-        ResearchedItems[(int)source].Add(itemId);
+            ResearchedItems[(int)source] = [itemId];
+        else
+            ResearchedItems[(int)source]!.Add(itemId);
     }
 
 
@@ -413,7 +359,49 @@ public class Researcher
         }
 
         if (SacrificedItems[(int)source] == null)
-            SacrificedItems[(int)source] = [];
-        SacrificedItems[(int)source][itemId] = SacrificedItems[(int)source].GetValueOrDefault(itemId, 0) + amount;
+            SacrificedItems[(int)source] = new Dictionary<int, int> { [itemId] = amount };
+        else
+            SacrificedItems[(int)source]![itemId] += amount;
     }
+
+    #region StaticMethods
+
+    public static int GetSharedValue(int itemId) =>
+        ContentSamples.CreativeResearchItemPersistentIdOverride.GetValueOrDefault(itemId, -1);
+
+    public static int GetTotalNeeded(int itemId)
+    {
+        if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId,
+                out int amountNeeded))
+            return ConfigOptions.OnlyOneItemNeeded ? 1 : amountNeeded;
+        return 0;
+    }
+
+    public static int GetResearchedCount(int itemId) =>
+        Main.LocalPlayerCreativeTracker.ItemSacrifices.GetSacrificeCount(itemId);
+
+    public static int GetRemaining(int itemId) => GetTotalNeeded(itemId) - GetResearchedCount(itemId);
+
+    public static bool IsResearched(int itemId)
+    {
+        if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId,
+                out int amountNeeded))
+        {
+            int researched = Main.LocalPlayerCreativeTracker.ItemSacrifices.GetSacrificeCount(itemId);
+            return amountNeeded <= researched;
+        }
+
+        return false;
+    }
+
+    private static bool IsValidResearchItem(int itemId) =>
+        ContentSamples.ItemsByType.TryGetValue(itemId, out Item? item)
+        && item is { IsAir: false }
+        && item.type == itemId;
+
+    public static bool IsResearchable(int itemId) =>
+        IsValidResearchItem(itemId)
+        && CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId, out _);
+
+    #endregion
 }
