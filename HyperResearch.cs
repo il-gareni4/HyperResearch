@@ -38,4 +38,7 @@ public class HyperResearch : Mod
                 break;
         }
     }
+
+    public override uint ExtraPlayerBuffSlots =>
+        (uint)(ConfigOptions.UseResearchedPotionsBuff ? 99 : 0);
 }

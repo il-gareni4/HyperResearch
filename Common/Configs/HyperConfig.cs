@@ -79,6 +79,7 @@ public class HyperConfig : ModConfig
     [DefaultValue(false)]
     public bool OnlyOneItemNeeded;
 
+    [ReloadRequired]
     public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
 

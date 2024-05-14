@@ -82,7 +82,11 @@ public partial class BaseGlobalItem : GlobalItem
             if (!HyperConfig.Instance.UseCustomResearchTooltip)
             {
                 if (ConfigOptions.OnlyOneItemNeeded && vanillaTooltipIndex >= 0)
-                    tooltips[vanillaTooltipIndex].Text = DigitsRegex().Replace(tooltips[vanillaTooltipIndex].Text, "1");
+                    tooltips[vanillaTooltipIndex].Text = Regex.Replace(
+                        tooltips[vanillaTooltipIndex].Text,
+                        @"\d+",
+                        "1"
+                    );
                 return;
             }
 
@@ -110,7 +114,4 @@ public partial class BaseGlobalItem : GlobalItem
                 resPlayer.OnResearch(item);
         }
     }
-
-    [GeneratedRegex(@"\d+")]
-    private static partial Regex DigitsRegex();
 }

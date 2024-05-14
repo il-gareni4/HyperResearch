@@ -62,7 +62,7 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         {
             foreach (int buffId in enabled)
             {
-                if (buffId < BuffID.Count)
+                if (buffId < BuffLoader.BuffCount)
                     Buffs[buffId] = true;
             }
         }
@@ -75,7 +75,7 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         foreach ((int buffId, bool enabled) in Buffs)
         {
             if (enabled)
-                Player.AddBuff(buffId, 1);
+                Player.AddBuff(buffId, 2);
         }
     }
 

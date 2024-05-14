@@ -84,6 +84,7 @@ public class ServerConfig : ModConfig
 
         [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.ItemResearchCountOverride.Label")]
         [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.ItemResearchCountOverride.Tooltip")]
+        [ReloadRequired]
         public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
     public static ServerConfig Instance { get; private set; } = null!;
