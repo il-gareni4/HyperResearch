@@ -55,7 +55,7 @@ Configs: {
 			ConsumptionSettingsHeader: Consumption Settings
 			MessagesSettingsHeader: Messages Settings
 			SacrificeSettingsHeader: Research Settings
-			MutiplayerMessagesSettingsHeader: Mutiplayer Messages Settings
+			MultiplayerMessagesSettingsHeader: Multiplayer Messages Settings
 			UISettingsHeader: UI Settings
 		}
 
@@ -353,7 +353,7 @@ Configs: {
 			Label: Show shared partially researched items
 			Tooltip:
 				'''
-				Shows a chat message when a player from one team shares a partially reserched item with you.
+				Shows a chat message when a player from one team shares a partially researched item with you.
 				You need to enable the [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncSacrificesInOneTeam.Label}] option in the {$Configs.ServerConfig.DisplayName}
 
 				For example:

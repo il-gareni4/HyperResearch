@@ -11,7 +11,7 @@ public class ResearchSystem : ModSystem
     private Dictionary<int, int> CountOverride { get; } = [];
     public static int ResearchableItemsCount { get; private set; }
 
-    public override void PostSetupContent()
+    public override void OnWorldLoad()
     {
         OverrideDefaultResearchCount();
         CalculateResearchable();

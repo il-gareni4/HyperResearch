@@ -173,7 +173,7 @@ public class HyperConfig : ModConfig
     public bool ShowSacrifices;
 
 
-    [Header("MutiplayerMessagesSettingsHeader")]
+    [Header("MultiplayerMessagesSettingsHeader")]
 
     [DefaultValue(true)]
     public bool ShowSharedItems;

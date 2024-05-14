@@ -47,7 +47,7 @@ public class PlayerSystem : ModSystem
 
     private void OnResearchButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.SacrificeInventory();
     private void OnClearButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.ClearResearched();
-    private void OnAutoCraftButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.ResearchAndMessageCraftable();
+    private void OnAutoCraftButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.ResearchCraftable();
 
     private void OnShopButtonMouseDown(UIMouseEvent evt, UIElement el) =>
         HPlayer?.ResearchShop(HPlayer.CurrentShopItems);

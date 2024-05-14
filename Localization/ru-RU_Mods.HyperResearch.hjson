@@ -55,7 +55,7 @@ Configs: {
 			ConsumptionSettingsHeader: Настройки расходуемых предметов
 			MessagesSettingsHeader: Настройки сообщений
 			SacrificeSettingsHeader: Настройки изучений
-			MutiplayerMessagesSettingsHeader: Настройки сообщений мультиплеера
+			MultiplayerMessagesSettingsHeader: Настройки сообщений мультиплеера
 			UISettingsHeader: Настройки пользовательского интерфейса
 		}
 
