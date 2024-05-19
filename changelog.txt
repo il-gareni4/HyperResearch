@@ -1,5 +1,26 @@
 Hyper Research v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 [h1]Added[/h1]
 [list]
-[*] 
+[*] The ability to auto-research decraft items. [i]Configurable[/i].
+[*] Balance of shimmer transformation and decraft. Now, in order for transformations to be auto-researched, you must visit the aether biome at least once. [i]Configurable[/i].
+[*] The ability to use endless potion buffs. Buffs can be disabled (either in the Journey menu or in the buffs panel with RMB). [i]Configurable[/i].
+[*] The ability to selectively disable the banner effect.
+[*] The ability to change the number of items required for research for each individual item in the game. This allows you to make unresearchable items researchable, and vice versa.
+[*] The ability to select modifiers for items directly in the item duplication menu. You will see a new tooltip.
+	[*] This feature can be balanced so that the modifier can only be selected after completing the Goblin Army event (when the Goblin Tinkerer spawn is possible).
+[*] The ability to automatically partially research items, instead of waiting for the required amount. 
 [/list]
+
+[h1]Changed[/h1]
+[list]
+[*] Reorganized client config and server config.
+[*] Optimized sharing items with the team.
+[/list]
+
+[h2]Internal[/h2]
+[list]
+[*] Updated .NET version from 6 to 8 (due to the tML update).
+[/list]
+
+[h3]Notes[/h3]
+This update did not include the ability to research the rewards of the Angler and Dye Trader quests. This decision was made because the game code and tModLoader do not have a universal method for obtaining a list of all items with the conditions for obtaining them. Implementing a third-party method entails unstable behavior.

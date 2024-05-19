@@ -1,23 +1,32 @@
-Hyper Research is quality of life mod that adds a lot of useful features to the Journey mode
+Hyper Research is quality of life mod that adds a lot of useful features to the Journey mode.
+The mod gives you a lot of settings in the config, so take a look there and customize the mod for yourself.
 
-Features:
-- Auto-researching of all items in the inventory without having to open the Research Menu every time
-- Partial researching of unresearched items using the keybind or UI button
-- Cleaning of all researched items in the inventory using the keybind or UI button (excluding favorites)
-- Auto-researching of items that can be crafted (you need to research the necessary materials and crafting stations (or stand next to them))
-- Auto researching of items that are obtained after shimmer transmutation
-- Auto-trash items that have already been researched
-- Researching the contents of bags, crates and other loot items in one tap
-- Researching the contents of NPC shops in one tap or using UI button
-- Infinite researched consumable items (divided into categories: potions, blocks, throwing weapons, etc.)
-- Messages notifying about researching new items and crafting items
-- Custom research tooltip which will be visible even in mods
-- Ability to use the buff from researched banners without having to place banners
-- Ability to share researched items with the team
+Main features:
+- Auto-researching of items in the inventory without having to open the Research Menu every time.
+- Auto-researching of items that can be crafted. [i]You need to research the necessary materials and crafting stations (or stand next to them)[/i].
+- Auto-researching of items that are obtained after shimmer transmutation.
+- Auto-researching of items that are obtained after shimmer decrafting.
+- Auto-partial researching.
+- Auto-cleaning of researched items.
+- Messages notifying about researching new items and crafting items.
+- UI buttons and many keybinds.
+- Multiplayer support.
+    - Ability to share researched items with the team.
+    - Set global settings for all server participants.
+
+Other features:
+- The ability to select modifiers for items directly in the item duplication menu.
+- Auto-researching the contents of NPC shops.
+- Researching the contents of bags, crates and other loot items in one tap.
+- Infinite researched consumable items (divided into categories: potions, blocks, throwing weapons, etc.).
+- The ability to use the buff from researched banners without having to place them.
+- The ability to use the buff from researched potions without having to use them.
+- The ability to change the number of items required for research for each individual item in the game.
 
 Minor features:
-- Shows the number of items researched and the total number of items that can be researched
-- Max stack researched items
-- Ability to set the number of items needed to unlock duplication to one
+- Custom research tooltip which will be visible even in mods.
+- Shows the number of items researched and the total number of items that can be researched.
+- Max stack researched items.
+- Ability to set the number of items needed to unlock duplication to one.
 
 All update changes can be read on the steam workshop mod page
