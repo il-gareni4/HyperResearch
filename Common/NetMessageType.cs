@@ -1,8 +1,7 @@
-﻿namespace HyperResearch.Common
+﻿namespace HyperResearch.Common;
+
+public enum NetMessageType : byte
 {
-    public enum NetMessageType : byte
-    {
-        ShareItemsWithTeam,
-        SharedItems
-    }
+    ShareItemsWithTeam,
+    SharedItems
 }

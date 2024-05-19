@@ -1,29 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\tModLoader.targets" />
-  <PropertyGroup>
-	<AssemblyName>HyperResearch</AssemblyName>
-	<TargetFramework>net6.0</TargetFramework>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <AdditionalFiles Remove="Content\**" />
-    <Compile Remove="Content\**" />
-    <EmbeddedResource Remove="Content\**" />
-    <None Remove="Content\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Assets\Images\UI\AutoCraftButton.png" />
-    <None Remove="Assets\Images\UI\ClearButton.png" />
-    <None Remove="Assets\Images\UI\ResearchButton.png" />
-    <None Remove="Assets\Images\UI\ResearchShopButton.png" />
-    <None Remove="changelog.txt" />
-    <None Remove="en-US.hjson" />
-    <None Remove="icon_workshop.png" />
-    <None Remove="Localization\ru-RU_Mods.HyperResearch.hjson" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
-  </ItemGroup>
+    <Import Project="..\tModLoader.targets"/>
+    <PropertyGroup>
+        <AssemblyName>HyperResearch</AssemblyName>
+        <LangVersion>latest</LangVersion>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <AdditionalFiles Remove="Content\**"/>
+        <Compile Remove="Content\**"/>
+        <EmbeddedResource Remove="Content\**"/>
+        <None Remove="Content\**"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="Assets\Images\UI\AutoCraftButton.png"/>
+        <None Remove="Assets\Images\UI\ClearButton.png"/>
+        <None Remove="Assets\Images\UI\ResearchButton.png"/>
+        <None Remove="Assets\Images\UI\ResearchShopButton.png"/>
+        <None Remove="changelog.txt"/>
+        <None Remove="en-US.hjson"/>
+        <None Remove="icon_workshop.png"/>
+        <None Remove="Localization\ru-RU_Mods.HyperResearch.hjson"/>
+    </ItemGroup>
 </Project>

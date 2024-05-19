@@ -1,8 +1,17 @@
+Colors: {
+	Warning: FF666D
+	Condition: FFE582
+	UsefulNote: FE95FF
+	Note: 8FCBFF
+	Mention: FFAB65
+}
+
 Messages: {
 	ResearchedItems: "{^0:Изучен;Изучено;Изучено} {0} {^0:новый предмет;новых предмета;новых предметов}: {1}"
 	SharedItems: "{0} поделился {1} {^1:новым предметом;новыми предметами;новыми предметами}: {2}"
-	ResearchedCraftableItems: "{^0:Изучен;Изучено;Изучено} {0} {^0:автосозданный предмет;автосозданных предмета;автосозданных предметов}: {1}"
-	ResearchedShimmeredItems: Изучено {0} {^0:мерцающее преобразование;мерцающих преобразования;мерцающих преобразований}: {1}
+	CraftResearchedItems: "{^0:Изучен;Изучено;Изучено} {0} {^0:автосозданный предмет;автосозданных предмета;автосозданных предметов}: {1}"
+	ShimmerResearchedItems: Изучено {0} {^0:мерцающее преобразование;мерцающих преобразования;мерцающих преобразований}: {1}
+	DecraftResearchedItems: "{^0:Изучен;Изучено;Изучено} {0} {^0:предмет;предмета;предметов} в процессе декрафта: {1}"
 	Sacrifices: Частично {^0:изучен;изучено;изучено} {0} {^0:предмет;предмета;предметов}: {1}
 	SharedSacrifices: "{0} поделился {1} частично {^1:изученным предметом;изученными предметами;изученными предметами}: {2}"
 	OtherPlayerResearchedItems: "{0} изучил {1} {^1:новый предмет;новых предмета;новых предметов}: {2}"
@@ -13,36 +22,47 @@ Tooltips: {
 	NeededToResearch: Исследуйте {0} {^0:единицу;единицы;единиц} для дублирования ({1}/{2})
 	Researched: Изучено
 	ResearchLoot: Нажмите {0}, чтобы изучить содержимое (исключая глобальные предметы)
+	EnableBuff: Нажмите {0}, чтобы включить бафф
+	DisableBuff: Нажмите {0}, чтобы выключить бафф
+	EnableBanner: Нажмите {0}, чтобы включить эффект баннера
+	DisableBanner: Нажмите {0}, чтобы выключить эффект баннера
+	ChoosePrefix: Нажмите {0}, чтобы выбрать желаемый модификатор
 }
 
 UI: {
 	InventoryButtons: {
-		ResearchButtonHoverText: "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"
-		ClearButtonHoverText: "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"
-		AutoCraftHoverText: "{$Mods.HyperResearch.Keybinds.ResearchCraftableItems.DisplayName}"
+		ResearchButtonHoverText: "{$Keybinds.ResearchInventoryItems.DisplayName}"
+		ClearButtonHoverText: "{$Keybinds.ClearResearchedItems.DisplayName}"
+		AutoCraftHoverText: "{$Keybinds.ResearchCraftableItems.DisplayName}"
 	}
 
-	ShopButtons.ResearchButtonHoverText: "{$Mods.HyperResearch.Keybinds.ResearchShop.DisplayName}"
-	DuplicationMenu.TotalResearched: "{0}% изучены ({1}/{2} предметов)"
+	ShopButtons.ResearchButtonHoverText: "{$Keybinds.ResearchShop.DisplayName}"
+	DuplicationMenu.TotalResearched: "{0}%  изучено ({1}/{2} предметов)"
 }
 
 Configs: {
 	HyperConfig: {
-		DisplayName: Конфиг клиента
+		DisplayName: Конфиг Клиента
 
 		Headers: {
+			AutoResearchSettingsHeader: Настройки автоматического изучения
+			BuffsSettingsHeader: Настройки баффов
+			AutoTrashSettingsHeader: Настройки автоматической очистки
+			BalanceSettingsHeader: Настройки баланса
+			TooltipsSettingsHeader: Настройки подсказок предметов
 			ResearchSettingsHeader: Настройки изучения предметов
 			ClearSettingsHeader: Найстроки очищения
-			MessagesSettingsHeader: Настройки сообщений
 			ConsumptionSettingsHeader: Настройки расходуемых предметов
+			MessagesSettingsHeader: Настройки сообщений
 			SacrificeSettingsHeader: Настройки изучений
+			MultiplayerMessagesSettingsHeader: Настройки сообщений мультиплеера
 			UISettingsHeader: Настройки пользовательского интерфейса
-			OtherSettingsHeader: Прочие настройки
-			MutiplayerMessagesSettingsHeader: Настройки сообщений мультиплеера
 		}
 
+		# === AUTO-RESEARCH SETTINGS ===
 		ResearchInventory: {
-			Label: "[i:{0}] Изучать предметы в инвентаре"
+			Name: Изучать предметы в инвентаре
+			Label: "[i:{0}] {$Configs.HyperConfig.ResearchInventory.Name}"
 			Tooltip:
 				'''
 				Автоматичеки изучает предметы в инвентаре, если общее количество
@@ -50,33 +70,39 @@ Configs: {
 				'''
 		}
 
-		AutoTrashResearched: {
-			Label: "[i:{0}] Не подбирать изученные предметы"
-			Tooltip: Все подобранные предметы, которые уже изучены, больше не будут добавляться в инвентарь
+		AutoSacrifice: {
+			Name: Автоматическое частичное изучение
+			Label: "[i:{0}] {$Configs.HyperConfig.AutoSacrifice.Name}"
+			Tooltip:
+				'''
+				В отличие от [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchInventory.Name}], 
+				предмет не копится в инвентаре, пока необходимое количество не собрано,
+				а сразу частично изучает предмет.
+				[c/{$Colors.Warning}:Выключите] [c/{$Colors.Mention}:{$Configs.HyperConfig.ShowSacrifices.Label}] [c/{$Colors.Warning}:, чтобы не заполнять чат множеством сообщений.]
+				[c/{$Colors.Warning}:Не рекомендуется использовать с] [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncSacrificesInOneTeam.Label}]
+				'''
 		}
 
 		AutoResearchCraftableItems: {
 			Label: "[i:{0}] Изучать предметы, которые возможно создать"
 			Tooltip:
 				'''
-				После изучения нового предмета, все новые предметы, которые возможно создать
-				из уже изученных предметов, изучаются.
-				Для этого требуется изучить необходимые станции создания и
-				выполнить условия создания (только если параметр "{$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Name}" выключен)
+				После изучения нового предмета, все новые предметы, которые возможно создать из уже изученных предметов, изучаются.
+				[c/{$Colors.Condition}:Для этого требуется изучить необходимые станции создания и выполнить условия создания] [c/{$Colors.Mention}:(см. "{$Configs.HyperConfig.IgnoreCraftingConditions.Name}").]
+				[c/{$Colors.Note}:Альтернативно, вы можете назначить горячую клавишу или использовать кнопку под инвентарем]
 				'''
 		}
 
-		IgnoreCraftingConditions: {
-			Name: Игнорировать некоторые условия создания
-			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Name}"
-			Tooltip:
-				'''
-				Для автосоздания предметов следующие типы условий будут игнорироваться: 
-				условия нахождения рядом с жидкостями, условия времени, условия событий и
-				стадий лун и условия нахождения в биоме.
-				Это означает, что условия сида мира или убийств боссов не будут проигнорированы.
-				Все условия, которые добавляют моды, не будут проигнорированы.
-				'''
+		ResearchShimmerableItems: {
+			Name: Изучать мерцающие превращения
+			Label: "[i:{0}] {$Configs.HyperConfig.ResearchShimmerableItems.Name}"
+			Tooltip: Автоматически изучает предмет, который получается если бросить изначальный предмет в мерцание
+		}
+
+		ResearchDecraftItems: {
+			Name: Изучать декрафты предметов
+			Label: "[i:{0}] {$Configs.HyperConfig.ResearchDecraftItems.Name}"
+			Tooltip: Автоматически изучает предметы, которые можно получить разобрав изначальный предмет в мерцании
 		}
 
 		AutoResearchShop: {
@@ -84,19 +110,103 @@ Configs: {
 			Tooltip:
 				'''
 				При открытии магазина изучается все, что NPC в данный момент продает.
-				Чтобы изучить некоторые предметы, необходимо изучить
-				соответвующую валюту (например, [i:{0}]Медали защитника)
+				[c/{$Colors.Condition}:Чтобы изучить некоторые предметы, необходимо изучить соответвующую валюту (например, ][i:{0}][c/{$Colors.Condition}:Медали защитника).]
+				[c/{$Colors.Note}:Альтернативно, вы можете назначить горячую клавишу или использовать кнопку под интерфейсом магазина]
 				'''
 		}
 
-		ResearchShimmerableItems: {
-			Name: Изучать Мерцающие превращения
-			Label: "[i:{0}] {$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}"
-			Tooltip: ""
+		# === BUFFS SETTINGS ===
+		UseResearchedBannersBuff: {
+			Label: "[i:{0}] Использовать бафф изученных баннеров"
+			Tooltip:
+				'''
+				Если изучен баннер NPC, то эффект баннера будет действовать даже если сам баннер не поставлен.
+				[c/{$Colors.UsefulNote}:Во вермя игры вы можете выборочно отключать баннеры в меню дупликатов.]
+				'''
 		}
 
+		BannerBuffEnabledByDefault: {
+			Label: Включить бафф баннера при изучении
+			Tooltip: Если баннер ранее не был изучен, то бафф от этого баннера будет по умолчанию включен при изучении
+		}
+
+		UseResearchedPotionsBuff: {
+			Name: Использовать баффы изученных зелий
+			Label: "[i:{0}] {$Configs.HyperConfig.UseResearchedPotionsBuff.Name}"
+			Tooltip:
+				'''
+				Применяет баффы с изученных зелий, еды и флаконов.
+				[c/{$Colors.UsefulNote}:Во вермя игры вы можете выборочно отключать зелья, нажав правой кнопкой мыши по баффу, или в меню дупликатов.]
+				'''
+		}
+
+		PotionBuffEnabledByDefault: {
+			Label: Включить бафф зелья при изучении
+			Tooltip: Если зелье ранее не было изучено, то бафф от этого зелья будет по умолчанию включен при изучении
+		}
+
+		# === AUTO-TRASH SETTINGS ===
+		AutoTrashResearched: {
+			Name: Не подбирать изученные предметы
+			Label: "[i:{0}] {$Configs.HyperConfig.AutoTrashResearched.Name}"
+			Tooltip: Все подобранные предметы, которые уже изучены, больше не будут добавляться в инвентарь
+		}
+
+		AutoTrashAfterResearching: {
+			Label: "[i:{0}] Убирать предмет после изучения"
+			Tooltip:
+				'''
+				В отличие от настройки "[c/{$Colors.Mention}:{$Configs.HyperConfig.AutoTrashResearched.Name}]"
+				убирает предмет этот предмет из инвентаря сразу после изучения, а не во время подбора
+				'''
+		}
+
+		# === BALANCE SETTINGS ===
+		IgnoreCraftingConditions: {
+			Name: Игнорировать некоторые условия создания
+			Label: "[i:{0}] {$Configs.HyperConfig.IgnoreCraftingConditions.Name}"
+			Tooltip:
+				'''
+				Для автосоздания предметов следующие типы условий будут игнорироваться: условия нахождения рядом с жидкостями,
+				условия времени, условия событий и стадий лун и условия нахождения в биоме.
+				[c/{$Colors.Note}:Это означает, что условия сида мира или убийств боссов не будут проигнорированы.]
+				[c/{$Colors.Warning}:Все условия, которые добавляют моды, не будут проигнорированы.]
+				'''
+		}
+
+		BalanceShimmerAutoresearch: {
+			Name: Сбалансировать авто-изучения мерцания
+			Label: "[i:{0}] {$Configs.HyperConfig.BalanceShimmerAutoresearch.Name}"
+			Tooltip:
+				'''
+				Чтобы настройки [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchShimmerableItems.Name}] и [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchDecraftItems.Name}] 
+				заработали, вам необходимо посетить Эфирную пещеру хотя бы раз.
+				'''
+		}
+
+		BalancePrefixPicker: {
+			Name: Сбалансировать окно выбора модификатора
+			Label: "[i:{0}] {$Configs.HyperConfig.BalancePrefixPicker.Name}"
+			Tooltip:
+				'''
+				Для того, чтобы окно выбора модификатора в меню дупликации предметов появилось,
+				необходимо сначала завершить событие Армии Гоблинов.
+				'''
+		}
+
+		OnlyOneItemNeeded: {
+			Label: "[i:{0}] Только одна единица предмета необходима для изучения"
+			Tooltip: Неизучаемые предметы останутся неизучаемыми
+		}
+
+		ItemResearchCountOverride: {
+			Label: Перезаписать количество необходимое для изучения
+			Tooltip: "[c/{$Colors.UsefulNote}:Позволяет вам делать неизучаемые предметы изучаемыми и наоборот.]"
+		}
+
+		# === TOOLTIPS SETTINGS ===
 		UseCustomResearchTooltip: {
-			Label: "[i:{0}] Использовать пользовательскую подсказку прогресса изучения"
+			Label: "[i:{0}] Использовать модифицированную подсказку прогресса изучения"
 			Tooltip:
 				'''
 				В отличие от стандартной подсказки, пользовательская будет отображаться везде
@@ -105,59 +215,51 @@ Configs: {
 		}
 
 		ShowResearchedTooltip: {
-			Label: '''[i:{0}] Показывать подсказку "{$Tooltips.Researched}"'''
+			Label: "[i:{0}] Показывать подсказку [c/FFE745:{$Tooltips.Researched}]"
 			Tooltip: ""
 		}
 
-		UseResearchedBannersBuff: {
-			Label: "[i:{0}] Использовать бафф изученных баннеров"
+		# === RESEARCH SETTIGNS ===
+		SacrificeHotbarSlots: {
+			Label: "[i:{0}] Включать слоты хотбара в действие изучения"
 			Tooltip:
 				'''
-				Если изучен баннер NPC, то эффект баннера будет действовать
-				даже если сам баннер не поставлен
+				Действие изучения это горячая клавиша [c/{$Colors.Mention}:{$Keybinds.ResearchInventoryItems.DisplayName}]
+				или одноименная кнопка под инвентарем.
 				'''
-		}
-
-		OnlyOneItemNeeded: {
-			Label: "[i:{0}] Только одна единица предмета необходима для изучения"
-			Tooltip: ""
-		}
-
-		AutoTrashAfterResearching: {
-			Label: "[i:{0}] Убирать предмет после изучения"
-			Tooltip: ""
-		}
-
-		SacrificeHotbarSlots: {
-			Label: '''[i:{0}] Изучать слоты хотбара при нажатии на "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"'''
-			Tooltip: ""
 		}
 
 		SacrificeCoinsSlots: {
-			Label: '''[i:{0}] Изучать слоты монет при нажатии на "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"'''
-			Tooltip: ""
+			Label: "[i:{0}] Включать слоты монет в действие изучения"
+			Tooltip: "{$Configs.HyperConfig.SacrificeHotbarSlots.Tooltip}"
 		}
 
 		SacrificeAmmoSlots: {
-			Label: '''[i:{0}] Изучать слоты патрон при нажатии на "{$Mods.HyperResearch.Keybinds.ResearchInventoryItems.DisplayName}"'''
-			Tooltip: ""
+			Label: "[i:{0}] Включать слоты патрон в действие изучения"
+			Tooltip: "{$Configs.HyperConfig.SacrificeHotbarSlots.Tooltip}"
 		}
 
+		# === CLEAR SETTINGS ===
 		ClearHotbarSlots: {
-			Label: '''[i:{0}] Очищать слоты хотбара при нажатии на "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"'''
-			Tooltip: ""
+			Label: "[i:{0}] Включать слоты хотбара в действие очистки"
+			Tooltip:
+				'''
+				Действие очистки это горячая клавиша [c/{$Colors.Mention}:{$Keybinds.ClearResearchedItems.DisplayName}]
+				или одноименная кнопка под инвентарем.
+				'''
 		}
 
 		ClearCoinsSlots: {
-			Label: '''[i:{0}] Очищать слоты монет при нажатии на "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"'''
-			Tooltip: ""
+			Label: "[i:{0}] Включать слоты монет в действие очистки"
+			Tooltip: "{$Configs.HyperConfig.ClearHotbarSlots.Tooltip}"
 		}
 
 		ClearAmmoSlots: {
-			Label: '''[i:{0}] Очищать слоты патрон при нажатии на "{$Mods.HyperResearch.Keybinds.ClearResearchedItems.DisplayName}"'''
-			Tooltip: ""
+			Label: "[i:{0}] Включать слоты патрон в действие очистки"
+			Tooltip: "{$Configs.HyperConfig.ClearHotbarSlots.Tooltip}"
 		}
 
+		# === CONSUMPTION SETTINGS ===
 		ConsumeResearchedAmmo: {
 			Label: "[i:{0}] Расходовать изученные патроны"
 			Tooltip: ""
@@ -194,41 +296,114 @@ Configs: {
 
 		ConsumeOtherResearchedItems: {
 			Label: "[i:{0}] Расходовать другие изученные предметы"
-			Tooltip: Другие предметы, которые не попали под категории выше, будут расходоваться
+			Tooltip:
+				'''
+				Другие предметы, которые не попали под категории выше, будут расходоваться
+				[c/{$Colors.Warning}:Рекомендуется не отключать эту настройку]
+				'''
 		}
 
+		# === MESSAGES SETTINGS ===
 		ShowNewlyResearchedItems: {
 			Label: Показывать изученные предметы
-			Tooltip: ""
+			Tooltip:
+				'''
+				Например :
+				[c/FF78BB:Изучено 3 новых предмета:] [i:1][i:2][i:3]
+				'''
 		}
 
 		ShowResearchedCraftableItems: {
 			Label: Показывать изученные автосоздаваемые предметы
-			Tooltip: ""
+			Tooltip:
+				'''
+				Например:
+				[c/FF9E70:Изучено 3 автосозданных предмета:] [i:1][i:2][i:3]
+				'''
 		}
 
 		ShowResearchedShimmeredItems: {
 			Label: Показывать изученные Мерцающие превращения
-			Tooltip: Этот тип сообщений можно увидеть только если настройка "{$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Name}" включена
+			Tooltip:
+				'''
+				Этот тип сообщений можно увидеть если настройка "[c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchShimmerableItems.Name}]" включена
+
+				Например:
+				[c/ED88D6:Изучено 3 мерцающих преобразования:] [i:1][i:2][i:3]
+				'''
+		}
+
+		ShowResearchedDecraftItems: {
+			Label: Показывать изученные декрафты
+			Tooltip:
+				'''
+				Этот тип сообщений можно увидеть если настройка  "[c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchDecraftItems.Name}]" включена
+
+				Например:
+				[c/FFBBDD:Изучено 3 предмета в процессе декрафта:] [i:1][i:2][i:3]
+				'''
+		}
+
+		ShowSacrifices: {
+			Label: Показывать частично изученные предметы
+			Tooltip:
+				'''
+				Этот сообщений появляется при выполнении действия изучения.
+
+				Например:
+				[c/F1A0BF:Частично изучено 2 предмета:] [i/s2:2][i/s99:3]
+				'''
+		}
+
+		# === MULTIPLAYER MESSAGES SETTGINGS ===
+		ShowSharedItems: {
+			Label: Показывать предметы, которыми с вами поделились
+			Tooltip:
+				'''
+				Показывает сообщение в чат, когда игрок из одной команды поделился с вами изученным предметом.
+				Для этого необходимо включить настройку [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncResearchedItemsInOneTeam.Label}] в "{$Configs.ServerConfig.DisplayName}"
+
+				Например:
+				[c/FFC0CB:PlayerName поделился 3 новыми предметами:] [i:1][i:2][i:3]
+				'''
+		}
+
+		ShowSharedSacrifices: {
+			Label: Показывать частично изученные предметы, которыми с вами поделились
+			Tooltip:
+				'''
+				Показывает сообщение в чат, когда игрок из одной команды поделился с вами частично изученным предметом.
+				Для этого необходимо включить настройку [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncSacrificesInOneTeam.Label}] в "{$Configs.ServerConfig.DisplayName}"
+
+				Например:
+				[c/FFC0CB:PlayerName поделился 2 частично изученными предметами:] [i/s2:2][i/s99:3]
+				'''
 		}
 
 		ShowOtherPlayersResearchedItems: {
 			Label: Показывать новые изученные предметы участников команды
-			Tooltip: Показываются даже те предметы, что были уже изучены вами
+			Tooltip:
+				'''
+				Показываются даже те предметы, что были уже изучены вами
+
+				Например:
+				[c/FFC0CB:PlayerName изучил 3 новых предметама:] [i:1][i:2][i:3]
+				'''
 		}
 
+		# === UI SETTINGS ===
 		ShowResearchInventoryButton: {
-			Label: Показывать кнопку "{$Mods.HyperResearch.UI.InventoryButtons.ResearchButtonHoverText}"
+			Label: Показывать кнопку "{$UI.InventoryButtons.ResearchButtonHoverText}"
 			Tooltip: ""
 		}
 
 		ShowClearInventoryButton: {
-			Label: Показывать кнопку "{$Mods.HyperResearch.UI.InventoryButtons.ClearButtonHoverText}"
+			Label: Показывать кнопку "{$UI.InventoryButtons.ClearButtonHoverText}"
 			Tooltip: ""
 		}
 
 		ShowAutoCraftButton: {
-			Label: Показывать кнопку "{$Mods.HyperResearch.UI.InventoryButtons.AutoCraftHoverText}"
+			Label: Показывать кнопку "{$UI.InventoryButtons.AutoCraftHoverText}"
 			Tooltip: ""
 		}
 
@@ -242,36 +417,13 @@ Configs: {
 		}
 
 		ShowResearchShopButton: {
-			Label: Показывать кнопку "{$Mods.HyperResearch.UI.ShopButtons.ResearchButtonHoverText}" в меню магазина
+			Label: Показывать кнопку "{$UI.ShopButtons.ResearchButtonHoverText}" в меню магазина
 			Tooltip: ""
 		}
 
 		ShowTotalResearchedItemsCount: {
 			Label: Показывать общее количество изученных предметов
 			Tooltip: Показывается под меню дубликации
-		}
-
-		ShowSacrifices: {
-			Label: Показывать частично изученные предметы
-			Tooltip: ""
-		}
-
-		ShowSharedItems: {
-			Label: Показывать предметы, которыми с вами поделились
-			Tooltip:
-				'''
-				Показывает сообщение в чат, когда игрок из одной команды поделился с вами изученным предметом.
-				Нужен включенный параметр "{$Mods.HyperResearch.Configs.ServerConfig.SyncResearchedItemsInOneTeam.Label}" в конфиге сервера
-				'''
-		}
-
-		ShowSharedSacrifices: {
-			Label: Показывать частично изученные предметы, которыми с вами поделились
-			Tooltip:
-				'''
-				Показывает сообщение в чат, когда игрок из одной команды поделился с вами частично изученным предметом.
-				Нужен включенный параметр "{$Mods.HyperResearch.Configs.ServerConfig.SyncSacrificesInOneTeam.Label}" в конфиге сервера
-				'''
 		}
 	}
 
@@ -299,26 +451,6 @@ Configs: {
 				Локальные настройки в конфиге клиента будут заменены серверными.
 				'''
 		}
-
-		IgnoreCraftingConditions: {
-			Label: "{$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Label}"
-			Tooltip: ""
-		}
-
-		ResearchShimmerableItems: {
-			Label: "{$Mods.HyperResearch.Configs.HyperConfig.ResearchShimmerableItems.Label}"
-			Tooltip: ""
-		}
-
-		UseResearchedBannersBuff: {
-			Label: "{$Mods.HyperResearch.Configs.HyperConfig.UseResearchedBannersBuff.Label}"
-			Tooltip: ""
-		}
-
-		OnlyOneItemNeeded: {
-			Label: "{$Mods.HyperResearch.Configs.HyperConfig.OnlyOneItemNeeded.Label}"
-			Tooltip: ""
-		}
 	}
 }
 
@@ -332,4 +464,5 @@ Keybinds: {
 	ResearchBagContents.DisplayName: Изучить содержимое мешка/ящика
 	ResearchShop.DisplayName: Изучить магазин
 	ShareAllResearched.DisplayName: Поделиться предметами с командой
+	EnableDisableBuff.DisplayName: Включить/Выключить бафф
 }

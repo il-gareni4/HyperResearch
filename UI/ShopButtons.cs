@@ -1,71 +1,73 @@
-﻿using HyperResearch.Common.Configs;
+﻿using System;
+using HyperResearch.Common.Configs;
 using HyperResearch.Common.Systems;
-using HyperResearch.UI.Components;
+using HyperResearch.UI.Elements;
 using HyperResearch.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Localization;
 using Terraria.UI;
 
-namespace HyperResearch.UI
+namespace HyperResearch.UI;
+
+public class ShopButtons : UIState
 {
-    public class ShopButtons : UIState
+    private const float ShopSlotSize = 39f;
+
+    private const float ShopSlotGap = 3f;
+
+    //public static bool 
+    public UIAnimatedImageButton ResearchShopButton = null!;
+
+    public override void OnInitialize()
     {
-        public const float ShopSlotSize = 39f;
-        public const float ShopSlotGap = 3f;
-        //public static bool 
-        public UIAnimatedImageButton ResearchShopButton;
-        public override void OnInitialize()
+        HyperConfig.Changed += RebuildButtons;
+
+        ResearchShopButton = new UIAnimatedImageButton(UISystem.ResearchShopButtonTexture!)
         {
-            HyperConfig.Changed += RebuildButtons;
+            Width = StyleDimension.FromPixels(32),
+            Height = StyleDimension.FromPixels(32),
+            HoverText = Language.GetText("Mods.HyperResearch.UI.ShopButtons.ResearchButtonHoverText"),
+            ReleaseStartFrame = 4,
+            OneFrameCount = 4,
+            AnimationFramesCount = 5,
+            HoverFrame = 6,
+            CanInteract = () => Main.LocalPlayer.TalkNPC is not null && Main.npcShop >= 1
+        };
+        RebuildButtons();
+    }
 
-            ResearchShopButton = new(UISystem.ResearchShopButtonTexture)
-            {
-                Width = StyleDimension.FromPixels(32),
-                Height = StyleDimension.FromPixels(32),
-                HoverText = Language.GetText("Mods.HyperResearch.UI.ShopButtons.ResearchButtonHoverText"),
-                ReleaseStartFrame = 4,
-                OneFrameCount = 4,
-                AnimationFramesCount = 5,
-                HoverFrame = 6,
-                CanInteract = () => Main.LocalPlayer.TalkNPC is not null && Main.npcShop >= 1
-            };
-            RebuildButtons();
-        }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        if (Researcher.IsPlayerInJourneyMode && Main.LocalPlayer.TalkNPC is not null && Main.npcShop >= 1)
+            base.Draw(spriteBatch);
+    }
 
-        public override void Draw(SpriteBatch spriteBatch)
+    public override void Update(GameTime gameTime)
+    {
+        if (Researcher.IsPlayerInJourneyMode) base.Update(gameTime);
+    }
+
+    private void RebuildButtons()
+    {
+        Top = StyleDimension.FromPixels(
+            MathF.Floor(
+                InventoryButtons.BaseMargin + (InventoryButtons.ItemSlotSize + InventoryButtons.ItemSlotGap) * 5) + 1f +
+            (ShopSlotSize + ShopSlotGap) * 4
+        );
+        Left = StyleDimension.FromPixels(
+            MathF.Floor(InventoryButtons.BaseMargin + InventoryButtons.ItemSlotSize * 10 +
+                        InventoryButtons.ItemSlotGap * 9) + 1f -
+            (ShopSlotSize * 2 + ShopSlotGap)
+        );
+
+        RemoveAllChildren();
+        if (HyperConfig.Instance.ShowResearchShopButton)
         {
-            if (Researcher.IsPlayerInJourneyMode() && Main.LocalPlayer.TalkNPC is not null && Main.npcShop >= 1)
-                base.Draw(spriteBatch);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            if (Researcher.IsPlayerInJourneyMode()) base.Update(gameTime);
-        }
-
-        public void RebuildButtons()
-        {
-            if (HyperConfig.Instance is null) return;
-
-            Top = StyleDimension.FromPixels(
-                MathF.Floor(InventoryButtons.BaseMargin + (InventoryButtons.ItemSlotSize + InventoryButtons.ItemSlotGap) * 5) + 1f +
-                (ShopSlotSize + ShopSlotGap) * 4
-            );
-            Left = StyleDimension.FromPixels(
-                MathF.Floor(InventoryButtons.BaseMargin + InventoryButtons.ItemSlotSize * 10 + InventoryButtons.ItemSlotGap * 9) + 1f -
-                (ShopSlotSize * 2 + ShopSlotGap)
-            );
-
-            RemoveAllChildren();
-            if (HyperConfig.Instance.ShowResearchShopButton)
-            {
-                ResearchShopButton.MarginTop = MathF.Floor((ShopSlotSize - ResearchShopButton.Width.Pixels) / 2);
-                ResearchShopButton.MarginLeft = MathF.Floor((ShopSlotSize - ResearchShopButton.Width.Pixels) / 2);
-                Append(ResearchShopButton);
-            }
+            ResearchShopButton.MarginTop = MathF.Floor((ShopSlotSize - ResearchShopButton.Width.Pixels) / 2);
+            ResearchShopButton.MarginLeft = MathF.Floor((ShopSlotSize - ResearchShopButton.Width.Pixels) / 2);
+            Append(ResearchShopButton);
         }
     }
 }
