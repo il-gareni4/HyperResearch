@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using HyperResearch.Common.Configs;
 using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
@@ -79,11 +81,14 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         }
     }
 
-    private void ResearchItem(Item item, bool enabledIfNotFound = true)
+    private void ResearchItem(Item item, bool enable = true)
     {
-        if (item.buffType == 0 || Buffs.ContainsKey(item.buffType)) return;
+        if (item.buffType == 0) return;
 
-        Buffs[item.buffType] = BuffUtils.IsABuffPotion(item) && enabledIfNotFound;
+        Buffs.TryAdd(
+            item.buffType,
+            BuffUtils.IsABuffPotion(item) && enable && HyperConfig.Instance.PotionBuffEnabledByDefault
+        );
     }
 
     private void ToggleBuffItem(Item item)

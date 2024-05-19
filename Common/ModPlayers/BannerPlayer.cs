@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using HyperResearch.Common.Configs;
 using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
@@ -69,9 +70,9 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
         }
     }
 
-    private void TryAddBanner(int itemId, bool enabledIfNotFound = true)
+    private void TryAddBanner(int itemId, bool enabled = true)
     {
         if (!BannerSystem.ItemToBanner.TryGetValue(itemId, out int bannerId)) return;
-        ResearchedBanners.TryAdd(bannerId, enabledIfNotFound);
+        ResearchedBanners.TryAdd(bannerId, enabled && HyperConfig.Instance.BannerBuffEnabledByDefault);
     }
 }

@@ -122,6 +122,11 @@ Configs: {
 				'''
 		}
 
+		BannerBuffEnabledByDefault: {
+			Label: Enable banner buff on research
+			Tooltip: If a banner has not been previously researched, then the buff from this banner will be enabled by default when researched
+		}
+
 		UseResearchedPotionsBuff: {
 			Name: Use buff of researched potions
 			Label: "[i:{0}] {$Configs.HyperConfig.UseResearchedPotionsBuff.Name}"
@@ -130,6 +135,11 @@ Configs: {
 				Applies buffs from researched potions, food and flasks.
 				[c/{$Colors.UsefulNote}:Within the game, potions can be selectively disabled by right-clicking on the buff or in the duplication menu.]
 				'''
+		}
+
+		PotionBuffEnabledByDefault: {
+			Label: Enable potion buff on research
+			Tooltip: If a potion has not been previously researched, then the buff from this potion will be enabled by default when researched
 		}
 
 		# === AUTO-TRASH SETTINGS ===
@@ -192,7 +202,6 @@ Configs: {
 				'''
 				Allows you to overwrite the number of items required to research for each individual item in the game.
 				[c/{$Colors.UsefulNote}:Allows you to make unresearchable items researchable and vice versa.]
-				[c/{$Colors.Warning}:Important: for this setting to work, you must reload all mods! Nothing will be changed during the game.]
 				'''
 		}
 

@@ -44,10 +44,16 @@ public class HyperConfig : ModConfig
     [LabelArgs(ItemID.ZombieBanner)]
     [DefaultValue(true)]
     public bool UseResearchedBannersBuff;
+    
+    [DefaultValue(true)]
+    public bool BannerBuffEnabledByDefault;
 
     [LabelArgs(ItemID.WrathPotion)]
     [DefaultValue(true)]
     public bool UseResearchedPotionsBuff;
+    
+    [DefaultValue(true)]
+    public bool PotionBuffEnabledByDefault;
 
 
     [Header("AutoTrashSettingsHeader")]
