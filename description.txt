@@ -3,7 +3,7 @@ The mod gives you a lot of settings in the config, so take a look there and cust
 
 Main features:
 - Auto-researching of items in the inventory without having to open the Research Menu every time.
-- Auto-researching of items that can be crafted. [i]You need to research the necessary materials and crafting stations (or stand next to them)[/i].
+- Auto-researching of items that can be crafted. You need to research the necessary materials and crafting stations (or stand next to them).
 - Auto-researching of items that are obtained after shimmer transmutation.
 - Auto-researching of items that are obtained after shimmer decrafting.
 - Auto-partial researching.
