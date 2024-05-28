@@ -1,9 +1,16 @@
 Colors: {
-	Warning: FF666D
-	Condition: FFE582
-	UsefulNote: FE95FF
-	Note: 8FCBFF
-	Mention: FFAB65
+	// Warning: FF666D
+	// Condition: FFE582
+	// UsefulNote: FE95FF
+	// Note: 8FCBFF
+	// Mention: FFAB65
+
+	Game: {
+		// JourneyMode: FF78BB
+		// CoinSilver: B5C0C1
+		// RarityGreen: 96FF96
+		// RarityRed: FF9696
+	}
 }
 
 Messages: {
@@ -21,7 +28,7 @@ Messages: {
 Tooltips: {
 	NeededToResearch: Исследуйте {0} {^0:единицу;единицы;единиц} для дублирования ({1}/{2})
 	Researched: Изучено
-	ResearchLoot: Нажмите {0}, чтобы изучить содержимое (исключая глобальные предметы)
+	ResearchLoot: Нажмите {0}, чтобы изучить содержимое
 	EnableBuff: Нажмите {0}, чтобы включить бафф
 	DisableBuff: Нажмите {0}, чтобы выключить бафф
 	EnableBanner: Нажмите {0}, чтобы включить эффект баннера
@@ -219,7 +226,27 @@ Configs: {
 			Tooltip: ""
 		}
 
-		# === RESEARCH SETTIGNS ===
+		ShowResearchBagTooltip: {
+			Label: Показывать подсказку [c/{$Colors.Game.JourneyMode}:Нажмите <кнопку> чтобы изучить содержимое]
+			Tooltip: ""
+		}
+
+		ShowBannerBuffTooltips: {
+			Label: Показывать подсказку [c/{$Colors.Game.RarityGreen}:Нажмите <кнопку>, чтобы включить]/[c/{$Colors.Game.RarityRed}:выключить эффект баннера]
+			Tooltip: ""
+		}
+
+		ShowPotionBuffTooltips: {
+			Label: Показывать подсказку [c/{$Colors.Game.RarityGreen}:Нажмите <кнопку>, чтобы включить]/[c/{$Colors.Game.RarityRed}:выключить бафф]
+			Tooltip: ""
+		}
+
+		ShowSelectPrefixTooltip: {
+			Label: Показывать подсказку [c/{$Colors.Game.CoinSilver}:Нажмите <кнопку> чтобы выбрать желаемый модификатор]
+			Tooltip: ""
+		}
+
+		# === RESEARCH SETTINGS ===
 		SacrificeHotbarSlots: {
 			Label: "[i:{0}] Включать слоты хотбара в действие изучения"
 			Tooltip:

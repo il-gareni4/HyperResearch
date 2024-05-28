@@ -89,17 +89,6 @@ public class HyperConfig : ModConfig
     public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
 
-    [Header("TooltipsSettingsHeader")]
-
-    [LabelArgs(ItemID.HandOfCreation)]
-    [DefaultValue(true)]
-    public bool UseCustomResearchTooltip;
-
-    [LabelArgs(ItemID.Sign)]
-    [DefaultValue(false)]
-    public bool ShowResearchedTooltip;
-
-
     [Header("SacrificeSettingsHeader")]
 
     [LabelArgs(ItemID.LockBox)]
@@ -160,6 +149,29 @@ public class HyperConfig : ModConfig
     [LabelArgs(ItemID.SuspiciousLookingEye)]
     [DefaultValue(true)]
     public bool ConsumeOtherResearchedItems;
+    
+    
+    [Header("TooltipsSettingsHeader")]
+
+    [LabelArgs(ItemID.HandOfCreation)]
+    [DefaultValue(true)]
+    public bool UseCustomResearchTooltip;
+
+    [LabelArgs(ItemID.Sign)]
+    [DefaultValue(false)]
+    public bool ShowResearchedTooltip;
+
+    [DefaultValue(true)]
+    public bool ShowResearchBagTooltip;
+
+    [DefaultValue(true)]
+    public bool ShowBannerBuffTooltips;
+    
+    [DefaultValue(true)]
+    public bool ShowPotionBuffTooltips;
+    
+    [DefaultValue(true)]
+    public bool ShowSelectPrefixTooltip;
 
 
     [Header("MessagesSettingsHeader")]

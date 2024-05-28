@@ -134,7 +134,7 @@ public class Researcher
 
     private Queue<int> ResearchedQueue => _researchedQueue ??= new Queue<int>();
 
-    public static bool IsPlayerInJourneyMode => Main.LocalPlayer.difficulty == 3;
+    public static bool IsPlayerInJourneyMode => Main.CurrentPlayer.difficulty == 3;
 
 
     private List<int>?[] ResearchedItems { get; } = new List<int>?[ResearchedItemGroups];

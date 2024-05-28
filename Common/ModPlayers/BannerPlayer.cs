@@ -46,19 +46,19 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
 
     public override void SaveData(TagCompound tag)
     {
-        if (Main.CurrentPlayer.difficulty != 3) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
         tag["bannersEnabled"] = ResearchedBanners.Where(kv => kv.Value).Select(kv => kv.Key).ToArray();
     }
 
     public override void Unload()
     {
-        if (Main.CurrentPlayer.difficulty != 3) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
         ResearchedBanners.Clear();
     }
 
     public override void LoadData(TagCompound tag)
     {
-        if (Main.CurrentPlayer.difficulty != 3) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
 
         if (tag.TryGet("bannersEnabled", out int[] enabledBanners))
         {

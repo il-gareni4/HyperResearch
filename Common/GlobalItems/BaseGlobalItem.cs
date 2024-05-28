@@ -66,8 +66,9 @@ public partial class BaseGlobalItem : GlobalItem
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
         if (!Researcher.IsPlayerInJourneyMode || !Researcher.IsResearchable(item.type)) return;
-        if (Researcher.IsResearched(item.type) && HyperConfig.Instance.ShowResearchedTooltip &&
-            item.tooltipContext != ItemSlot.Context.CreativeInfinite)
+        if (Researcher.IsResearched(item.type)
+            && HyperConfig.Instance.ShowResearchedTooltip
+            && item.tooltipContext != ItemSlot.Context.CreativeInfinite)
         {
             TooltipLine researched =
                 new(Mod, "Researched", Language.GetTextValue("Mods.HyperResearch.Tooltips.Researched"))
@@ -81,13 +82,13 @@ public partial class BaseGlobalItem : GlobalItem
             int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
             if (!HyperConfig.Instance.UseCustomResearchTooltip)
             {
-                if (ConfigOptions.OnlyOneItemNeeded && vanillaTooltipIndex >= 0)
-                    tooltips[vanillaTooltipIndex].Text = Regex.Replace(
-                        tooltips[vanillaTooltipIndex].Text,
-                        @"\d+",
-                        "1"
-                    );
-                return;
+                if (!ConfigOptions.OnlyOneItemNeeded || vanillaTooltipIndex == -1) return;
+
+                tooltips[vanillaTooltipIndex].Text = Regex.Replace(
+                    tooltips[vanillaTooltipIndex].Text,
+                    @"\d+",
+                    "1"
+                );
             }
 
             LocalizedText tooltipText = Language.GetText("Mods.HyperResearch.Tooltips.NeededToResearch");

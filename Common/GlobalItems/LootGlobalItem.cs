@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using HyperResearch.Common.Configs;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using Terraria;
@@ -16,6 +17,7 @@ public class LootGlobalItem : GlobalItem
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
         if (!Researcher.IsPlayerInJourneyMode ||
+            !HyperConfig.Instance.ShowResearchBagTooltip ||
             !Researcher.IsResearched(item.type) ||
             !ItemLoader.CanRightClick(item) ||
             !ItemsUtils.IsLootItem(item.type) ||

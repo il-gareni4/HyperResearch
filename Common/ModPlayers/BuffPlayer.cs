@@ -46,19 +46,19 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
 
     public override void SaveData(TagCompound tag)
     {
-        if (Main.CurrentPlayer.difficulty != 3) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
         tag["buffsEnabled"] = Buffs.Where(kv => kv.Value).Select(kv => kv.Key).ToArray();
     }
 
     public override void Unload()
     {
-        if (Main.CurrentPlayer.difficulty != 3) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
         Buffs.Clear();
     }
 
     public override void LoadData(TagCompound tag)
     {
-        if (Main.CurrentPlayer.difficulty != 3) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
 
         if (tag.TryGet("buffsEnabled", out int[] enabled))
         {

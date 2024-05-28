@@ -13,6 +13,8 @@ public class ResearchSystem : ModSystem
 
     public override void OnWorldLoad()
     {
+        if (!Researcher.IsPlayerInJourneyMode) return;
+        
         OverrideDefaultResearchCount();
         CalculateResearchable();
     }

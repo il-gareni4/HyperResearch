@@ -147,13 +147,13 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     public override void SaveData(TagCompound tag)
     {
-        if (Main.CurrentPlayer.difficulty != 3) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
         tag["WasInAether"] = WasInAether;
     }
 
     public override void LoadData(TagCompound tag)
     {
-        if (Main.CurrentPlayer.difficulty != 3) return;
+        if (!Researcher.IsPlayerInJourneyMode) return;
         if (tag.TryGet("WasInAether", out bool wasInAether))
             WasInAether = wasInAether;
     }

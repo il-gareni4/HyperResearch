@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using HyperResearch.Common.Configs;
 using HyperResearch.Common.ModPlayers;
+using HyperResearch.Utils;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -15,7 +16,7 @@ public class PlayerSystem : ModSystem
 
     public override void OnWorldLoad()
     {
-        if (Main.netMode == NetmodeID.Server) return;
+        if (Main.netMode == NetmodeID.Server || !Researcher.IsPlayerInJourneyMode) return;
         if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
         {
             HPlayer = modPlayer;
@@ -32,7 +33,7 @@ public class PlayerSystem : ModSystem
 
     public override void OnWorldUnload()
     {
-        if (Main.netMode == NetmodeID.Server || HPlayer == null) return;
+        if (Main.netMode == NetmodeID.Server || HPlayer == null || !Researcher.IsPlayerInJourneyMode) return;
 
         HyperConfig.Changed -= HPlayer.OnClientConfigChanged;
         ModContent.GetInstance<UISystem>().InventoryButtons!.ResearchButton.OnLeftMouseDown -=

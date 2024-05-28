@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using HyperResearch.Common.Configs;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
@@ -17,6 +18,7 @@ public class BannerGlobalItem : GlobalItem
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
         if (!Researcher.IsPlayerInJourneyMode
+            || !HyperConfig.Instance.ShowBannerBuffTooltips
             || item.tooltipContext != ItemSlot.Context.CreativeInfinite
             || !BannerSystem.ItemToBanner.TryGetValue(item.type, out int bannerId)
             || !Main.LocalPlayer.TryGetModPlayer(out BannerPlayer bannerPlayer)

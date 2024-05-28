@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using HyperResearch.UI;
+using HyperResearch.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -64,6 +65,8 @@ internal class UISystem : ModSystem
 
     public override void UpdateUI(GameTime gameTime)
     {
+        if (!Researcher.IsPlayerInJourneyMode) return;
+        
         _duplicationMenu?.Update(gameTime);
         _inventoryButtons?.Update(gameTime);
         _shopButtons?.Update(gameTime);
@@ -76,6 +79,8 @@ internal class UISystem : ModSystem
 
     public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
     {
+        if (!Researcher.IsPlayerInJourneyMode) return;
+        
         int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
         if (mouseTextIndex == -1) return;
 

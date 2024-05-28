@@ -4,6 +4,13 @@ Colors: {
 	UsefulNote: FE95FF
 	Note: 8FCBFF
 	Mention: FFAB65
+
+	Game: {
+		JourneyMode: FF78BB
+		CoinSilver: B5C0C1
+		RarityGreen: 96FF96
+		RarityRed: FF9696
+	}
 }
 
 Messages: {
@@ -21,7 +28,7 @@ Messages: {
 Tooltips: {
 	NeededToResearch: Research {0} more to unlock duplication ({1}/{2})
 	Researched: Researched
-	ResearchLoot: Press {0} to research all loot (excluding global)
+	ResearchLoot: Press {0} to research all loot
 	EnableBuff: Press {0} to enable buff
 	DisableBuff: Press {0} to disable buff
 	EnableBanner: Press {0} to enable banner buff
@@ -182,7 +189,7 @@ Configs: {
 		}
 
 		BalancePrefixPicker: {
-			Name: Balance the prefix selector
+			Name: Balance the modifier selector
 			Label: "[i:{0}] {$Configs.HyperConfig.BalancePrefixPicker.Name}"
 			Tooltip:
 				'''
@@ -216,7 +223,27 @@ Configs: {
 			Tooltip: ""
 		}
 
-		# === RESEARCH SETTIGNS ===
+		ShowResearchBagTooltip: {
+			Label: Show [c/{$Colors.Game.JourneyMode}:Press <key> to research all loot] tooltip
+			Tooltip: ""
+		}
+
+		ShowBannerBuffTooltips: {
+			Label: Show [c/{$Colors.Game.RarityGreen}:Press <key> to enable]/[c/{$Colors.Game.RarityRed}:disable banner buff] tooltip
+			Tooltip: ""
+		}
+
+		ShowPotionBuffTooltips: {
+			Label: Show [c/{$Colors.Game.RarityGreen}:Press <key> to enable]/[c/{$Colors.Game.RarityRed}:disable buff] tooltip
+			Tooltip: ""
+		}
+
+		ShowSelectPrefixTooltip: {
+			Label: Show [c/{$Colors.Game.CoinSilver}:Press <key> to select the desired modifier] tooltip
+			Tooltip: ""
+		}
+
+		# === RESEARCH SETTINGS ===
 		SacrificeHotbarSlots: {
 			Label: "[i:{0}] Include hotbar slots on Research action"
 			Tooltip: Research action is a [c/{$Colors.Mention}:{$Keybinds.ResearchInventoryItems.DisplayName}] keybind or eponymous UI button
@@ -298,7 +325,7 @@ Configs: {
 			Tooltip:
 				'''
 				For example:
-				[c/FF78BB:Researched 3 new items:] [i:1][i:2][i:3]
+				[c/{$Colors.Game.JourneyMode}:Researched 3 new items:] [i:1][i:2][i:3]
 				'''
 		}
 
