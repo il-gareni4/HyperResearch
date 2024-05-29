@@ -1,10 +1,5 @@
 Hyper Research v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
-[h1]Added[/h1]
+[h1]Fixed[/h1]
 [list]
-[*] The ability to disable every tooltip that the mod adds
-[/list]
-
-[h1]Changed[/h1]
-[list]
-[*] Tooltips settings have been moved to the bottom of the client config
+[*] OnResearched method causes the game to crash
 [/list]
