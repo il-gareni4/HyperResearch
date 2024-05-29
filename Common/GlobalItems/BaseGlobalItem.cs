@@ -108,7 +108,6 @@ public partial class BaseGlobalItem : GlobalItem
     {
         if (!Researcher.IsPlayerInJourneyMode || !fullyResearched || item.IsAir) return;
 
-        ItemLoader.OnPickup(item, Main.LocalPlayer); // For ItemChecklist and BossChecklist
         foreach (ModPlayer modPlayer in Main.LocalPlayer.ModPlayers)
         {
             if (modPlayer is IResearchPlayer resPlayer)
