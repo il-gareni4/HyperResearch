@@ -12,8 +12,10 @@ The mod gives you a lot of settings in the config, so take a look there and cust
 [*]Messages notifying about researching new items and crafting items.
 [*]UI buttons and many keybinds.
 [*][b]Multiplayer support[/b].
+    [list]
     [*]Ability to share researched items with the team.
     [*]Set global settings for all server participants.
+    [/list]
 [/list]
 
 [h2]Other features[/h2]
