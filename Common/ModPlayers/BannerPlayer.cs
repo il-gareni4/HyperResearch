@@ -14,7 +14,19 @@ namespace HyperResearch.Common.ModPlayers;
 
 public class BannerPlayer : ModPlayer, IResearchPlayer
 {
-    public Dictionary<int, bool> ResearchedBanners { get; } = [];
+    public SortedDictionary<int, bool> ResearchedBanners { get; } = [];
+
+    public IEnumerable<int> EnabledBanners
+    {
+        get
+        {
+            foreach ((int bannerId, bool bannerEnabled) in ResearchedBanners)
+            {
+                if (bannerEnabled)
+                    yield return bannerId;
+            }
+        }
+    }
 
     public void OnResearch(Item item) => TryAddBanner(item.type);
 
@@ -23,10 +35,8 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
         if (!Researcher.IsPlayerInJourneyMode) return;
 
         for (var itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
-        {
             if (Researcher.IsResearched(itemId))
                 TryAddBanner(itemId, false);
-        }
     }
 
     public override void ProcessTriggers(TriggersSet triggersSet)
@@ -47,7 +57,9 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
     public override void SaveData(TagCompound tag)
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
-        tag["bannersEnabled"] = ResearchedBanners.Where(kv => kv.Value).Select(kv => kv.Key).ToArray();
+        tag["bannersEnabled"] = ResearchedBanners.Where(kv => kv.Value)
+            .Select(kv => kv.Key)
+            .ToArray();
     }
 
     public override void Unload()
@@ -61,13 +73,9 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
         if (!Researcher.IsPlayerInJourneyMode) return;
 
         if (tag.TryGet("bannersEnabled", out int[] enabledBanners))
-        {
             foreach (int bannerId in enabledBanners)
-            {
                 if (bannerId < Main.SceneMetrics.NPCBannerBuff.Length)
                     ResearchedBanners[bannerId] = true;
-            }
-        }
     }
 
     private void TryAddBanner(int itemId, bool enabled = true)

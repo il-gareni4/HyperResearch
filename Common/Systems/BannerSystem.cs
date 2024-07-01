@@ -16,10 +16,7 @@ public class BannerSystem : ModSystem
     {
         const int vanillaBannersCount = 290;
         for (var bannerId = 0; bannerId < vanillaBannersCount; bannerId++)
-        {
-            int itemId = Item.BannerToItem(bannerId);
-            ItemToBanner[itemId] = bannerId;
-        }
+            ItemToBanner[Item.BannerToItem(bannerId)] = bannerId;
 
         var bannerToItem = (IDictionary<int, int>?)typeof(NPCLoader)
             .GetField("bannerToItem", BindingFlags.NonPublic | BindingFlags.Static)
@@ -35,17 +32,12 @@ public class BannerSystem : ModSystem
         if (!Researcher.IsPlayerInJourneyMode || !ConfigOptions.UseResearchedBannersBuff) return;
         if (Main.LocalPlayer.TryGetModPlayer(out BannerPlayer player) && player.ResearchedBanners.Count > 0)
         {
-            var anyBannerEnabled = false;
-            foreach ((int bannerId, bool bannerEnabled) in player.ResearchedBanners)
+            foreach (int bannerId in player.EnabledBanners)
             {
-                if (bannerEnabled)
-                {
-                    Main.SceneMetrics.NPCBannerBuff[bannerId] = true;
-                    anyBannerEnabled = true;
-                }
+                if (bannerId <= 0) continue;
+                Main.SceneMetrics.NPCBannerBuff[bannerId] = true;
+                Main.SceneMetrics.hasBanner = true;
             }
-
-            Main.SceneMetrics.hasBanner = anyBannerEnabled;
         }
     }
 
