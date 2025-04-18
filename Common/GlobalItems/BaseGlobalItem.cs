@@ -26,6 +26,7 @@ public partial class BaseGlobalItem : GlobalItem
 
         Researcher researcher = new();
         researcher.SacrificeItem(item);
+        researcher.ProcessResearched();
         if (player.TryGetModPlayer(out HyperPlayer hyperPlayer))
             hyperPlayer.AfterLocalResearch(researcher, false);
         return true;

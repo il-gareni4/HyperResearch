@@ -54,7 +54,6 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         {
             Researcher researcher = new()
             {
-                AutoResearchQueue = false,
                 AutoResearchCraftable = false,
                 AutoResearchShimmerableItems = false,
                 AutoResearchDecraftItems = false
@@ -119,6 +118,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
                      && Researcher.GetResearchedCount(itemId) >= 1)
                 researcher.ResearchItem(itemId);
         }
+        researcher.ProcessResearched();
 
         AfterLocalResearch(researcher);
     }
@@ -140,6 +140,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
                 researcher.TryResearchShimmeredItem(itemId);
                 researcher.TryResearchDecraftItems(itemId);
             }
+            researcher.ProcessResearched();
 
             AfterLocalResearch(researcher);
         }
@@ -202,13 +203,10 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     public void SharedItems(int fromPlayer, int[] items, Dictionary<int, int> sacrifices)
     {
         TextUtils.MessageOtherPlayerResearchedItems(items.ToList(), fromPlayer);
-        Researcher researcher = new()
-        {
-            AutoResearchQueue = false
-        };
+        Researcher researcher = new();
         researcher.SacrificeItems(sacrifices, SacrificeSource.Shared);
         researcher.ResearchItems(items, ResearchSource.Shared);
-        researcher.ResearchQueue();
+        researcher.ProcessResearched();
 
         AfterLocalResearch(researcher, playerShared: fromPlayer);
     }
@@ -231,7 +229,8 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
         if (items.Count == 0) return;
         Researcher researcher = new();
-        researcher.TryResearchItems(items);
+        researcher.ResearchItemsWithCount(items);
+        researcher.ProcessResearched();
         AfterLocalResearch(researcher);
     }
 
@@ -256,6 +255,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
         Researcher researcher = new();
         researcher.SacrificeItems(itemToSacrifice);
+        researcher.ProcessResearched();
         AfterLocalResearch(researcher);
     }
 
@@ -280,12 +280,10 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     private void TrashInventoryItems(int[] items)
     {
-        if (!HyperConfig.Instance.AutoTrashAfterResearching) return;
-
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
             Item? item = Player.inventory[slot];
-            if (item.IsAir && !item.favorited) continue;
+            if (item.IsAir || item.favorited) continue;
             if (items.Contains(item.type)) item.TurnToAir();
         }
     }
@@ -325,12 +323,15 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
         Researcher researcher = new();
         researcher.ResearchItems(toResearch);
+        researcher.ProcessResearched();
         AfterLocalResearch(researcher);
     }
 
     public void OnClientConfigChanged()
     {
-        if (!ConfigOptions.OnlyOneItemNeeded && !ConfigOptions.ResearchShimmerableItems) return;
+        if (!ConfigOptions.OnlyOneItemNeeded &&
+            !ConfigOptions.ResearchShimmerableItems &&
+            !ConfigOptions.ResearchDecraftItems) return;
 
         Researcher researcher = new();
         for (var itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
@@ -341,6 +342,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
                 Researcher.GetResearchedCount(itemId) >= 1)
                 researcher.ResearchItem(itemId);
         }
+        researcher.ProcessResearched();
 
         AfterLocalResearch(researcher);
     }
@@ -349,6 +351,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     {
         Researcher researcher = new();
         researcher.ResearchCraftable();
+        researcher.ProcessResearched();
         AfterLocalResearch(researcher);
     }
 
@@ -359,18 +362,20 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         IEnumerable<int> items = ItemsUtils.GetItemLoot(itemId);
         Researcher researcher = new();
         researcher.ResearchItems(items);
+        researcher.ProcessResearched();
         AfterLocalResearch(researcher);
     }
 
     internal void AfterLocalResearch(Researcher researcher, bool playSacrificeSounds = true, int playerShared = -1)
     {
         if (researcher is { AnyItemResearched: false, AnyItemSacrificed: false }) return;
-        
+
         TextUtils.MessageResearcherResults(researcher, playerShared);
         if (researcher.AnyItemResearched)
         {
             SoundEngine.PlaySound(SoundID.ResearchComplete);
-            TrashInventoryItems(researcher.AllResearchedItems.ToArray());
+            if (HyperConfig.Instance.AutoTrashAfterResearching)
+                TrashInventoryItems(researcher.AllResearchedItems.ToArray());
         }
         else if (researcher.DefaultSacrifices is { Count: > 0 } && playSacrificeSounds)
             SoundEngine.PlaySound(SoundID.Research);
