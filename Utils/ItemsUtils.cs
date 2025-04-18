@@ -146,15 +146,26 @@ public static class ItemsUtils
     public static bool IsInItemGroup(Item item, ContentSamples.CreativeHelper.ItemGroup group) =>
         ContentSamples.CreativeHelper.GetItemGroup(item, out int _) == group;
 
-    private static int[] GetAllPrefixes(Item item)
+    private static IEnumerable<int> GetAllPrefixes(Item item)
     {
-        PrefixCategory? category = item.GetPrefixCategory();
-        if (category == null) return [];
-        IReadOnlyList<ModPrefix>? modPrefixes = PrefixLoader.GetPrefixesInCategory((PrefixCategory)category);
-        return [.. Item.GetVanillaPrefixes((PrefixCategory)category), .. modPrefixes.Select(p => p.Type)];
+        List<PrefixCategory> categories = item.GetPrefixCategories();
+        if (categories == null || categories.Count == 0) return [];
+
+        IEnumerable<int> vanillaPrefixes = 
+            categories
+            .SelectMany(Item.GetVanillaPrefixes)
+            .Distinct();
+
+        IEnumerable<ModPrefix> modPrefixes = 
+            categories
+            .SelectMany(PrefixLoader.GetPrefixesInCategory)
+            .Distinct();
+
+        return vanillaPrefixes.Concat(modPrefixes.Select(p => p.Type));
     }
 
-    public static int[] GetPossiblePrefixes(Item item) => GetAllPrefixes(item).Where(item.CanApplyPrefix).ToArray();
+    public static IEnumerable<int> GetPossiblePrefixes(Item item) =>
+        GetAllPrefixes(item).Where(item.CanApplyPrefix);
 
     public static Color GetRarityColor(Item item)
     {
@@ -179,5 +190,5 @@ public static class ItemsUtils
     }
 
     public static bool CanHavePrefixes(Item item) =>
-        item.CanHavePrefixes() && (item.ModItem?.CanReforge() ?? true) && GetPossiblePrefixes(item).Length > 0;
+        item.CanHavePrefixes() && (item.ModItem?.CanReforge() ?? true) && GetPossiblePrefixes(item).Any();
 }
