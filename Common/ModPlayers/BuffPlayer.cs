@@ -4,7 +4,6 @@ using HyperResearch.Common.Configs;
 using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
-using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -16,7 +15,7 @@ namespace HyperResearch.Common.ModPlayers;
 
 public class BuffPlayer : ModPlayer, IResearchPlayer
 {
-    public DictionaryAnalysisData<int, bool> Buffs { get; } = [];
+    public Dictionary<int, bool> Buffs { get; } = [];
 
     public void OnResearch(Item item) => ResearchItem(item);
 

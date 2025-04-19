@@ -5,6 +5,7 @@ using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
 using HyperResearch.Utils.Extensions;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace HyperResearch;
@@ -39,6 +40,19 @@ public class HyperResearch : Mod
         }
     }
 
-    public override uint ExtraPlayerBuffSlots =>
-        (uint)(ConfigOptions.UseResearchedPotionsBuff ? 99 : 0);
+    public override uint ExtraPlayerBuffSlots
+    {
+        get
+        {
+            uint extraBuffs = 0;
+            for (int i = 0; i < BuffLoader.BuffCount; i++)
+            {
+                if (!BuffUtils.IsABuffFromPotion(i))
+                    continue;
+                extraBuffs++;
+            }
+            
+            return extraBuffs + 2 - 44; // 2 is for flask and food, 44 is default buff count
+        }
+    }
 }
