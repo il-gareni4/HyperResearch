@@ -9,6 +9,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
 
 namespace HyperResearch.Common.ModPlayers;
@@ -16,6 +17,7 @@ namespace HyperResearch.Common.ModPlayers;
 public class BuffPlayer : ModPlayer, IResearchPlayer
 {
     public Dictionary<int, bool> Buffs { get; } = [];
+    private readonly List<string> _buffsOfDisabledMods = [];
 
     public void OnResearch(Item item) => ResearchItem(item);
 
@@ -36,22 +38,31 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
-        for (var itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
-        {
-            Item item = ContentSamples.ItemsByType[itemId];
-            if (Researcher.IsResearched(item.type)) ResearchItem(item, false);
-        }
+        foreach (int itemId in Researcher.ReseachedItems)
+            ResearchItem(ContentSamples.ItemsByType[itemId], false);
     }
 
     public override void SaveData(TagCompound tag)
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
-        tag["buffsEnabled"] = Buffs.Where(kv => kv.Value).Select(kv => kv.Key).ToArray();
+
+        tag["enabledVanillaBuffs"] =
+            Buffs
+            .Where(kv => kv.Key < BuffID.Count && kv.Value)
+            .Select(kv => kv.Key)
+            .ToArray();
+        tag["enabledModBuffs"] =
+            Buffs
+            .Where(kv => kv.Key >= BuffID.Count && kv.Value)
+            .Select(kv => BuffLoader.GetBuff(kv.Key).FullName)
+            .Concat(_buffsOfDisabledMods)
+            .ToArray();
     }
 
     public override void Unload()
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
+
         Buffs.Clear();
     }
 
@@ -59,12 +70,36 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
+        // Migrate from 1.0 to 1.1
         if (tag.TryGet("buffsEnabled", out int[] enabled))
         {
-            foreach (int buffId in enabled)
+            foreach (int buffId in enabled.Where(buffId => buffId < BuffID.Count))
+                Buffs[buffId] = true;
+        }
+
+        // Current version
+        if (tag.TryGet("enabledVanillaBuffs", out int[] enabledVanillaBuffs))
+        {
+            foreach (int buffId in enabledVanillaBuffs.Where(buffId => buffId < BuffID.Count))
+                Buffs[buffId] = true;
+        }
+
+        if (tag.TryGet("enabledModBuffs", out string[] enabledModBuffs))
+        {
+            foreach (string buffFullName in enabledModBuffs)
             {
-                if (buffId < BuffLoader.BuffCount)
-                    Buffs[buffId] = true;
+                if (ModContent.TryFind(buffFullName, out ModBuff modBuff))
+                    Buffs[modBuff.Type] = true;
+                else
+                {
+                    string[] buffFullNameSplit = buffFullName.Split('/');
+                    if (buffFullNameSplit.Length == 2 &&
+                        !ModLoader.HasMod(buffFullNameSplit[0]) &&
+                        _buffsOfDisabledMods.Count < 128) // To prevent save file to be too big
+                    {
+                        _buffsOfDisabledMods.Add(buffFullName);
+                    }
+                }
             }
         }
     }
