@@ -41,6 +41,13 @@ UI: {
 		ResearchButtonHoverText: "{$Keybinds.ResearchInventoryItems.DisplayName}"
 		ClearButtonHoverText: "{$Keybinds.ClearResearchedItems.DisplayName}"
 		AutoCraftHoverText: "{$Keybinds.ResearchCraftableItems.DisplayName}"
+		// ShimmerButtonHoverText: "{$Keybinds.ResearchShimmerItems.DisplayName}"
+		// ShimmerDecraftButtonHoverText: "{$Keybinds.ResearchDecrafts.DisplayName}"
+		// ShareButtonHoverText: "{$Keybinds.ShareAllResearched.DisplayName}"
+		// ShimmerDisabledHoverText: You must visit the Aether biome to research shimmer items
+		// DecraftDisabledHoverText: You must visit the Aether biome to research decrafts
+		// ShareDisabledNoTeamHoverText: You must be in a team to share items
+		// ShareDisabledNoMembersHoverText: Team must have at least 2 members to share items
 	}
 
 	ShopButtons.ResearchButtonHoverText: "{$Keybinds.ResearchShop.DisplayName}"
@@ -452,6 +459,31 @@ Configs: {
 			Label: Показывать общее количество изученных предметов
 			Tooltip: Показывается под меню дубликации
 		}
+
+		ShowShimmerButton: {
+			// Label: Show Shimmer Button
+			// Tooltip: ""
+		}
+
+		ShowShimmerDecraftButton: {
+			// Label: Show Shimmer Decraft Button
+			// Tooltip: ""
+		}
+
+		ShowTeamShareButton: {
+			// Label: Show Team Share Button
+			// Tooltip: ""
+		}
+
+		AutoResearchShimmerItems: {
+			// Label: Auto Research Shimmer Items
+			// Tooltip: ""
+		}
+
+		AutoResearchDecraftItems: {
+			// Label: Auto Research Decraft Items
+			// Tooltip: ""
+		}
 	}
 
 	ServerConfig: {
@@ -487,9 +519,12 @@ Keybinds: {
 	ResearchInventoryItems.DisplayName: Изучить предметы в инвентаре
 	ClearResearchedItems.DisplayName: Убрать изученные предметы
 	ResearchCraftableItems.DisplayName: Изучить предметы создания
-	MaxStack.DisplayName: Установить макс. стак предмету
+	// ResearchShimmerItems.DisplayName: Research Shimmer Items
+	// ResearchDecrafts.DisplayName: Research Shimmer Decrafts
+	ShareAllResearched.DisplayName: Поделиться предметами с командой
 	ResearchBagContents.DisplayName: Изучить содержимое мешка/ящика
 	ResearchShop.DisplayName: Изучить магазин
-	ShareAllResearched.DisplayName: Поделиться предметами с командой
 	EnableDisableBuff.DisplayName: Включить/Выключить бафф
+	MaxStack.DisplayName: Установить макс. стак предмету
+	// ForgetAether.DisplayName: Forget Aether
 }

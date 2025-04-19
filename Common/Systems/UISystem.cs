@@ -20,6 +20,13 @@ internal class UISystem : ModSystem
     public static Asset<Texture2D>? ClearButtonTexture;
     public static Asset<Texture2D>? AutoCraftButtonTexture;
     public static Asset<Texture2D>? ResearchShopButtonTexture;
+    public static Asset<Texture2D>? ShimmerButtonTexture;
+    public static Asset<Texture2D>? ShimmerDecraftButtonTexture;
+    public static Asset<Texture2D>? RedShareButtonTexture;
+    public static Asset<Texture2D>? GreenShareButtonTexture;
+    public static Asset<Texture2D>? BlueShareButtonTexture;
+    public static Asset<Texture2D>? YellowShareButtonTexture;
+    public static Asset<Texture2D>? PinkShareButtonTexture;
     private UserInterface? _duplicationMenu;
     private UserInterface? _inventoryButtons;
     private UserInterface? _prefixWindow;
@@ -41,6 +48,13 @@ internal class UISystem : ModSystem
         ClearButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/ClearButton");
         AutoCraftButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/AutoCraftButton");
         ResearchShopButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/ResearchShopButton");
+        ShimmerButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/ShimmerButton");
+        ShimmerDecraftButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/ShimmerDecraftButton");
+        RedShareButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/TeamShareRedButton");
+        GreenShareButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/TeamShareGreenButton");
+        BlueShareButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/TeamShareBlueButton");
+        YellowShareButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/TeamShareYellowButton");
+        PinkShareButtonTexture = Mod.Assets.Request<Texture2D>("Assets/Images/UI/TeamSharePinkButton");
 
         DuplicationMenu = new DuplicationMenu();
         DuplicationMenu.Activate();
@@ -129,5 +143,12 @@ internal class UISystem : ModSystem
         ClearButtonTexture = null;
         AutoCraftButtonTexture = null;
         ResearchShopButtonTexture = null;
+        ShimmerButtonTexture = null;
+        ShimmerDecraftButtonTexture = null;
+        RedShareButtonTexture = null;
+        GreenShareButtonTexture = null;
+        BlueShareButtonTexture = null;
+        YellowShareButtonTexture = null;
+        PinkShareButtonTexture = null;
     }
 }

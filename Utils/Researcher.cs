@@ -7,6 +7,7 @@ using HyperResearch.Common.Systems;
 using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace HyperResearch.Utils;
 
@@ -129,13 +130,11 @@ public class Researcher
 
     private static readonly int ResearchedItemGroups = Enum.GetValues(typeof(ResearchSource)).Length;
     private static readonly int SacrificeGroups = Enum.GetValues(typeof(SacrificeSource)).Length;
+    public static bool IsPlayerInJourneyMode => Main.CurrentPlayer.difficulty == 3;
+    public static IEnumerable<int> ReseachedItems => Enumerable.Range(1, ItemLoader.ItemCount - 1).Where(IsResearched);
 
     private Queue<int>? _researchedQueue;
-
     private Queue<int> ResearchedQueue => _researchedQueue ??= new Queue<int>();
-
-    public static bool IsPlayerInJourneyMode => Main.CurrentPlayer.difficulty == 3;
-
 
     private List<int>?[] ResearchedItems { get; } = new List<int>?[ResearchedItemGroups];
     public List<int>? DefaultResearchedItems => ResearchedItems[(int)ResearchSource.Default];
@@ -147,11 +146,6 @@ public class Researcher
     public Dictionary<int, int>?[] SacrificedItems { get; } = new Dictionary<int, int>?[SacrificeGroups];
     public Dictionary<int, int>? DefaultSacrifices => SacrificedItems[(int)SacrificeSource.Default];
     public Dictionary<int, int>? SharedSacrifices => SacrificedItems[(int)SacrificeSource.Shared];
-
-    public bool AutoResearchCraftable { get; set; } = HyperConfig.Instance.AutoResearchCraftableItems;
-    public bool AutoResearchShimmerableItems { get; set; } = ConfigOptions.ResearchShimmerableItems;
-    public bool AutoResearchDecraftItems { get; set; } = ConfigOptions.ResearchDecraftItems;
-    public bool BalanceShimmerAutoresearch { get; set; } = ConfigOptions.BalanceShimmerAutoresearch;
 
     public IEnumerable<int> AllResearchedItems =>
         ResearchedItems.Where(list => list is { Count: > 0 })
@@ -241,15 +235,50 @@ public class Researcher
         return result == CreativeUI.ItemSacrificeResult.SacrificedAndDone;
     }
 
+    /// <inheritdoc cref="ProcessResearched(bool, bool, bool)"/>
+    /// <remarks>
+    /// This method is a shortcut for <see cref="ProcessResearched(bool, bool, bool)"/> with the default values from <see cref="HyperConfig"/>.
+    /// </remarks>
     public void ProcessResearched()
     {
-        if (!AutoResearchCraftable && !AutoResearchShimmerableItems && !AutoResearchDecraftItems) return;
+        ProcessResearched(
+            HyperConfig.Instance.AutoResearchCraftableItems,
+            HyperConfig.Instance.AutoResearchShimmerItems,
+            HyperConfig.Instance.AutoResearchDecraftItems
+        );
+    }
+
+    /// <inheritdoc cref="ProcessResearched(bool, bool, bool)"/>
+    /// <remarks>
+    /// This method is a shortcut for <see cref="ProcessResearched(bool, bool, bool)"/> with shimmer corrections (<see cref="HyperConfig.BalanceShimmerAutoresearch"/>).
+    /// </remarks>
+    public void ProcessResearched(HyperPlayer hyperPlayer)
+    {
+        ProcessResearched(
+            hyperPlayer.AutoResearchCraftable,
+            hyperPlayer.AutoResearchShimmer,
+            hyperPlayer.AutoResearchDecraft
+        );
+    }
+
+    /// <summary>
+    /// Reseaches related items (craftable from, shimmer, decraft) based on the given flags.
+    /// </summary>
+    /// <param name="craftable">Whether to research craftable items.</param>
+    /// <param name="shimmer">Whether to research shimmer items.</param>
+    /// <param name="decraft">Whether to research decraft items.</param>
+    public void ProcessResearched(bool craftable, bool shimmer, bool decraft)
+    {
+        if (!craftable && !shimmer && !decraft) return;
 
         while (ResearchedQueue.TryDequeue(out int itemId))
         {
-            TryResearchShimmeredItem(itemId);
-            TryResearchDecraftItems(itemId);
-            ResearchItemOccurrences(itemId);
+            if (shimmer)
+                TryResearchShimmerItem(itemId);
+            if (decraft)
+                TryResearchDecraftItems(itemId);
+            if (craftable)
+                ResearchCraftItemOccurrences(itemId);
         }
     }
 
@@ -260,36 +289,27 @@ public class Researcher
                 ResearchItem(recipe.createItem.type, ResearchSource.Craft);
     }
 
-    public void TryResearchShimmeredItem(int itemId)
+    public void TryResearchShimmerItem(int itemId)
     {
-        if (!AutoResearchShimmerableItems
-            || !IsResearched(itemId)
-            || (BalanceShimmerAutoresearch && !Main.LocalPlayer.GetModPlayer<HyperPlayer>().WasInAether)) return;
-
-        int shimmerItemId = ItemsUtils.GetShimmeredItemId(itemId);
+        int shimmerItemId = ItemsUtils.GetShimmerItemId(itemId);
         if (shimmerItemId > 0)
             ResearchItem(shimmerItemId, ResearchSource.Shimmer);
     }
 
     public void TryResearchDecraftItems(int itemId)
     {
-        if (!AutoResearchDecraftItems
-            || !IsResearched(itemId)
-            || (BalanceShimmerAutoresearch && !Main.LocalPlayer.GetModPlayer<HyperPlayer>().WasInAether)) return;
-
         List<int> decraftItems = ItemsUtils.GetDecraftItems(itemId);
         if (decraftItems.Count == 0) return;
-        
-        foreach (int decraftItemId in decraftItems) 
+
+        foreach (int decraftItemId in decraftItems)
             ResearchItem(decraftItemId, ResearchSource.ShimmerDecraft);
     }
 
-    private void ResearchItemOccurrences(int itemId) =>
+    private void ResearchCraftItemOccurrences(int itemId) =>
         ResearchItemOccurrences(ContentSamples.ItemsByType[itemId]);
 
     private void ResearchItemOccurrences(Item item)
     {
-        if (!AutoResearchCraftable) return;
         ResearchItemRecipesOccurrences(item);
         ResearchTileRecipesOccurrences(item);
     }

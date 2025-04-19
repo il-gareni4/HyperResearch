@@ -25,21 +25,6 @@ public class ServerConfig : ModConfig
         public bool UseServerSettings;
 
 
-        [Header("$Mods.HyperResearch.Configs.HyperConfig.Headers.AutoResearchSettingsHeader")]
-
-        [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Label")]
-        [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Tooltip")]
-        [LabelArgs(ItemID.BottomlessShimmerBucket)]
-        [DefaultValue(true)]
-        public bool ResearchShimmerableItems;
-
-        [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Label")]
-        [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.ResearchDecraftItems.Tooltip")]
-        [LabelArgs(ItemID.IronOre)]
-        [DefaultValue(true)]
-        public bool ResearchDecraftItems;
-
-
         [Header("$Mods.HyperResearch.Configs.HyperConfig.Headers.BuffsSettingsHeader")]
 
         [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.UseResearchedBannersBuff.Label")]

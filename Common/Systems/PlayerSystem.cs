@@ -12,44 +12,66 @@ namespace HyperResearch.Common.Systems;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public class PlayerSystem : ModSystem
 {
-    private HyperPlayer? HPlayer { get; set; }
+    private HyperPlayer? HyperPlayer { get; set; }
 
     public override void OnWorldLoad()
     {
         if (Main.netMode == NetmodeID.Server || !Researcher.IsPlayerInJourneyMode) return;
         if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
         {
-            HPlayer = modPlayer;
+            HyperPlayer = modPlayer;
 
-            HyperConfig.Changed += HPlayer.OnClientConfigChanged;
-            ModContent.GetInstance<UISystem>().InventoryButtons!.ResearchButton.OnLeftMouseDown +=
-                OnResearchButtonMouseDown;
-            ModContent.GetInstance<UISystem>().InventoryButtons!.ClearButton.OnLeftMouseDown += OnClearButtonMouseDown;
-            ModContent.GetInstance<UISystem>().InventoryButtons!.AutoCraftButton.OnLeftMouseDown +=
-                OnAutoCraftButtonMouseDown;
-            ModContent.GetInstance<UISystem>().ShopButtons!.ResearchShopButton.OnLeftMouseDown += OnShopButtonMouseDown;
+            HyperConfig.Changed += HyperPlayer.OnClientConfigChanged;
+            UISystem uiSystem = ModContent.GetInstance<UISystem>();
+
+            uiSystem.InventoryButtons!.ResearchButton.OnLeftMouseDown += OnResearchButtonMouseDown;
+            uiSystem.InventoryButtons!.ClearButton.OnLeftMouseDown += OnClearButtonMouseDown;
+            uiSystem.InventoryButtons!.ResearchCraftableButton.OnLeftMouseDown += OnAutoCraftButtonMouseDown;
+            uiSystem.InventoryButtons!.ShimmerButton.OnLeftMouseDown += OnShimmerButtonMouseDown;
+            uiSystem.InventoryButtons!.ShimmerDecraftButton.OnLeftMouseDown += OnShimmerDecraftButtonMouseDown;
+            uiSystem.InventoryButtons!.ShareButton.OnLeftMouseDown += OnShareButtonMouseDown;
+
+            uiSystem.ShopButtons!.ResearchShopButton.OnLeftMouseDown += OnShopButtonMouseDown;
         }
     }
 
     public override void OnWorldUnload()
     {
-        if (Main.netMode == NetmodeID.Server || HPlayer == null || !Researcher.IsPlayerInJourneyMode) return;
+        if (Main.netMode == NetmodeID.Server || HyperPlayer == null || !Researcher.IsPlayerInJourneyMode) return;
 
-        HyperConfig.Changed -= HPlayer.OnClientConfigChanged;
-        ModContent.GetInstance<UISystem>().InventoryButtons!.ResearchButton.OnLeftMouseDown -=
-            OnResearchButtonMouseDown;
-        ModContent.GetInstance<UISystem>().InventoryButtons!.ClearButton.OnLeftMouseDown -= OnClearButtonMouseDown;
-        ModContent.GetInstance<UISystem>().InventoryButtons!.AutoCraftButton.OnLeftMouseDown -=
-            OnAutoCraftButtonMouseDown;
-        ModContent.GetInstance<UISystem>().ShopButtons!.ResearchShopButton.OnLeftMouseDown -= OnShopButtonMouseDown;
+        HyperConfig.Changed -= HyperPlayer.OnClientConfigChanged;
+        UISystem uiSystem = ModContent.GetInstance<UISystem>();
 
-        HPlayer = null;
+        uiSystem.InventoryButtons!.ResearchButton.OnLeftMouseDown -= OnResearchButtonMouseDown;
+        uiSystem.InventoryButtons!.ClearButton.OnLeftMouseDown -= OnClearButtonMouseDown;
+        uiSystem.InventoryButtons!.ResearchCraftableButton.OnLeftMouseDown -= OnAutoCraftButtonMouseDown;
+        uiSystem.InventoryButtons!.ShimmerButton.OnLeftMouseDown -= OnShimmerButtonMouseDown;
+        uiSystem.InventoryButtons!.ShimmerDecraftButton.OnLeftMouseDown -= OnShimmerDecraftButtonMouseDown;
+        uiSystem.InventoryButtons!.ShareButton.OnLeftMouseDown -= OnShareButtonMouseDown;
+
+        uiSystem.ShopButtons!.ResearchShopButton.OnLeftMouseDown -= OnShopButtonMouseDown;
+
+        HyperPlayer = null;
     }
 
-    private void OnResearchButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.SacrificeInventory();
-    private void OnClearButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.ClearResearched();
-    private void OnAutoCraftButtonMouseDown(UIMouseEvent evt, UIElement el) => HPlayer?.ResearchCraftable();
+    private void OnResearchButtonMouseDown(UIMouseEvent evt, UIElement el) => 
+        HyperPlayer?.SacrificeInventory();
+        
+    private void OnClearButtonMouseDown(UIMouseEvent evt, UIElement el) => 
+        HyperPlayer?.ClearResearched();
+
+    private void OnAutoCraftButtonMouseDown(UIMouseEvent evt, UIElement el) => 
+        HyperPlayer?.ResearchCraftable();
+
+    private void OnShimmerButtonMouseDown(UIMouseEvent evt, UIElement el) => 
+        HyperPlayer?.ResearchShimmerItemsAction();
+
+    private void OnShimmerDecraftButtonMouseDown(UIMouseEvent evt, UIElement el) => 
+        HyperPlayer?.ResearchDecraftItemsAction();
+
+    private void OnShareButtonMouseDown(UIMouseEvent evt, UIElement el) => 
+        HyperPlayer?.ShareResearchedItemsAction();
 
     private void OnShopButtonMouseDown(UIMouseEvent evt, UIElement el) =>
-        HPlayer?.ResearchShop(HPlayer.CurrentShopItems);
+        HyperPlayer?.ResearchShop(HyperPlayer.CurrentShopItems);
 }

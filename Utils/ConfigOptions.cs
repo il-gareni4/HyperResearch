@@ -15,14 +15,6 @@ public static class ConfigOptions
         ? ServerConfig.Instance.IgnoreCraftingConditions
         : HyperConfig.Instance.IgnoreCraftingConditions;
 
-    public static bool ResearchShimmerableItems => UseServerSettings
-        ? ServerConfig.Instance.ResearchShimmerableItems
-        : HyperConfig.Instance.ResearchShimmerableItems;
-
-    public static bool ResearchDecraftItems => UseServerSettings
-        ? ServerConfig.Instance.ResearchDecraftItems
-        : HyperConfig.Instance.ResearchDecraftItems;
-
     public static bool BalanceShimmerAutoresearch => UseServerSettings
         ? ServerConfig.Instance.BalanceShimmerAutoresearch
         : HyperConfig.Instance.BalanceShimmerAutoresearch;

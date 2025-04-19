@@ -27,11 +27,11 @@ public class HyperConfig : ModConfig
 
     [LabelArgs(ItemID.BottomlessShimmerBucket)]
     [DefaultValue(true)]
-    public bool ResearchShimmerableItems;
+    public bool AutoResearchShimmerItems;
 
     [LabelArgs(ItemID.IronOre)]
     [DefaultValue(true)]
-    public bool ResearchDecraftItems;
+    public bool AutoResearchDecraftItems;
 
     [LabelArgs(ItemID.PlatinumCoin)]
     [TooltipArgs(ItemID.DefenderMedal)]
@@ -214,6 +214,17 @@ public class HyperConfig : ModConfig
 
     [DefaultValue(true)]
     public bool ShowAutoCraftButton;
+
+    [DefaultValue(true)]
+    public bool ShowShimmerButton;
+
+    [DefaultValue(true)]
+    public bool ShowShimmerDecraftButton;
+
+    [DefaultValue(true)]
+    public bool ShowTeamShareButton;
+
+    
 
     [Range(2, 9)]
     [Slider()]

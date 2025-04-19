@@ -29,10 +29,9 @@ public class ShopButtons : UIState
             Width = StyleDimension.FromPixels(32),
             Height = StyleDimension.FromPixels(32),
             HoverText = Language.GetText("Mods.HyperResearch.UI.ShopButtons.ResearchButtonHoverText"),
-            ReleaseStartFrame = 4,
+            StopFrame = 3,
             OneFrameCount = 4,
-            AnimationFramesCount = 5,
-            HoverFrame = 6,
+            AnimationFramesCount = 6,
             CanInteract = () => Main.LocalPlayer.TalkNPC is not null && Main.npcShop >= 1
         };
         RebuildButtons();

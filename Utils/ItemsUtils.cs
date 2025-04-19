@@ -61,7 +61,7 @@ public static class ItemsUtils
             .Select(info => info.itemId);
     }
 
-    public static int GetShimmeredItemId(int itemId)
+    public static int GetShimmerItemId(int itemId)
     {
         if (!ItemID.Sets.ShimmerCountsAsItem.IndexInRange(itemId) ||
             !ItemID.Sets.ShimmerTransformToItem.IndexInRange(itemId)) return -1;
@@ -73,7 +73,7 @@ public static class ItemsUtils
 
     private static Recipe? GetDecraftRecipe(int itemId)
     {
-        if (GetShimmeredItemId(itemId) > 0 ||
+        if (GetShimmerItemId(itemId) > 0 ||
             ContentSamples.ItemsByType[itemId].createTile == TileID.MusicBoxes) return null;
         if (ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
             itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];
