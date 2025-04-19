@@ -20,7 +20,7 @@ public class BannerGlobalItem : GlobalItem
         if (!Researcher.IsPlayerInJourneyMode
             || !HyperConfig.Instance.ShowBannerBuffTooltips
             || item.tooltipContext != ItemSlot.Context.CreativeInfinite
-            || !BannerSystem.ItemToBanner.TryGetValue(item.type, out int bannerId)
+            || !BannerSystem.TryItemToBanner(item.type, out int bannerId)
             || !Main.LocalPlayer.TryGetModPlayer(out BannerPlayer bannerPlayer)
             || !bannerPlayer.ResearchedBanners.TryGetValue(bannerId, out bool enabled)) return;
 

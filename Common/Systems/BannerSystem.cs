@@ -1,48 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace HyperResearch.Common.Systems;
 
 public class BannerSystem : ModSystem
 {
-    public static Dictionary<int, int> ItemToBanner { get; } = [];
+    public const int vanillaBannersCount = 290;
+    public static Dictionary<int, int> VanillaItemToBanner { get; } = [];
 
     public override void PostSetupContent()
     {
-        const int vanillaBannersCount = 290;
+        
         for (var bannerId = 0; bannerId < vanillaBannersCount; bannerId++)
-            ItemToBanner[Item.BannerToItem(bannerId)] = bannerId;
-
-        var bannerToItem = (IDictionary<int, int>?)typeof(NPCLoader)
-            .GetField("bannerToItem", BindingFlags.NonPublic | BindingFlags.Static)
-            ?.GetValue(null);
-
-        if (bannerToItem is null) return;
-        foreach ((int bannerId, int itemId) in bannerToItem)
-            ItemToBanner[itemId] = bannerId;
+            VanillaItemToBanner[Item.BannerToItem(bannerId)] = bannerId;
     }
 
     public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
     {
-        if (!Researcher.IsPlayerInJourneyMode || !ConfigOptions.UseResearchedBannersBuff) return;
-        if (Main.LocalPlayer.TryGetModPlayer(out BannerPlayer player) && player.ResearchedBanners.Count > 0)
+        if (!Researcher.IsPlayerInJourneyMode ||
+         !ConfigOptions.UseResearchedBannersBuff ||
+         !Main.LocalPlayer.TryGetModPlayer(out BannerPlayer player) ||
+         player.ResearchedBanners.Count == 0)
         {
-            foreach (int bannerId in player.EnabledBanners)
-            {
-                if (bannerId <= 0) continue;
-                Main.SceneMetrics.NPCBannerBuff[bannerId] = true;
-                Main.SceneMetrics.hasBanner = true;
-            }
+            return;
+        }
+
+        foreach (int bannerId in player.EnabledBanners)
+        {
+            if (bannerId <= 0) continue;
+            Main.SceneMetrics.NPCBannerBuff[bannerId] = true;
+            Main.SceneMetrics.hasBanner = true;
         }
     }
 
-    public override void Unload()
+    public static int ItemToBanner(int itemId)
     {
-        ItemToBanner.Clear();
+        if (itemId < ItemID.Count)
+        {
+            if (VanillaItemToBanner.TryGetValue(itemId, out int bannerId))
+                return bannerId;
+            else
+                return -1;
+        }
+        return NPCLoader.BannerItemToNPC(itemId);
+    }
+
+    public static bool TryItemToBanner(int itemId, out int bannerId)
+    {
+        bannerId = ItemToBanner(itemId);
+        return bannerId >= 0;
     }
 }

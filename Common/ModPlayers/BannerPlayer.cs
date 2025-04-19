@@ -14,19 +14,11 @@ namespace HyperResearch.Common.ModPlayers;
 
 public class BannerPlayer : ModPlayer, IResearchPlayer
 {
-    public SortedDictionary<int, bool> ResearchedBanners { get; } = [];
+    private readonly List<string> _bannersOfDisabledMods = [];
+    public Dictionary<int, bool> ResearchedBanners { get; } = [];
 
-    public IEnumerable<int> EnabledBanners
-    {
-        get
-        {
-            foreach ((int bannerId, bool bannerEnabled) in ResearchedBanners)
-            {
-                if (bannerEnabled)
-                    yield return bannerId;
-            }
-        }
-    }
+    public IEnumerable<int> EnabledBanners =>
+        ResearchedBanners.Where(kv => kv.Value).Select(kv => kv.Key);
 
     public void OnResearch(Item item) => TryAddBanner(item.type);
 
@@ -47,18 +39,28 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
         if (KeybindSystem.ForgetAllBind!.JustPressed)
             ResearchedBanners.Clear();
 #endif
-        if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite
-            && BannerSystem.ItemToBanner.TryGetValue(Main.HoverItem.type, out int bannerId)
-            && ResearchedBanners.TryGetValue(bannerId, out bool enabled)
-            && KeybindSystem.EnableDisableBuffBind!.JustPressed)
+        if (KeybindSystem.EnableDisableBuffBind!.JustPressed &&
+            Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite &&
+            BannerSystem.TryItemToBanner(Main.HoverItem.type, out int bannerId) &&
+            ResearchedBanners.TryGetValue(bannerId, out bool enabled))
+        {
             ResearchedBanners[bannerId] = !enabled;
+        }
     }
 
     public override void SaveData(TagCompound tag)
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
-        tag["bannersEnabled"] = ResearchedBanners.Where(kv => kv.Value)
+        tag["enabledVanillaBanners"] = 
+            ResearchedBanners
+            .Where(kv => kv.Key < BannerSystem.vanillaBannersCount && kv.Value)
             .Select(kv => kv.Key)
+            .ToArray();
+        tag["enabledModBanners"] =
+            ResearchedBanners
+            .Where(kv => kv.Key >= BannerSystem.vanillaBannersCount && kv.Value)
+            .Select(kv => NPCLoader.GetNPC(kv.Key).FullName)
+            .Concat(_bannersOfDisabledMods)
             .ToArray();
     }
 
@@ -72,15 +74,38 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
+        // Migrate from 1.0 to 1.1
         if (tag.TryGet("bannersEnabled", out int[] enabledBanners))
             foreach (int bannerId in enabledBanners)
-                if (bannerId < Main.SceneMetrics.NPCBannerBuff.Length)
+                if (bannerId < BannerSystem.vanillaBannersCount)
                     ResearchedBanners[bannerId] = true;
+
+        // Current version
+        if (tag.TryGet("enabledVanillaBanners", out int[] enabledVanillaBanners))
+            foreach (int bannerId in enabledVanillaBanners.Where(bannerId => bannerId < BannerSystem.vanillaBannersCount))
+                ResearchedBanners[bannerId] = true;
+
+        if (tag.TryGet("enabledModBanners", out string[] enabledModBanners))
+            foreach (string npcFullName in enabledModBanners)
+            {
+                if (ModContent.TryFind(npcFullName, out ModNPC modNPC))
+                    ResearchedBanners[modNPC.Banner] = true;
+                else
+                {
+                    string[] npcFullNameSplit = npcFullName.Split('/');
+                    if (npcFullNameSplit.Length == 2 &&
+                        !ModLoader.HasMod(npcFullNameSplit[0]) &&
+                        _bannersOfDisabledMods.Count < 128) // To prevent save file to be too big
+                    {
+                        _bannersOfDisabledMods.Add(npcFullName);
+                    }
+                }
+            }
     }
 
     private void TryAddBanner(int itemId, bool enabled = true)
     {
-        if (!BannerSystem.ItemToBanner.TryGetValue(itemId, out int bannerId)) return;
+        if (!BannerSystem.TryItemToBanner(itemId, out int bannerId)) return;
         ResearchedBanners.TryAdd(bannerId, enabled && HyperConfig.Instance.BannerBuffEnabledByDefault);
     }
 }
