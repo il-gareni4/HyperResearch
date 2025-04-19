@@ -73,6 +73,38 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         ItemsResearchedCount++;
     }
 
+    public override void UpdateAutopause()
+    {
+        if (!Researcher.IsPlayerInJourneyMode) return;
+        if (Main.drawingPlayerChat || Main.editSign || Main.editChest || Main.blockInput)
+            return;
+
+#if DEBUG
+        if (KeybindSystem.ForgetAllBind!.JustPressed)
+            ForgetAllAction();
+        if (KeybindSystem.ResearchAllBind!.JustPressed)
+            ResearchAllAction();
+        if (KeybindSystem.ForgetAetherBind!.JustPressed)
+            ForgetAetherAction();
+#endif
+        if (KeybindSystem.SacrificeInventoryBind!.JustPressed)
+            SacrificeInventory();
+        if (KeybindSystem.ClearResearchedBind!.JustPressed)
+            ClearResearched();
+        if (KeybindSystem.ResearchCraftableBind!.JustPressed)
+            ResearchCraftable();
+        if (KeybindSystem.ResearchShimmerBind!.JustPressed)
+            ResearchShimmerItemsAction();
+        if (KeybindSystem.ResearchDecraftsBind!.JustPressed)
+            ResearchDecraftItemsAction();
+        if (KeybindSystem.MaxStackBind!.JustPressed)
+            MaxStackAction();
+        if (KeybindSystem.ResearchLootBind!.JustPressed)
+            ResearchLootAction();
+        if (KeybindSystem.ResearchShopBind!.JustPressed)
+            ResearchShopAction();
+    }
+
     public override void ProcessTriggers(TriggersSet triggersSet)
     {
         if (!Researcher.IsPlayerInJourneyMode) return;

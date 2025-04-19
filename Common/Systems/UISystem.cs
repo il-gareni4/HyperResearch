@@ -37,9 +37,6 @@ internal class UISystem : ModSystem
     internal PrefixWindow? PrefixWindow;
     internal ShopButtons? ShopButtons;
 
-    internal static event Action? WorldLoaded;
-    internal static event Action? WorldUnloaded;
-
     public override void Load()
     {
         if (Main.dedServ) return;
@@ -86,10 +83,6 @@ internal class UISystem : ModSystem
         _shopButtons?.Update(gameTime);
         _prefixWindow?.Update(gameTime);
     }
-
-    public override void OnWorldLoad() => WorldLoaded?.Invoke();
-
-    public override void OnWorldUnload() => WorldUnloaded?.Invoke();
 
     public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
     {

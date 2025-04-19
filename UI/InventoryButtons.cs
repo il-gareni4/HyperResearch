@@ -31,9 +31,9 @@ public class InventoryButtons : UIState
 
     public override void OnInitialize()
     {
-        UISystem.WorldLoaded += RebuildButtons;
-        UISystem.WorldLoaded += SetupEvents;
-        UISystem.WorldUnloaded += RemoveEvents;
+        HooksSystem.WorldLoaded += RebuildButtons;
+        HooksSystem.WorldLoaded += SetupEvents;
+        HooksSystem.WorldUnloaded += RemoveEvents;
 
         ResearchButton = new UIAnimatedImageButton(UISystem.ResearchButtonTexture!)
         {

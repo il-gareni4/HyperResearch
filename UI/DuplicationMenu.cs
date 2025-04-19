@@ -25,8 +25,8 @@ internal class DuplicationMenu : UIState
 
     public override void OnInitialize()
     {
-        UISystem.WorldLoaded += OnWorldLoad;
-        UISystem.WorldUnloaded += OnWorldUnload;
+        HooksSystem.WorldLoaded += OnWorldLoad;
+        HooksSystem.WorldUnloaded += OnWorldUnload;
         _totalResearchedText = Language.GetText("Mods.HyperResearch.UI.DuplicationMenu.TotalResearched");
 
         _uiTotalResearchedText = new UIText("")
