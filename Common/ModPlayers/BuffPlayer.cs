@@ -18,6 +18,7 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     private readonly List<string> _buffsOfDisabledMods = [];
     public Dictionary<int, bool> Buffs { get; } = [];
     public IEnumerable<int> EnabledBuffs => Buffs.Where(kv => kv.Value).Select(kv => kv.Key);
+    public bool? CurrentSetState { get; private set; } = null;
 
     public void OnResearch(Item item) => ResearchItem(item);
 
@@ -25,11 +26,18 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
-        if (KeybindSystem.EnableDisableBuffBind!.JustPressed &&
-            ConfigOptions.UseResearchedPotionsBuff &&
-            Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite)
+        if (KeybindSystem.EnableDisableBuffBind!.JustReleased)
+            CurrentSetState = null;
+
+        if (ConfigOptions.UseResearchedPotionsBuff &&
+            Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite &&
+            Buffs.TryGetValue(Main.HoverItem.buffType, out bool enabled))
         {
-            ToggleBuffItem(Main.HoverItem);
+            if (KeybindSystem.EnableDisableBuffBind!.JustPressed)
+                CurrentSetState = !enabled;
+
+            if (KeybindSystem.EnableDisableBuffBind!.Current && CurrentSetState.HasValue)
+                SetBuff(Main.HoverItem, CurrentSetState.Value);
         }
 #if DEBUG
         if (KeybindSystem.ForgetAllBind!.JustPressed)
@@ -135,11 +143,11 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         );
     }
 
-    private void ToggleBuffItem(Item item)
+    private void SetBuff(Item item, bool enabled)
     {
-        if (!Buffs.TryGetValue(Main.HoverItem.buffType, out bool enabled)) return;
+        if (!Buffs.TryGetValue(item.buffType, out bool wasEnabled) || wasEnabled == enabled) return;
 
-        if (BuffUtils.IsABuffPotion(item)) Buffs[Main.HoverItem.buffType] = !enabled;
+        if (BuffUtils.IsABuffPotion(item)) Buffs[item.buffType] = enabled;
         else if (BuffUtils.IsAFlask(item)) ToggleGroup(item.buffType, BuffID.Sets.IsAFlaskBuff);
         else if (BuffUtils.IsAFood(item)) ToggleGroup(item.buffType, BuffID.Sets.IsWellFed);
     }

@@ -16,6 +16,7 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
 {
     private readonly List<string> _bannersOfDisabledMods = [];
     public Dictionary<int, bool> ResearchedBanners { get; } = [];
+    public bool? CurrentSetState { get; private set; } = null;
 
     public IEnumerable<int> EnabledBanners =>
         ResearchedBanners.Where(kv => kv.Value).Select(kv => kv.Key);
@@ -35,17 +36,22 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
+        if (KeybindSystem.EnableDisableBuffBind!.JustReleased)
+            CurrentSetState = null;
 #if DEBUG
         if (KeybindSystem.ForgetAllBind!.JustPressed)
             ResearchedBanners.Clear();
-#endif
-        if (KeybindSystem.EnableDisableBuffBind!.JustPressed &&
+#endif 
+        if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite &&
             ConfigOptions.UseResearchedBannersBuff &&
-            Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite &&
             BannerSystem.TryItemToBanner(Main.HoverItem.type, out int bannerId) &&
             ResearchedBanners.TryGetValue(bannerId, out bool enabled))
         {
-            ResearchedBanners[bannerId] = !enabled;
+            if (KeybindSystem.EnableDisableBuffBind!.JustPressed)
+                CurrentSetState = !enabled;
+
+            if (KeybindSystem.EnableDisableBuffBind!.Current && CurrentSetState.HasValue)
+                ResearchedBanners[bannerId] = CurrentSetState.Value;
         }
     }
 
@@ -68,7 +74,7 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
     public override void Unload()
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
-        
+
         ResearchedBanners.Clear();
         _bannersOfDisabledMods.Clear();
     }
