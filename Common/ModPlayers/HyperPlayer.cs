@@ -228,6 +228,8 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
         ItemsResearchedCount = 0;
         Researcher researcher = new();
+        if (AutoResearchCraftable)
+            researcher.ResearchCraftable();
         for (var itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
         {
             if (Researcher.IsResearched(itemId))
@@ -371,10 +373,10 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         {
             Item? item = Player.inventory[slot];
 
-            if (item.IsAir || item.favorited
-                           || (!HyperConfig.Instance.SacrificeHotbarSlots && IsHotbarSlot(slot))
-                           || (!HyperConfig.Instance.SacrificeCoinsSlots && IsCoinSlot(slot))
-                           || (!HyperConfig.Instance.SacrificeAmmoSlots && IsAmmoSlot(slot)))
+            if (item.IsAir || item.favorited ||
+                (!HyperConfig.Instance.SacrificeHotbarSlots && IsHotbarSlot(slot)) ||
+                (!HyperConfig.Instance.SacrificeCoinsSlots && IsCoinSlot(slot)) ||
+                (!HyperConfig.Instance.SacrificeAmmoSlots && IsAmmoSlot(slot)))
                 continue;
 
             itemToSacrifice.Add(item);
@@ -392,10 +394,10 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
             Item? item = Player.inventory[slot];
-            if (item.favorited || item.IsAir || !Researcher.IsResearched(item.type)
-                || (!HyperConfig.Instance.ClearHotbarSlots && IsHotbarSlot(slot))
-                || (!HyperConfig.Instance.ClearCoinsSlots && IsCoinSlot(slot))
-                || (!HyperConfig.Instance.ClearAmmoSlots && IsAmmoSlot(slot)))
+            if (item.favorited || item.IsAir || !Researcher.IsResearched(item.type) ||
+                (!HyperConfig.Instance.ClearHotbarSlots && IsHotbarSlot(slot)) ||
+                (!HyperConfig.Instance.ClearCoinsSlots && IsCoinSlot(slot)) ||
+                (!HyperConfig.Instance.ClearAmmoSlots && IsAmmoSlot(slot)))
                 continue;
 
             item.TurnToAir();
@@ -410,7 +412,11 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
             Item? item = Player.inventory[slot];
-            if (item.IsAir || item.favorited) continue;
+            if (item.IsAir || item.favorited || !Researcher.IsResearched(item.type) ||
+                (!HyperConfig.Instance.ClearHotbarSlots && IsHotbarSlot(slot)) ||
+                (!HyperConfig.Instance.ClearCoinsSlots && IsCoinSlot(slot)) ||
+                (!HyperConfig.Instance.ClearAmmoSlots && IsAmmoSlot(slot)))
+                continue;
             if (items.Contains(item.type)) item.TurnToAir();
         }
     }
@@ -460,6 +466,8 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             !HyperConfig.Instance.AutoResearchDecraftItems) return;
 
         Researcher researcher = new();
+        if (AutoResearchCraftable)
+            researcher.ResearchCraftable();
         for (var itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
         {
             if (Researcher.IsResearched(itemId))

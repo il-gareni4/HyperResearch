@@ -17,7 +17,7 @@ public class BannerSystem : ModSystem
 
     public override void PostSetupContent()
     {
-        
+
         for (var bannerId = 0; bannerId < vanillaBannersCount; bannerId++)
             VanillaItemToBanner[Item.BannerToItem(bannerId)] = bannerId;
     }
@@ -34,7 +34,12 @@ public class BannerSystem : ModSystem
 
         foreach (int bannerId in player.EnabledBanners)
         {
-            if (bannerId <= 0) continue;
+            if (!Main.SceneMetrics.NPCBannerBuff.IndexInRange(bannerId))
+            {
+                player.ResearchedBanners.Remove(bannerId);
+                continue;
+            }
+
             Main.SceneMetrics.NPCBannerBuff[bannerId] = true;
             Main.SceneMetrics.hasBanner = true;
         }

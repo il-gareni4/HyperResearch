@@ -37,10 +37,7 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
 
 #if DEBUG
         if (KeybindSystem.ForgetAllBind!.JustPressed)
-        {
             ResearchedBanners.Clear();
-            _bannersOfDisabledMods.Clear();
-        }
 #endif
         if (KeybindSystem.EnableDisableBuffBind!.JustPressed &&
             Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite &&
@@ -70,7 +67,9 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
     public override void Unload()
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
+        
         ResearchedBanners.Clear();
+        _bannersOfDisabledMods.Clear();
     }
 
     public override void LoadData(TagCompound tag)

@@ -16,8 +16,9 @@ namespace HyperResearch.Common.ModPlayers;
 
 public class BuffPlayer : ModPlayer, IResearchPlayer
 {
-    public Dictionary<int, bool> Buffs { get; } = [];
     private readonly List<string> _buffsOfDisabledMods = [];
+    public Dictionary<int, bool> Buffs { get; } = [];
+    public IEnumerable<int> EnabledBuffs => Buffs.Where(kv => kv.Value).Select(kv => kv.Key);
 
     public void OnResearch(Item item) => ResearchItem(item);
 
@@ -30,10 +31,7 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
             ToggleBuffItem(Main.HoverItem);
 #if DEBUG
         if (KeybindSystem.ForgetAllBind!.JustPressed)
-        {
             Buffs.Clear();
-            _buffsOfDisabledMods.Clear();
-        }
 #endif
     }
 
@@ -50,14 +48,13 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         if (!Researcher.IsPlayerInJourneyMode) return;
 
         tag["enabledVanillaBuffs"] =
-            Buffs
-            .Where(kv => kv.Key < BuffID.Count && kv.Value)
-            .Select(kv => kv.Key)
+            EnabledBuffs
+            .Where(buffId => buffId < BuffID.Count)
             .ToArray();
         tag["enabledModBuffs"] =
-            Buffs
-            .Where(kv => kv.Key >= BuffID.Count && kv.Value)
-            .Select(kv => BuffLoader.GetBuff(kv.Key).FullName)
+            EnabledBuffs
+            .Where(buffId => buffId >= BuffID.Count)
+            .Select(buffId => BuffLoader.GetBuff(buffId).FullName)
             .Concat(_buffsOfDisabledMods)
             .ToArray();
     }
@@ -67,6 +64,7 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         if (!Researcher.IsPlayerInJourneyMode) return;
 
         Buffs.Clear();
+        _buffsOfDisabledMods.Clear();
     }
 
     public override void LoadData(TagCompound tag)
@@ -83,7 +81,7 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
         // Current version
         if (tag.TryGet("enabledVanillaBuffs", out int[] enabledVanillaBuffs))
         {
-            foreach (int buffId in enabledVanillaBuffs.Where(buffId => buffId < BuffID.Count))
+            foreach (int buffId in enabledVanillaBuffs.Where(buffId => buffId < BuffID.Count && BuffUtils.IsAcceptableBuff(buffId)))
                 Buffs[buffId] = true;
         }
 
@@ -92,7 +90,10 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
             foreach (string buffFullName in enabledModBuffs)
             {
                 if (ModContent.TryFind(buffFullName, out ModBuff modBuff))
-                    Buffs[modBuff.Type] = true;
+                {
+                    if (BuffUtils.IsAcceptableBuff(modBuff.Type))
+                        Buffs[modBuff.Type] = true;
+                }
                 else
                 {
                     string[] buffFullNameSplit = buffFullName.Split('/');
@@ -111,10 +112,14 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode || !ConfigOptions.UseResearchedPotionsBuff) return;
 
-        foreach ((int buffId, bool enabled) in Buffs)
+        foreach (int buffId in EnabledBuffs)
         {
-            if (enabled)
-                Player.AddBuff(buffId, 2);
+            if (buffId < 0 || buffId >= BuffLoader.BuffCount)
+            {
+                Buffs.Remove(buffId);
+                continue;
+            }
+            Player.AddBuff(buffId, 2);
         }
     }
 

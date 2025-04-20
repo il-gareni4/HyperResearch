@@ -18,6 +18,13 @@ public static class BuffUtils
         !Main.debuff[buffType] &&
         !Main.pvpBuff[buffType];
 
+    public static bool IsAcceptableBuff(int buffType) =>
+        BuffID.Sets.BasicMountData[buffType] == null &&
+        !Main.vanityPet[buffType] &&
+        !Main.lightPet[buffType] &&
+        !Main.debuff[buffType] &&
+        !Main.pvpBuff[buffType];
+
     public static bool IsAFlask(Item item) =>
         item.buffType > 0
         && BuffID.Sets.IsAFlaskBuff[item.buffType];
