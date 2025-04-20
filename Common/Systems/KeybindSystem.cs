@@ -27,7 +27,7 @@ public class KeybindSystem : ModSystem
         ClearResearchedBind = KeybindLoader.RegisterKeybind(Mod, "ClearResearchedItems", Keys.NumPad2);
         ResearchCraftableBind = KeybindLoader.RegisterKeybind(Mod, "ResearchCraftableItems", Keys.NumPad3);
         ResearchShimmerBind = KeybindLoader.RegisterKeybind(Mod, "ResearchShimmerItems", Keys.NumPad4);
-        ResearchDecraftsBind = KeybindLoader.RegisterKeybind(Mod, "ResearchDecrafts", Keys.NumPad5);
+        ResearchDecraftsBind = KeybindLoader.RegisterKeybind(Mod, "ResearchDecraftItems", Keys.NumPad5);
         ShareAllResearched = KeybindLoader.RegisterKeybind(Mod, "ShareAllResearched", Keys.PageUp);
         MaxStackBind = KeybindLoader.RegisterKeybind(Mod, "MaxStack", Keys.OemTilde);
         EnableDisableBuffBind = KeybindLoader.RegisterKeybind(Mod, "EnableDisableBuff", "Mouse3");

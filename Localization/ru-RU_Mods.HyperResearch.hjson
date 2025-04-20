@@ -41,13 +41,13 @@ UI: {
 		ResearchButtonHoverText: "{$Keybinds.ResearchInventoryItems.DisplayName}"
 		ClearButtonHoverText: "{$Keybinds.ClearResearchedItems.DisplayName}"
 		AutoCraftHoverText: "{$Keybinds.ResearchCraftableItems.DisplayName}"
-		// ShimmerButtonHoverText: "{$Keybinds.ResearchShimmerItems.DisplayName}"
-		// ShimmerDecraftButtonHoverText: "{$Keybinds.ResearchDecrafts.DisplayName}"
-		// ShareButtonHoverText: "{$Keybinds.ShareAllResearched.DisplayName}"
-		// ShimmerDisabledHoverText: You must visit the Aether biome to research shimmer items
-		// DecraftDisabledHoverText: You must visit the Aether biome to research decrafts
-		// ShareDisabledNoTeamHoverText: You must be in a team to share items
-		// ShareDisabledNoMembersHoverText: Team must have at least 2 members to share items
+		ShimmerButtonHoverText: "{$Keybinds.ResearchShimmerItems.DisplayName}"
+		ShimmerDecraftButtonHoverText: "{$Keybinds.ResearchDecraftItems.DisplayName}"
+		ShareButtonHoverText: "{$Keybinds.ShareAllResearched.DisplayName}"
+		ShimmerDisabledHoverText: Вы должны посетить эфирный биом, чтобы изучить предметы мерцания
+		DecraftDisabledHoverText: Вы должны посетить эфирный биом, чтобы изучить декрафты
+		ShareDisabledNoTeamHoverText: Вы должны быть в команде, чтобы делиться предметами
+		ShareDisabledNoMembersHoverText: В команде должно быть не менее 2 участников, чтобы делиться предметами
 	}
 
 	ShopButtons.ResearchButtonHoverText: "{$Keybinds.ResearchShop.DisplayName}"
@@ -68,7 +68,7 @@ Configs: {
 			ClearSettingsHeader: Найстроки очищения
 			ConsumptionSettingsHeader: Настройки расходуемых предметов
 			MessagesSettingsHeader: Настройки сообщений
-			SacrificeSettingsHeader: Настройки изучений
+			SacrificeSettingsHeader: Настройки частичного изучения
 			MultiplayerMessagesSettingsHeader: Настройки сообщений мультиплеера
 			UISettingsHeader: Настройки пользовательского интерфейса
 		}
@@ -79,8 +79,8 @@ Configs: {
 			Label: "[i:{0}] {$Configs.HyperConfig.ResearchInventory.Name}"
 			Tooltip:
 				'''
-				Автоматичеки изучает предметы в инвентаре, если общее количество
-				одного предмета больше или равно необходимого количества для изучения
+				Автоматически изучает предметы в инвентаре, если общее количество
+				одного предмета равно или превышает необходимое количество для изучения.
 				'''
 		}
 
@@ -89,10 +89,11 @@ Configs: {
 			Label: "[i:{0}] {$Configs.HyperConfig.AutoSacrifice.Name}"
 			Tooltip:
 				'''
+				Автоматически частично изучает предметы при подборе.
 				В отличие от [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchInventory.Name}], 
 				предмет не копится в инвентаре, пока необходимое количество не собрано,
-				а сразу частично изучает предмет.
-				[c/{$Colors.Warning}:Выключите] [c/{$Colors.Mention}:{$Configs.HyperConfig.ShowSacrifices.Label}] [c/{$Colors.Warning}:, чтобы не заполнять чат множеством сообщений.]
+				а сразу частично изучается.
+				[c/{$Colors.Warning}:Рекомендуется выключить] [c/{$Colors.Mention}:{$Configs.HyperConfig.ShowSacrifices.Label}] [c/{$Colors.Warning}:, чтобы не заполнять чат множеством сообщений.]
 				[c/{$Colors.Warning}:Не рекомендуется использовать с] [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncSacrificesInOneTeam.Label}]
 				'''
 		}
@@ -101,22 +102,32 @@ Configs: {
 			Label: "[i:{0}] Изучать предметы, которые возможно создать"
 			Tooltip:
 				'''
-				После изучения нового предмета, все новые предметы, которые возможно создать из уже изученных предметов, изучаются.
+				После изучения нового предмета, все новые предметы, которые возможно создать из уже изученных материалов, изучаются.
 				[c/{$Colors.Condition}:Для этого требуется изучить необходимые станции создания и выполнить условия создания] [c/{$Colors.Mention}:(см. "{$Configs.HyperConfig.IgnoreCraftingConditions.Name}").]
 				[c/{$Colors.Note}:Альтернативно, вы можете назначить горячую клавишу или использовать кнопку под инвентарем]
 				'''
 		}
 
-		ResearchShimmerableItems: {
-			Name: Изучать мерцающие превращения
-			Label: "[i:{0}] {$Configs.HyperConfig.ResearchShimmerableItems.Name}"
-			Tooltip: Автоматически изучает предмет, который получается если бросить изначальный предмет в мерцание
+		AutoResearchShimmerItems: {
+			Name: Авто-изучение преобразований мерцания
+			Label: "[i:{0}] {$Configs.HyperConfig.AutoResearchShimmerItems.Name}"
+			Tooltip:
+				'''
+				Автоматически изучает предмет, полученный после бросания исходного предмета в мерцание.
+				[c/{$Colors.Condition}:Может быть сбалансировано настройкой] [c/{$Colors.Mention}:{$Configs.HyperConfig.BalanceShimmerAutoresearch.Name}]
+				[c/{$Colors.Note}:Альтернативно, вы можете назначить горячую клавишу для изучения предметов мерцания или использовать кнопку под инвентарем]
+				'''
 		}
 
-		ResearchDecraftItems: {
-			Name: Изучать декрафты предметов
-			Label: "[i:{0}] {$Configs.HyperConfig.ResearchDecraftItems.Name}"
-			Tooltip: Автоматически изучает предметы, которые можно получить разобрав изначальный предмет в мерцании
+		AutoResearchDecraftItems: {
+			Name: Авто-изучение предметов декрафта в мерцании
+			Label: "[i:{0}] {$Configs.HyperConfig.AutoResearchDecraftItems.Name}"
+			Tooltip:
+				'''
+				Автоматически изучает предметы, которые можно получить путем декрафта исходного предмета в мерцании.
+				[c/{$Colors.Condition}:Может быть сбалансировано настройкой] [c/{$Colors.Mention}:{$Configs.HyperConfig.BalanceShimmerAutoresearch.Name}]
+				[c/{$Colors.Note}:Альтернативно, вы можете назначить горячую клавишу для изучения предметов декрафта или использовать кнопку под инвентарем]
+				'''
 		}
 
 		AutoResearchShop: {
@@ -124,7 +135,7 @@ Configs: {
 			Tooltip:
 				'''
 				При открытии магазина изучается все, что NPC в данный момент продает.
-				[c/{$Colors.Condition}:Чтобы изучить некоторые предметы, необходимо изучить соответвующую валюту (например, ][i:{0}][c/{$Colors.Condition}:Медали защитника).]
+				[c/{$Colors.Condition}:Чтобы изучить некоторые предметы, необходимо изучить соответствующую валюту (например, ][i:{0}][c/{$Colors.Condition}:Медали защитника).]
 				[c/{$Colors.Note}:Альтернативно, вы можете назначить горячую клавишу или использовать кнопку под интерфейсом магазина]
 				'''
 		}
@@ -135,13 +146,13 @@ Configs: {
 			Tooltip:
 				'''
 				Если изучен баннер NPC, то эффект баннера будет действовать даже если сам баннер не поставлен.
-				[c/{$Colors.UsefulNote}:Во вермя игры вы можете выборочно отключать баннеры в меню дупликатов.]
+				[c/{$Colors.UsefulNote}:Во время игры вы можете выборочно отключать баннеры в меню дупликатов.]
 				'''
 		}
 
 		BannerBuffEnabledByDefault: {
 			Label: Включить бафф баннера при изучении
-			Tooltip: Если баннер ранее не был изучен, то бафф от этого баннера будет по умолчанию включен при изучении
+			Tooltip: Когда баннер изучается, его бафф будет включен по умолчанию.
 		}
 
 		UseResearchedPotionsBuff: {
@@ -149,14 +160,14 @@ Configs: {
 			Label: "[i:{0}] {$Configs.HyperConfig.UseResearchedPotionsBuff.Name}"
 			Tooltip:
 				'''
-				Применяет баффы с изученных зелий, еды и флаконов.
-				[c/{$Colors.UsefulNote}:Во вермя игры вы можете выборочно отключать зелья, нажав правой кнопкой мыши по баффу, или в меню дупликатов.]
+				Применяет баффы с изученных зелий, еды и флаконов перманентно.
+				[c/{$Colors.UsefulNote}:Во время игры вы можете выборочно отключать эти баффы, нажав правой кнопкой мыши по иконке баффа, или в меню дупликатов.]
 				'''
 		}
 
 		PotionBuffEnabledByDefault: {
 			Label: Включить бафф зелья при изучении
-			Tooltip: Если зелье ранее не было изучено, то бафф от этого зелья будет по умолчанию включен при изучении
+			Tooltip: Когда зелье, еда или флакон изучается, его бафф будет включен по умолчанию.
 		}
 
 		# === AUTO-TRASH SETTINGS ===
@@ -170,8 +181,9 @@ Configs: {
 			Label: "[i:{0}] Убирать предмет после изучения"
 			Tooltip:
 				'''
-				В отличие от настройки "[c/{$Colors.Mention}:{$Configs.HyperConfig.AutoTrashResearched.Name}]"
-				убирает предмет этот предмет из инвентаря сразу после изучения, а не во время подбора
+				В отличие от настройки "[c/{$Colors.Mention}:{$Configs.HyperConfig.AutoTrashResearched.Name}]",
+				убирает этот предмет из инвентаря сразу после изучения, а не во время подбора.
+				[c/{$Colors.Note}:Настройки очистки определяют, какие слоты инвентаря затрагиваются.]
 				'''
 		}
 
@@ -193,8 +205,8 @@ Configs: {
 			Label: "[i:{0}] {$Configs.HyperConfig.BalanceShimmerAutoresearch.Name}"
 			Tooltip:
 				'''
-				Чтобы настройки [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchShimmerableItems.Name}] и [c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchDecraftItems.Name}] 
-				заработали, вам необходимо посетить Эфирную пещеру хотя бы раз.
+				Чтобы настройки [c/{$Colors.Mention}:{$Configs.HyperConfig.AutoResearchShimmerItems.Name}] и [c/{$Colors.Mention}:{$Configs.HyperConfig.AutoResearchDecraftItems.Name}] 
+				заработали, вам необходимо посетить Эфирный биом хотя бы раз.
 				'''
 		}
 
@@ -210,22 +222,22 @@ Configs: {
 
 		OnlyOneItemNeeded: {
 			Label: "[i:{0}] Только одна единица предмета необходима для изучения"
-			Tooltip: Неизучаемые предметы останутся неизучаемыми
+			Tooltip: Делает все изучаемые предметы требующими только одной единицы для полного изучения. Неизучаемые предметы останутся неизучаемыми.
 		}
 
 		ItemResearchCountOverride: {
 			Label: Перезаписать количество необходимое для изучения
-			Tooltip: "[c/{$Colors.UsefulNote}:Позволяет вам делать неизучаемые предметы изучаемыми и наоборот.]"
+			Tooltip:
+				'''
+				Позволяет переопределить количество предметов, необходимое для изучения любого конкретного предмета, 
+				[c/{$Colors.UsefulNote}:включая возможность делать неизучаемые предметы изучаемыми и наоборот.]
+				'''
 		}
 
 		# === TOOLTIPS SETTINGS ===
 		UseCustomResearchTooltip: {
 			Label: "[i:{0}] Использовать модифицированную подсказку прогресса изучения"
-			Tooltip:
-				'''
-				В отличие от стандартной подсказки, пользовательская будет отображаться везде
-				при наведении курсора на предмет (включая другие моды)
-				'''
+			Tooltip: Отображает расширенную информацию и статус изучения в подсказках предметов (включая слоты предметов из других модов).
 		}
 
 		ShowResearchedTooltip: {
@@ -325,15 +337,16 @@ Configs: {
 
 		ConsumeResearchedLootItems: {
 			Label: "[i:{0}] Расходовать изученные мешки и ящики"
-			Tooltip: ""
+			Tooltip: Если отключено, изученные контейнеры с добычей (например, мешки и ящики) не будут расходоваться при открытии.
 		}
 
 		ConsumeOtherResearchedItems: {
 			Label: "[i:{0}] Расходовать другие изученные предметы"
 			Tooltip:
 				'''
-				Другие предметы, которые не попали под категории выше, будут расходоваться
-				[c/{$Colors.Warning}:Рекомендуется не отключать эту настройку]
+				Если отключено, другие расходуемые предметы, не попавшие в категории выше (например, призыватели боссов), 
+				не будут расходоваться после изучения.
+				[c/{$Colors.Warning}:Рекомендуется не отключать эту настройку, чтобы избежать непреднамеренного использования бесконечных предметов.]
 				'''
 		}
 
@@ -360,8 +373,6 @@ Configs: {
 			Label: Показывать изученные Мерцающие превращения
 			Tooltip:
 				'''
-				Этот тип сообщений можно увидеть если настройка "[c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchShimmerableItems.Name}]" включена
-
 				Например:
 				[c/ED88D6:Изучено 3 мерцающих преобразования:] [i:1][i:2][i:3]
 				'''
@@ -371,8 +382,6 @@ Configs: {
 			Label: Показывать изученные декрафты
 			Tooltip:
 				'''
-				Этот тип сообщений можно увидеть если настройка  "[c/{$Colors.Mention}:{$Configs.HyperConfig.ResearchDecraftItems.Name}]" включена
-
 				Например:
 				[c/FFBBDD:Изучено 3 предмета в процессе декрафта:] [i:1][i:2][i:3]
 				'''
@@ -406,7 +415,7 @@ Configs: {
 			Label: Показывать частично изученные предметы, которыми с вами поделились
 			Tooltip:
 				'''
-				Показывает сообщение в чат, когда игрок из одной команды поделился с вами частично изученным предметом.
+				Показывает сообщение в чат, когда игрок из одной команды поделился с вами частично изученными предметами.
 				Для этого необходимо включить настройку [c/{$Colors.Mention}:{$Configs.ServerConfig.SyncSacrificesInOneTeam.Label}] в "{$Configs.ServerConfig.DisplayName}"
 
 				Например:
@@ -418,10 +427,10 @@ Configs: {
 			Label: Показывать новые изученные предметы участников команды
 			Tooltip:
 				'''
-				Показываются даже те предметы, что были уже изучены вами
+				Показываются даже те предметы, что были уже изучены вами.
 
 				Например:
-				[c/FFC0CB:PlayerName изучил 3 новых предметама:] [i:1][i:2][i:3]
+				[c/FFC0CB:PlayerName изучил 3 новых предмета:] [i:1][i:2][i:3]
 				'''
 		}
 
@@ -441,12 +450,31 @@ Configs: {
 			Tooltip: ""
 		}
 
+		ShowShimmerButton: {
+			Label: Показывать кнопку "{$UI.InventoryButtons.ShimmerButtonHoverText}"
+			Tooltip: "[c/{$Colors.Condition}: Отключено, если включена настройка ] [c/{$Colors.Mention}:{$Configs.HyperConfig.BalanceShimmerAutoresearch.Name}] [c/{$Colors.Condition}:и Эфирный биом не был посещен]"
+		}
+
+		ShowShimmerDecraftButton: {
+			Label: Показывать кнопку "{$UI.InventoryButtons.ShimmerDecraftButtonHoverText}"
+			Tooltip: "{$Configs.HyperConfig.ShowShimmerButton.Tooltip}"
+		}
+
+		ShowTeamShareButton: {
+			Label: Показывать кнопку "{$UI.InventoryButtons.ShareButtonHoverText}"
+			Tooltip:
+				'''
+				[c/{$Colors.Note}:Отображается только в мультиплеере.]
+				[c/{$Colors.Condition}:Отключено, если вы не в команде или в команде только один участник.]
+				'''
+		}
+
 		InventoryButtonsSlotOffset: {
 			Label: Смещение кнопок по слотам инвентаря
 			Tooltip:
 				'''
-				Определяет позицию отрисовки кнопок, основываясь
-				на каком слоте инвентаря первая кнопка будет нарисована
+				Регулирует горизонтальное положение кнопок пользовательского интерфейса инвентаря,
+				определяя слот, над которым будет нарисована первая кнопка.
 				'''
 		}
 
@@ -457,32 +485,7 @@ Configs: {
 
 		ShowTotalResearchedItemsCount: {
 			Label: Показывать общее количество изученных предметов
-			Tooltip: Показывается под меню дубликации
-		}
-
-		ShowShimmerButton: {
-			// Label: Show Shimmer Button
-			// Tooltip: ""
-		}
-
-		ShowShimmerDecraftButton: {
-			// Label: Show Shimmer Decraft Button
-			// Tooltip: ""
-		}
-
-		ShowTeamShareButton: {
-			// Label: Show Team Share Button
-			// Tooltip: ""
-		}
-
-		AutoResearchShimmerItems: {
-			// Label: Auto Research Shimmer Items
-			// Tooltip: ""
-		}
-
-		AutoResearchDecraftItems: {
-			// Label: Auto Research Decraft Items
-			// Tooltip: ""
+			Tooltip: Отображает общее количество и процент изученных предметов под меню дупликации.
 		}
 	}
 
@@ -492,12 +495,12 @@ Configs: {
 
 		SyncResearchedItemsInOneTeam: {
 			Label: Делиться изученными предметами с командой
-			Tooltip: Все участники команды будут изучать вами только что изученные предметы
+			Tooltip: Синхронизирует полностью изученные предметы между всеми участниками одной команды.
 		}
 
 		SyncSacrificesInOneTeam: {
-			Label: Делиться частично изученными предметами с комадной
-			Tooltip: ""
+			Label: Делиться частично изученными предметами с командой
+			Tooltip: Синхронизирует частично изученные предметы между всеми участниками одной команды.
 		}
 
 		Headers.HostSettings: Настройки хоста
@@ -516,15 +519,15 @@ Configs: {
 Keybinds: {
 	ForgetAll.DisplayName: Забыть всё
 	ResearchAll.DisplayName: Изучить всё
+	ForgetAether.DisplayName: Забыть Эфирный биом
 	ResearchInventoryItems.DisplayName: Изучить предметы в инвентаре
 	ClearResearchedItems.DisplayName: Убрать изученные предметы
 	ResearchCraftableItems.DisplayName: Изучить предметы создания
-	// ResearchShimmerItems.DisplayName: Research Shimmer Items
-	// ResearchDecrafts.DisplayName: Research Shimmer Decrafts
+	ResearchShimmerItems.DisplayName: Изучить предметы мерцания
+	ResearchDecraftItems.DisplayName: Изучить предметы декрафта
 	ShareAllResearched.DisplayName: Поделиться предметами с командой
 	ResearchBagContents.DisplayName: Изучить содержимое мешка/ящика
 	ResearchShop.DisplayName: Изучить магазин
-	EnableDisableBuff.DisplayName: Включить/Выключить бафф
+	EnableDisableBuff.DisplayName: Переключить бафф
 	MaxStack.DisplayName: Установить макс. стак предмету
-	// ForgetAether.DisplayName: Forget Aether
 }
