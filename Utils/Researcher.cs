@@ -298,7 +298,7 @@ public class Researcher
 
     public void TryResearchDecraftItems(int itemId)
     {
-        List<int> decraftItems = ItemsUtils.GetDecraftItems(itemId);
+        List<int> decraftItems = ItemsUtils.GetDecraftItemIds(itemId);
         if (decraftItems.Count == 0) return;
 
         foreach (int decraftItemId in decraftItems)

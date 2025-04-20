@@ -63,35 +63,34 @@ public static class ItemsUtils
 
     public static int GetShimmerItemId(int itemId)
     {
-        if (!ItemID.Sets.ShimmerCountsAsItem.IndexInRange(itemId) ||
-            !ItemID.Sets.ShimmerTransformToItem.IndexInRange(itemId)) return -1;
-
-        if (ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
+        if (ItemID.Sets.ShimmerCountsAsItem.IndexInRange(itemId) && ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
             itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];
-        return ItemID.Sets.ShimmerTransformToItem[itemId];
+        if (ItemID.Sets.ShimmerTransformToItem.IndexInRange(itemId) && ItemID.Sets.ShimmerTransformToItem[itemId] > 0)
+            return ItemID.Sets.ShimmerTransformToItem[itemId];
+        else
+            return -1;
     }
 
     private static Recipe? GetDecraftRecipe(int itemId)
     {
-        if (GetShimmerItemId(itemId) > 0 ||
-            ContentSamples.ItemsByType[itemId].createTile == TileID.MusicBoxes) return null;
-        if (ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
+        if (ContentSamples.ItemsByType[itemId].createTile == TileID.MusicBoxes)
+            return null;
+
+        if (ItemID.Sets.ShimmerCountsAsItem.IndexInRange(itemId) && ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
             itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];
 
-        if (ShimmerTransforms.IsItemTransformLocked(itemId)) return null;
+        if (!ItemID.Sets.CraftingRecipeIndices.IndexInRange(itemId) || ShimmerTransforms.IsItemTransformLocked(itemId)) return null;
         int recipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(itemId);
 
         return recipeIndex < 0 ? null : Main.recipe[recipeIndex];
     }
 
-    public static List<int> GetDecraftItems(int itemId) => GetDecraftItems(GetDecraftRecipe(itemId));
+    public static List<int> GetDecraftItemIds(int itemId) => GetDecraftItemIds(GetDecraftRecipe(itemId));
 
-    private static List<int> GetDecraftItems(Recipe? recipe)
+    private static List<int> GetDecraftItemIds(Recipe? recipe)
     {
         if (recipe is null) return [];
-        return recipe.customShimmerResults != null
-            ? recipe.customShimmerResults.Select(r => r.type).ToList()
-            : recipe.requiredItem.Select(r => r.type).ToList();
+        return [.. (recipe.customShimmerResults ?? recipe.requiredItem).Select(r => r.type)];
     }
 
     public static Dictionary<int, int>? GetCurrencyItemsAndValues(int currencyId)
@@ -151,12 +150,12 @@ public static class ItemsUtils
         List<PrefixCategory> categories = item.GetPrefixCategories();
         if (categories == null || categories.Count == 0) return [];
 
-        IEnumerable<int> vanillaPrefixes = 
+        IEnumerable<int> vanillaPrefixes =
             categories
             .SelectMany(Item.GetVanillaPrefixes)
             .Distinct();
 
-        IEnumerable<ModPrefix> modPrefixes = 
+        IEnumerable<ModPrefix> modPrefixes =
             categories
             .SelectMany(PrefixLoader.GetPrefixesInCategory)
             .Distinct();
