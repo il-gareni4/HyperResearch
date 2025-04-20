@@ -9,6 +9,17 @@ public static class BuffUtils
         item.buffType > 0
         && ItemsUtils.IsInItemGroup(item, ContentSamples.CreativeHelper.ItemGroup.BuffPotion);
 
+    public static bool IsAFlask(Item item) =>
+        item.buffType > 0
+        && BuffID.Sets.IsAFlaskBuff[item.buffType];
+
+    public static bool IsAFood(Item item) =>
+        item.buffType > 0
+        && BuffID.Sets.IsWellFed[item.buffType];
+
+    public static bool IsAcceptableBuffItem(Item item) =>
+        IsABuffPotion(item) || IsAFlask(item) || IsAFood(item);
+
     public static bool IsABuffFromPotion(int buffType) =>
         !BuffID.Sets.IsWellFed[buffType] &&
         !BuffID.Sets.IsAFlaskBuff[buffType] &&
@@ -23,13 +34,5 @@ public static class BuffUtils
         !Main.vanityPet[buffType] &&
         !Main.lightPet[buffType] &&
         !Main.debuff[buffType] &&
-        !Main.pvpBuff[buffType];
-
-    public static bool IsAFlask(Item item) =>
-        item.buffType > 0
-        && BuffID.Sets.IsAFlaskBuff[item.buffType];
-
-    public static bool IsAFood(Item item) =>
-        item.buffType > 0
-        && BuffID.Sets.IsWellFed[item.buffType];
+        !Main.pvpBuff[buffType]; 
 }

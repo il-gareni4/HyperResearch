@@ -21,7 +21,7 @@ public class BuffGlobalItem : GlobalItem
             || !HyperConfig.Instance.ShowPotionBuffTooltips
             || item.tooltipContext != ItemSlot.Context.CreativeInfinite
             || !ConfigOptions.UseResearchedPotionsBuff
-            || (!BuffUtils.IsABuffPotion(item) && !BuffUtils.IsAFlask(item) && !BuffUtils.IsAFood(item))
+            || !BuffUtils.IsAcceptableBuffItem(item)
             || !Main.LocalPlayer.TryGetModPlayer(out BuffPlayer buffPlayer)
             || !buffPlayer.Buffs.TryGetValue(item.buffType, out bool enabled)) return;
 

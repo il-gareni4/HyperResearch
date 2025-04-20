@@ -9,7 +9,6 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
 
 namespace HyperResearch.Common.ModPlayers;

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
 using Terraria;
@@ -17,8 +15,7 @@ public class BannerSystem : ModSystem
 
     public override void PostSetupContent()
     {
-
-        for (var bannerId = 0; bannerId < vanillaBannersCount; bannerId++)
+        for (var bannerId = 1; bannerId < vanillaBannersCount; bannerId++)
             VanillaItemToBanner[Item.BannerToItem(bannerId)] = bannerId;
     }
 

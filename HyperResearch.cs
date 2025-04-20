@@ -5,7 +5,6 @@ using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
 using HyperResearch.Utils.Extensions;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace HyperResearch;
