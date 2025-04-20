@@ -1,5 +1,33 @@
 Hyper Research v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
-[h1]Fixed[/h1]
+
+[h1]Added[/h1]
 [list]
-[*] OnResearched method causes the game to crash
+[*] "Research Shimmer Items" UI button and keybind. Can be removed in the Client Config. [i]Disabled if the 'Balance a shimmer auto-researches' setting is enabled and the Aether biome has not yet been visited.[/i]
+[*] "Research Shimmer Decrafts" UI button and keybind. Can be removed in the Client Config. [i]Disabled if the 'Balance a shimmer auto-researches' setting is enabled and the Aether biome has not yet been visited.[/i]
+[*] "Share Items With Team" UI button. Can be removed in the Client Config. [i]Shown only in multiplayer.[/i] [i]Disabled if not in a team, or if the team has only one member.[/i]
+[*] Visualization of enabled/disabled banner/buff status in the duplication menu. Can be disabled in the Client Config.
+[*] Ability to enable/disable multiple banners/buffs without releasing the toggle button.
+[/list]
+
+[h1]Changed[/h1]
+[list]
+[*] All UI buttons and their animations.
+[*] Many default keybinds.
+[*] "Include {X} slots on Clear action" options now affect the "Auto-trash an item after researching" option.
+[*] Overhauled all mod text (config descriptions, chat messages, tooltips, etc.).
+[/list]
+
+[h1]Fixes[/h1]
+[list]
+[*] Fixed "Auto-trash an item after researching" removing favorited items.
+[*] Fixed all mod controls not working during autopause.
+[*] Fixed "The server expects Player.MaxBuffs of {X} but this client reports {Y}" error when connecting to a server.
+[*] Fixed incorrect saving of mod buffs, which led to a meaningless set of buffs after loading into the world. [b]Due to this change, all saved mod buff states from previous versions will be lost. I apologize for the inconvenience.[/b]
+[*] Fixed incorrect saving of mod banners. [b]Due to this change, all saved mod banner states from previous versions will be lost.[/b]
+[*] Improved code responsible for processing shimmer/decraft items.
+[/list]
+
+[h1]Removed[/h1]
+[list]
+[*] Server settings for shimmer transmutations and decrafts. These settings are now only available in the Client Config, as manual research methods have been added.
 [/list]

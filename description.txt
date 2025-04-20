@@ -1,32 +1,29 @@
-Hyper Research is quality of life mod that adds a lot of useful features to the Journey mode.
+Hyper Research enhances Terraria's Journey mode with quality-of-life features.
 The mod gives you a lot of settings in the config, so take a look there and customize the mod for yourself.
 
-Main features:
-- Auto-researching of items in the inventory without having to open the Research Menu every time.
-- Auto-researching of items that can be crafted. You need to research the necessary materials and crafting stations (or stand next to them).
-- Auto-researching of items that are obtained after shimmer transmutation.
-- Auto-researching of items that are obtained after shimmer decrafting.
-- Auto-partial researching.
-- Auto-cleaning of researched items.
-- Messages notifying about researching new items and crafting items.
-- UI buttons and many keybinds.
-- Multiplayer support.
-    - Ability to share researched items with the team.
-    - Set global settings for all server participants.
+Core Gameplay Enhancements:
+- Effortless Research: Automatically research items directly from your inventory – no need to constantly open the Research Menu.
+- Smart Auto-Research: Automatically research craftable (required materials and have access to the necessary crafting stations), shimmerable and decraftable items.
+- Inventory Cleaning: Automatically (or manualy) clean researched items from your inventory (configurable).
+- Stay Informed: Receive notifications for all newly researched items grouped by the research source.
+- Convenient Controls: Access features through helpful UI buttons and customizable keybinds.
+- Multiplayer Ready:
+    - Share research progress with your team.
+    - Configure server-wide settings for a consistent experience.
 
-Other features:
-- The ability to select modifiers for items directly in the item duplication menu.
-- Auto-researching the contents of NPC shops.
-- Researching the contents of bags, crates and other loot items in one tap.
-- Infinite researched consumable items (divided into categories: potions, blocks, throwing weapons, etc.).
-- The ability to use the buff from researched banners without having to place them.
-- The ability to use the buff from researched potions without having to use them.
-- The ability to change the number of items required for research for each individual item in the game.
+Additional Quality of Life:
+- Modifier Selector: Choose item modifiers directly within the duplication menu.
+- Shop Auto-Research: Automatically research the contents of NPC shops.
+- One-Tap Loot Research: Research the entire contents of bags, crates, and other loot containers instantly.
+- Infinite Consumables: Infinite stacks of researched consumables like potions, blocks, throwing weapons, and more (configurable categories).
+- World-Wide Banner Buffs: Gain the buff of researched monster banners without needing to place them.
+- Unlimited Potion Buffs: Gain the buff of researched potions/food/flasks without consuming them.
+- Custom Research Numbers: Adjust the number of items needed for research for any specific item in the game.
 
-Minor features:
-- Custom research tooltip which will be visible even in mods.
-- Shows the number of items researched and the total number of items that can be researched.
-- Max stack researched items.
-- Ability to set the number of items needed to unlock duplication to one.
+Extra Conveniences:
+- Universal Tooltip: See a custom research tooltip that works even with other mod item slots.
+- Progress Tracker: Easily view how many items you've researched out of the total available.
+- Stack Management: Automatically stack researched items to their maximum capacity.
+- Optionally set the research requirement for duplication to just one item.
 
 All update changes can be read on the steam workshop mod page
