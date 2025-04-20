@@ -37,7 +37,10 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
 
 #if DEBUG
         if (KeybindSystem.ForgetAllBind!.JustPressed)
+        {
             ResearchedBanners.Clear();
+            _bannersOfDisabledMods.Clear();
+        }
 #endif
         if (KeybindSystem.EnableDisableBuffBind!.JustPressed &&
             Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite &&
@@ -51,7 +54,7 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
     public override void SaveData(TagCompound tag)
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
-        tag["enabledVanillaBanners"] = 
+        tag["enabledVanillaBanners"] =
             ResearchedBanners
             .Where(kv => kv.Key < BannerSystem.vanillaBannersCount && kv.Value)
             .Select(kv => kv.Key)

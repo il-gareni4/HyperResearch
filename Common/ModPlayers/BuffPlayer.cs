@@ -30,7 +30,10 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
             ToggleBuffItem(Main.HoverItem);
 #if DEBUG
         if (KeybindSystem.ForgetAllBind!.JustPressed)
+        {
             Buffs.Clear();
+            _buffsOfDisabledMods.Clear();
+        }
 #endif
     }
 
