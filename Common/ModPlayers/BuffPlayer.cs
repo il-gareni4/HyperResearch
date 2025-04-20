@@ -25,9 +25,12 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
-        if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite
-            && KeybindSystem.EnableDisableBuffBind!.JustPressed)
+        if (KeybindSystem.EnableDisableBuffBind!.JustPressed &&
+            ConfigOptions.UseResearchedPotionsBuff &&
+            Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite)
+        {
             ToggleBuffItem(Main.HoverItem);
+        }
 #if DEBUG
         if (KeybindSystem.ForgetAllBind!.JustPressed)
             Buffs.Clear();

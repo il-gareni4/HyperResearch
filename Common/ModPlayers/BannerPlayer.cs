@@ -40,6 +40,7 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
             ResearchedBanners.Clear();
 #endif
         if (KeybindSystem.EnableDisableBuffBind!.JustPressed &&
+            ConfigOptions.UseResearchedBannersBuff &&
             Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite &&
             BannerSystem.TryItemToBanner(Main.HoverItem.type, out int bannerId) &&
             ResearchedBanners.TryGetValue(bannerId, out bool enabled))
