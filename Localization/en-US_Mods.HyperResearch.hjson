@@ -420,6 +420,11 @@ Configs: {
 		}
 
 		# === UI SETTINGS ===
+		VisualizeBuffStatus: {
+			Label: Visualize banner/buff status
+			Tooltip: "Colorize the buff item slot in the duplication menu based on whether the buff is enabled or disabled."
+		}
+
 		ShowResearchInventoryButton: {
 			Label: Show "{$UI.InventoryButtons.ResearchButtonHoverText}" button
 			Tooltip: ""

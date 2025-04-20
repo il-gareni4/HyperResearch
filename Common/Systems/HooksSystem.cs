@@ -1,4 +1,5 @@
 using System;
+using HyperResearch.Common.Configs;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
 using Microsoft.Xna.Framework;
@@ -46,7 +47,7 @@ public class HooksSystem : ModSystem
             c.EmitLdloc1(); // item
             c.EmitDelegate((SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Color color, int context, Item item) =>
             {
-                if (context == ItemSlot.Context.CreativeInfinite)
+                if (HyperConfig.Instance.VisualizeBuffStatus && context == ItemSlot.Context.CreativeInfinite)
                 {
                     if (ConfigOptions.UseResearchedBannersBuff &&
                         BannerSystem.TryItemToBanner(item.type, out int bannerId) &&

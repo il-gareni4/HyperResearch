@@ -207,6 +207,9 @@ public class HyperConfig : ModConfig
     [Header("UISettingsHeader")]
 
     [DefaultValue(true)]
+    public bool VisualizeBuffStatus;
+
+    [DefaultValue(true)]
     public bool ShowResearchInventoryButton;
 
     [DefaultValue(true)]

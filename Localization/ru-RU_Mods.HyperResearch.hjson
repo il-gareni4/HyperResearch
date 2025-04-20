@@ -435,6 +435,11 @@ Configs: {
 		}
 
 		# === UI SETTINGS ===
+		VisualizeBuffStatus: {
+			Label: Визуализировать статус баннера/баффа
+			Tooltip: "Раскрашивает слот предмета баннера/баффа в меню дублирования в зависимости от того, включен или выключен бафф."
+		}
+
 		ShowResearchInventoryButton: {
 			Label: Показывать кнопку "{$UI.InventoryButtons.ResearchButtonHoverText}"
 			Tooltip: ""
