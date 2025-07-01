@@ -4,6 +4,7 @@ using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Terraria;
 using Terraria.ModLoader;
@@ -34,10 +35,10 @@ public class HooksSystem : ModSystem
     {
         try
         {
-            ILCursor c = new(il)
-            {
-                Index = 528
-            };
+            ILCursor c = new(il);
+            c.FindNext(out ILCursor[] m1, i => i.MatchLdcI4(-1)); // int num9 = -1;
+            c.GotoNext(MoveType.After, i => i.MatchBrtrue(m1[0].Next!)); // if (!flag2)
+            
             c.RemoveRange(15);
             c.EmitLdarg0(); // spriteBatch
             c.EmitLdloc(7); // texture
