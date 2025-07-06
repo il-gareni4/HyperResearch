@@ -40,21 +40,23 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     {
         get => _wasInAether; private set
         {
-            if (!_wasInAether && value && ConfigOptions.BalanceShimmerAutoresearch &&
-                (HyperConfig.Instance.AutoResearchShimmerItems || HyperConfig.Instance.AutoResearchDecraftItems))
+            if (!_wasInAether && value &&
+                ConfigOptions.BalanceShimmerAutoresearch &&
+                (HyperConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch ||
+                 HyperConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch))
             {
                 Researcher researcher = new();
                 foreach (int itemId in Researcher.ReseachedItems)
                 {
-                    if (HyperConfig.Instance.AutoResearchShimmerItems)
+                    if (HyperConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch)
                         researcher.TryResearchShimmerItem(itemId);
-                    if (HyperConfig.Instance.AutoResearchDecraftItems)
+                    if (HyperConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch)
                         researcher.TryResearchDecraftItems(itemId);
                 }
                 researcher.ProcessResearched(
                     AutoResearchCraftable,
-                    HyperConfig.Instance.AutoResearchShimmerItems,
-                    HyperConfig.Instance.AutoResearchDecraftItems
+                    HyperConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch,
+                    HyperConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch
                 );
 
                 AfterLocalResearch(researcher);
@@ -65,8 +67,8 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     public bool AutoResearchCraftable => HyperConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.OnResearch;
     public bool CanShimmerResearch => !ConfigOptions.BalanceShimmerAutoresearch || WasInAether;
-    public bool AutoResearchShimmer => HyperConfig.Instance.AutoResearchShimmerItems && CanShimmerResearch;
-    public bool AutoResearchDecraft => HyperConfig.Instance.AutoResearchDecraftItems && CanShimmerResearch;
+    public bool AutoResearchShimmer => HyperConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch && CanShimmerResearch;
+    public bool AutoResearchDecraft => HyperConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch && CanShimmerResearch;
 
     public void OnResearch(Item item)
     {
@@ -506,8 +508,9 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     public void OnClientConfigChanged()
     {
         if (!ConfigOptions.OnlyOneItemNeeded &&
-            !HyperConfig.Instance.AutoResearchShimmerItems &&
-            !HyperConfig.Instance.AutoResearchDecraftItems) return;
+            HyperConfig.Instance.ShimmerResearchMode != ShimmerResearchMode.OnResearch &&
+            HyperConfig.Instance.DecraftsResearchMode != DecraftsResearchMode.OnResearch)
+            return;
 
         Researcher researcher = new();
         if (AutoResearchCraftable)

@@ -171,7 +171,8 @@ public class InventoryButtons : UIState
             left += ItemSlotSize + ItemSlotGap;
         }
 
-        if (HyperConfig.Instance.ShowShimmerButton)
+        if (HyperConfig.Instance.ShowShimmerButton &&
+            HyperConfig.Instance.ShimmerResearchMode != ShimmerResearchMode.None)
         {
             ShimmerButton.MarginTop = BaseTopMargin;
             ShimmerButton.MarginLeft = MathF.Floor(left) + (ItemSlotSize - ShimmerButton.Width.Pixels) / 2;
@@ -179,7 +180,8 @@ public class InventoryButtons : UIState
             left += ItemSlotSize + ItemSlotGap;
         }
 
-        if (HyperConfig.Instance.ShowShimmerDecraftButton)
+        if (HyperConfig.Instance.ShowShimmerDecraftButton &&
+            HyperConfig.Instance.DecraftsResearchMode != DecraftsResearchMode.None)
         {
             ShimmerDecraftButton.MarginTop = BaseTopMargin;
             ShimmerDecraftButton.MarginLeft = MathF.Floor(left) + (ItemSlotSize - ShimmerDecraftButton.Width.Pixels) / 2;

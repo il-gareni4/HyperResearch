@@ -23,12 +23,12 @@ public class HyperConfig : ModConfig
     public CraftablesResearchMode CraftablesResearchMode;
 
     [LabelArgs(ItemID.BottomlessShimmerBucket)]
-    [DefaultValue(true)]
-    public bool AutoResearchShimmerItems;
+    [DefaultValue(ShimmerResearchMode.OnResearch)]
+    public ShimmerResearchMode ShimmerResearchMode;
 
     [LabelArgs(ItemID.IronOre)]
-    [DefaultValue(true)]
-    public bool AutoResearchDecraftItems;
+    [DefaultValue(DecraftsResearchMode.OnResearch)]
+    public DecraftsResearchMode DecraftsResearchMode;
 
     [LabelArgs(ItemID.PlatinumCoin)]
     [TooltipArgs(ItemID.DefenderMedal)]

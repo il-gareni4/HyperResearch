@@ -244,8 +244,8 @@ public class Researcher
     {
         ProcessResearched(
             HyperConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.OnResearch,
-            HyperConfig.Instance.AutoResearchShimmerItems,
-            HyperConfig.Instance.AutoResearchDecraftItems
+            HyperConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch,
+            HyperConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch
         );
     }
 
