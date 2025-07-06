@@ -63,7 +63,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         }
     }
 
-    public bool AutoResearchCraftable => HyperConfig.Instance.AutoResearchCraftableItems;
+    public bool AutoResearchCraftable => HyperConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.OnResearch;
     public bool CanShimmerResearch => !ConfigOptions.BalanceShimmerAutoresearch || WasInAether;
     public bool AutoResearchShimmer => HyperConfig.Instance.AutoResearchShimmerItems && CanShimmerResearch;
     public bool AutoResearchDecraft => HyperConfig.Instance.AutoResearchDecraftItems && CanShimmerResearch;
@@ -93,7 +93,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         if (KeybindSystem.ClearResearchedBind!.JustPressed)
             ClearResearched();
         if (KeybindSystem.ResearchCraftableBind!.JustPressed)
-            ResearchCraftable();
+            ResearchCraftableAction();
         if (KeybindSystem.ResearchShimmerBind!.JustPressed)
             ResearchShimmerItemsAction();
         if (KeybindSystem.ResearchDecraftsBind!.JustPressed)
@@ -122,7 +122,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         if (KeybindSystem.ClearResearchedBind!.JustPressed)
             ClearResearched();
         if (KeybindSystem.ResearchCraftableBind!.JustPressed)
-            ResearchCraftable();
+            ResearchCraftableAction();
         if (KeybindSystem.ResearchShimmerBind!.JustPressed)
             ResearchShimmerItemsAction();
         if (KeybindSystem.ResearchDecraftsBind!.JustPressed)
@@ -165,6 +165,14 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             return;
 
         SacrificeInventory();
+    }
+
+    public void ResearchCraftableAction()
+    {
+        if (HyperConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.None)
+            return;
+
+        ResearchCraftable();
     }
 
     public void ResearchShimmerItemsAction()

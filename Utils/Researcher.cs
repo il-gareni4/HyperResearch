@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HyperResearch.Common.Configs;
+using HyperResearch.Common.Configs.Enums;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.Systems;
 using Terraria;
@@ -242,7 +243,7 @@ public class Researcher
     public void ProcessResearched()
     {
         ProcessResearched(
-            HyperConfig.Instance.AutoResearchCraftableItems,
+            HyperConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.OnResearch,
             HyperConfig.Instance.AutoResearchShimmerItems,
             HyperConfig.Instance.AutoResearchDecraftItems
         );

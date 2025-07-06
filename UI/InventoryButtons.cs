@@ -162,7 +162,8 @@ public class InventoryButtons : UIState
             left += ItemSlotSize + ItemSlotGap;
         }
 
-        if (HyperConfig.Instance.ShowAutoCraftButton)
+        if (HyperConfig.Instance.ShowAutoCraftButton &&
+            HyperConfig.Instance.CraftablesResearchMode != CraftablesResearchMode.None)
         {
             ResearchCraftableButton.MarginTop = BaseTopMargin;
             ResearchCraftableButton.MarginLeft = MathF.Floor(left) + (ItemSlotSize - ResearchCraftableButton.Width.Pixels) / 2;

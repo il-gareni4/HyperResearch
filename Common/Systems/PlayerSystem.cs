@@ -61,7 +61,7 @@ public class PlayerSystem : ModSystem
         HyperPlayer?.ClearResearched();
 
     private void OnAutoCraftButtonMouseDown(UIMouseEvent evt, UIElement el) => 
-        HyperPlayer?.ResearchCraftable();
+        HyperPlayer?.ResearchCraftableAction();
 
     private void OnShimmerButtonMouseDown(UIMouseEvent evt, UIElement el) => 
         HyperPlayer?.ResearchShimmerItemsAction();

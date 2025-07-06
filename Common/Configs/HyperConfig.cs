@@ -19,8 +19,8 @@ public class HyperConfig : ModConfig
     public ResearchMode ResearchMode;
 
     [LabelArgs(ItemID.WorkBench)]
-    [DefaultValue(true)]
-    public bool AutoResearchCraftableItems;
+    [DefaultValue(CraftablesResearchMode.OnResearch)]
+    public CraftablesResearchMode CraftablesResearchMode;
 
     [LabelArgs(ItemID.BottomlessShimmerBucket)]
     [DefaultValue(true)]
