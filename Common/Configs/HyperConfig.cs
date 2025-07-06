@@ -34,6 +34,17 @@ public class HyperConfig : ModConfig
     [TooltipArgs(ItemID.DefenderMedal)]
     [DefaultValue(true)]
     public bool AutoResearchShop;
+    
+
+    [Header("AutoTrashSettingsHeader")]
+
+    [LabelArgs(ItemID.TrashCan)]
+    [DefaultValue(false)]
+    public bool AutoTrashResearched;
+
+    [LabelArgs(ItemID.TrashCan)]
+    [DefaultValue(false)]
+    public bool AutoTrashAfterResearching;
 
 
     [Header("BuffsSettingsHeader")]
@@ -51,17 +62,6 @@ public class HyperConfig : ModConfig
     
     [DefaultValue(true)]
     public bool PotionBuffEnabledByDefault;
-
-
-    [Header("AutoTrashSettingsHeader")]
-
-    [LabelArgs(ItemID.TrashCan)]
-    [DefaultValue(false)]
-    public bool AutoTrashResearched;
-
-    [LabelArgs(ItemID.TrashCan)]
-    [DefaultValue(false)]
-    public bool AutoTrashAfterResearching;
 
 
     [Header("BalanceSettingsHeader")]
