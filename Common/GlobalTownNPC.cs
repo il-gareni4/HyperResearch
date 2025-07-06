@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using HyperResearch.Common.Configs;
+using HyperResearch.Common.Configs.Enums;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
 using Terraria;
@@ -12,12 +13,12 @@ public class GlobalTownNPC : GlobalNPC
 {
     public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
     {
-        if (!Researcher.IsPlayerInJourneyMode) return;
+        if (!Researcher.IsPlayerInJourneyMode ||
+            !Main.LocalPlayer.TryGetModPlayer(out HyperPlayer hyperPlayer))
+            return;
 
-        if (Main.LocalPlayer.TryGetModPlayer(out HyperPlayer modPlayer))
-        {
-            modPlayer.CurrentShopItems = items;
-            if (HyperConfig.Instance.AutoResearchShop) modPlayer.ResearchShop(items);
-        }
+        hyperPlayer.CurrentShopItems = items;
+        if (HyperConfig.Instance.ShopResearchMode == ShopResearchMode.OnShopOpen)
+            hyperPlayer.ResearchShop(items);
     }
 }

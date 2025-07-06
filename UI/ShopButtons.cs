@@ -1,5 +1,6 @@
 ﻿using System;
 using HyperResearch.Common.Configs;
+using HyperResearch.Common.Configs.Enums;
 using HyperResearch.Common.Systems;
 using HyperResearch.UI.Elements;
 using HyperResearch.Utils;
@@ -50,6 +51,10 @@ public class ShopButtons : UIState
 
     private void RebuildButtons()
     {
+        RemoveAllChildren();
+        if (HyperConfig.Instance.ShopResearchMode != ShopResearchMode.Manual)
+            return;
+
         Top = StyleDimension.FromPixels(
             MathF.Floor(
                 InventoryButtons.BaseMargin + (InventoryButtons.ItemSlotSize + InventoryButtons.ItemSlotGap) * 5) + 1f +
@@ -61,12 +66,8 @@ public class ShopButtons : UIState
             (ShopSlotSize * 2 + ShopSlotGap)
         );
 
-        RemoveAllChildren();
-        if (HyperConfig.Instance.ShowResearchShopButton)
-        {
-            ResearchShopButton.MarginTop = MathF.Floor((ShopSlotSize - ResearchShopButton.Width.Pixels) / 2);
-            ResearchShopButton.MarginLeft = MathF.Floor((ShopSlotSize - ResearchShopButton.Width.Pixels) / 2);
-            Append(ResearchShopButton);
-        }
+        ResearchShopButton.MarginTop = MathF.Floor((ShopSlotSize - ResearchShopButton.Width.Pixels) / 2);
+        ResearchShopButton.MarginLeft = MathF.Floor((ShopSlotSize - ResearchShopButton.Width.Pixels) / 2);
+        Append(ResearchShopButton);
     }
 }

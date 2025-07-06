@@ -32,8 +32,8 @@ public class HyperConfig : ModConfig
 
     [LabelArgs(ItemID.PlatinumCoin)]
     [TooltipArgs(ItemID.DefenderMedal)]
-    [DefaultValue(true)]
-    public bool AutoResearchShop;
+    [DefaultValue(ShopResearchMode.OnShopOpen)]
+    public ShopResearchMode ShopResearchMode;
     
 
     [Header("AutoTrashSettingsHeader")]
@@ -230,9 +230,6 @@ public class HyperConfig : ModConfig
     [Slider()]
     [DefaultValue(2)]
     public int InventoryButtonsSlotOffset;
-
-    [DefaultValue(true)]
-    public bool ShowResearchShopButton;
 
     [DefaultValue(true)]
     public bool ShowTotalResearchedItemsCount;
