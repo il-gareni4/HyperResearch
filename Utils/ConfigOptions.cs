@@ -13,29 +13,29 @@ public static class ConfigOptions
 
     public static bool IgnoreCraftingConditions => UseServerSettings
         ? ServerConfig.Instance.IgnoreCraftingConditions
-        : HyperConfig.Instance.IgnoreCraftingConditions;
+        : BaseConfig.Instance.IgnoreCraftingConditions;
 
     public static bool BalanceShimmerAutoresearch => UseServerSettings
         ? ServerConfig.Instance.BalanceShimmerAutoresearch
-        : HyperConfig.Instance.BalanceShimmerAutoresearch;
+        : BaseConfig.Instance.BalanceShimmerAutoresearch;
 
     public static bool BalancePrefixPicker => UseServerSettings
         ? ServerConfig.Instance.BalancePrefixPicker
-        : HyperConfig.Instance.BalancePrefixPicker;
+        : BaseConfig.Instance.BalancePrefixPicker;
 
     public static bool UseResearchedBannersBuff => UseServerSettings
         ? ServerConfig.Instance.UseResearchedBannersBuff
-        : HyperConfig.Instance.UseResearchedBannersBuff;
+        : BaseConfig.Instance.UseResearchedBannersBuff;
 
     public static bool UseResearchedPotionsBuff => UseServerSettings
         ? ServerConfig.Instance.UseResearchedPotionsBuff
-        : HyperConfig.Instance.UseResearchedPotionsBuff;
+        : BaseConfig.Instance.UseResearchedPotionsBuff;
 
     public static bool OnlyOneItemNeeded => UseServerSettings
         ? ServerConfig.Instance.OnlyOneItemNeeded
-        : HyperConfig.Instance.OnlyOneItemNeeded;
+        : CheatsConfig.Instance.OnlyOneItemNeeded;
 
     public static Dictionary<ItemDefinition, uint> ItemResearchCountOverride => UseServerSettings
         ? ServerConfig.Instance.ItemResearchCountOverride
-        : HyperConfig.Instance.ItemResearchCountOverride;
+        : CheatsConfig.Instance.ItemResearchCountOverride;
 }

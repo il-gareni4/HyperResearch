@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using HyperResearch.Common.Configs;
 using HyperResearch.UI;
 using HyperResearch.Utils;
@@ -11,13 +10,12 @@ using Terraria.UI;
 
 namespace HyperResearch.Common.GlobalItems;
 
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class PrefixableGlobalItem : GlobalItem
 {
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
         if (!ItemsUtils.CanHavePrefixes(item)
-            || !HyperConfig.Instance.ShowSelectPrefixTooltip
+            || !VisualConfig.Instance.ShowSelectPrefixTooltip
             || item.tooltipContext != ItemSlot.Context.CreativeInfinite
             || !PrefixWindow.CanBeShown)
             return;

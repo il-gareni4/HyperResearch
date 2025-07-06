@@ -139,7 +139,7 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
 
         Buffs.TryAdd(
             item.buffType,
-            BuffUtils.IsABuffPotion(item) && enable && HyperConfig.Instance.PotionBuffEnabledByDefault
+            BuffUtils.IsABuffPotion(item) && enable && BaseConfig.Instance.PotionBuffEnabledByDefault
         );
     }
 

@@ -14,7 +14,6 @@ public class KeybindSystem : ModSystem
     public static ModKeybind? MaxStackBind { get; private set; }
     public static ModKeybind? EnableDisableBuffBind { get; private set; }
     public static ModKeybind? ResearchLootBind { get; private set; }
-    public static ModKeybind? ResearchShopBind { get; private set; }
 
     public override void Load()
     {
@@ -32,7 +31,6 @@ public class KeybindSystem : ModSystem
         MaxStackBind = KeybindLoader.RegisterKeybind(Mod, "MaxStack", Keys.OemTilde);
         EnableDisableBuffBind = KeybindLoader.RegisterKeybind(Mod, "EnableDisableBuff", "Mouse3");
         ResearchLootBind = KeybindLoader.RegisterKeybind(Mod, "ResearchBagContents", Keys.OemQuotes);
-        ResearchShopBind = KeybindLoader.RegisterKeybind(Mod, "ResearchShop", Keys.OemSemicolon);
     }
 
     public override void Unload()
@@ -51,7 +49,6 @@ public class KeybindSystem : ModSystem
         MaxStackBind = null;
         EnableDisableBuffBind = null;
         ResearchLootBind = null;
-        ResearchShopBind = null;
     }
 #if DEBUG
     public static ModKeybind? ForgetAllBind { get; private set; }

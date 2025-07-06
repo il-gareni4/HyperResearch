@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using HyperResearch.Common.Configs;
-using HyperResearch.Common.Configs.Enums;
-using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Utils;
 using Terraria;
@@ -14,19 +11,18 @@ using Terraria.UI;
 
 namespace HyperResearch.Common.GlobalItems;
 
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public partial class BaseGlobalItem : GlobalItem
 {
     public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
     {
         if (!Researcher.IsPlayerInJourneyMode) return base.CanConsumeAmmo(weapon, ammo, player);
-        return HyperConfig.Instance.ConsumeResearchedAmmo || !Researcher.IsResearched(ammo.type);
+        return BaseConfig.Instance.ConsumeResearchedAmmo || !Researcher.IsResearched(ammo.type);
     }
 
     public override bool? CanConsumeBait(Player player, Item bait)
     {
         if (!Researcher.IsPlayerInJourneyMode) return base.CanConsumeBait(player, bait);
-        return HyperConfig.Instance.ConsumeResearchedBaits || !Researcher.IsResearched(bait.type);
+        return BaseConfig.Instance.ConsumeResearchedBaits || !Researcher.IsResearched(bait.type);
     }
 
     public override bool ConsumeItem(Item item, Player player)
@@ -35,14 +31,14 @@ public partial class BaseGlobalItem : GlobalItem
         if (Researcher.IsResearched(item.type))
         {
             if (item.createTile >= TileID.Dirt || item.createWall > WallID.None)
-                return HyperConfig.Instance.ConsumeResearchedBlocks;
+                return BaseConfig.Instance.ConsumeResearchedBlocks;
             if (item.shoot > ProjectileID.None)
-                return HyperConfig.Instance.ConsumeResearchedThrowingWeapons;
+                return BaseConfig.Instance.ConsumeResearchedThrowingWeapons;
             if (item.potion || item.healMana > 0 || item.buffType > 0)
-                return HyperConfig.Instance.ConsumeResearchedPotions;
+                return BaseConfig.Instance.ConsumeResearchedPotions;
             if (ItemsUtils.IsLootItem(item.type))
-                return HyperConfig.Instance.ConsumeResearchedLootItems;
-            if (!HyperConfig.Instance.ConsumeOtherResearchedItems)
+                return BaseConfig.Instance.ConsumeResearchedLootItems;
+            if (!BaseConfig.Instance.ConsumeOtherResearchedItems)
                 return false;
         }
 
@@ -53,7 +49,7 @@ public partial class BaseGlobalItem : GlobalItem
     {
         if (!Researcher.IsPlayerInJourneyMode || !Researcher.IsResearchable(item.type)) return;
         if (Researcher.IsResearched(item.type)
-            && HyperConfig.Instance.ShowResearchedTooltip
+            && VisualConfig.Instance.ShowResearchedTooltip
             && item.tooltipContext != ItemSlot.Context.CreativeInfinite)
         {
             TooltipLine researched =
@@ -66,7 +62,7 @@ public partial class BaseGlobalItem : GlobalItem
         else if (!Researcher.IsResearched(item.type))
         {
             int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
-            if (!HyperConfig.Instance.UseCustomResearchTooltip)
+            if (!VisualConfig.Instance.UseCustomResearchTooltip)
             {
                 if (!ConfigOptions.OnlyOneItemNeeded || vanillaTooltipIndex == -1) return;
 

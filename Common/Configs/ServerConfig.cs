@@ -1,76 +1,73 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config;
 
 namespace HyperResearch.Common.Configs;
 
-[SuppressMessage("ReSharper", "UnassignedField.Global")]
-[SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
 public class ServerConfig : ModConfig
 {
     [DefaultValue(false)]
-        public bool SyncResearchedItemsInOneTeam;
+    public bool SyncResearchedItemsInOneTeam;
 
-        [DefaultValue(false)]
-        public bool SyncSacrificesInOneTeam;
-
-
-        [Header("HostSettings")]
+    [DefaultValue(false)]
+    public bool SyncSacrificesInOneTeam;
 
 
-        [DefaultValue(false)]
-        public bool UseServerSettings;
+    [Header("HostSettings")]
 
 
-        [Header("$Mods.HyperResearch.Configs.HyperConfig.Headers.BuffsSettingsHeader")]
-
-        [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.UseResearchedBannersBuff.Label")]
-        [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.UseResearchedBannersBuff.Tooltip")]
-        [LabelArgs(ItemID.ZombieBanner)]
-        [DefaultValue(true)]
-        public bool UseResearchedBannersBuff;
-
-        [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.UseResearchedPotionsBuff.Label")]
-        [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.UseResearchedPotionsBuff.Tooltip")]
-        [LabelArgs(ItemID.WrathPotion)]
-        [DefaultValue(true)]
-        public bool UseResearchedPotionsBuff;
+    [DefaultValue(false)]
+    public bool UseServerSettings;
 
 
-        [Header("$Mods.HyperResearch.Configs.HyperConfig.Headers.BalanceSettingsHeader")]
+    [Header("$Mods.HyperResearch.Configs.BaseConfig.Headers.BuffsSettingsHeader")]
+
+    [LabelKey("$Mods.HyperResearch.Configs.BaseConfig.UseResearchedBannersBuff.Label")]
+    [TooltipKey("$Mods.HyperResearch.Configs.BaseConfig.UseResearchedBannersBuff.Tooltip")]
+    [LabelArgs(ItemID.ZombieBanner)]
+    [DefaultValue(true)]
+    public bool UseResearchedBannersBuff;
+
+    [LabelKey("$Mods.HyperResearch.Configs.BaseConfig.UseResearchedPotionsBuff.Label")]
+    [TooltipKey("$Mods.HyperResearch.Configs.BaseConfig.UseResearchedPotionsBuff.Tooltip")]
+    [LabelArgs(ItemID.WrathPotion)]
+    [DefaultValue(true)]
+    public bool UseResearchedPotionsBuff;
 
 
-        [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Label")]
-        [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.IgnoreCraftingConditions.Tooltip")]
-        [LabelArgs(ItemID.BottledWater)]
-        [DefaultValue(true)]
-        public bool IgnoreCraftingConditions;
+    [Header("$Mods.HyperResearch.Configs.BaseConfig.Headers.BalanceSettingsHeader")]
 
-        [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.BalanceShimmerAutoresearch.Label")]
-        [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.BalanceShimmerAutoresearch.Tooltip")]
-        [LabelArgs(ItemID.Shimmerfly)]
-        [DefaultValue(true)]
-        public bool BalanceShimmerAutoresearch;
 
-        [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.BalancePrefixPicker.Label")]
-        [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.BalancePrefixPicker.Tooltip")]
-        [LabelArgs(ItemID.TinkerersWorkshop)]
-        [DefaultValue(false)]
-        public bool BalancePrefixPicker;
+    [LabelKey("$Mods.HyperResearch.Configs.BaseConfig.IgnoreCraftingConditions.Label")]
+    [TooltipKey("$Mods.HyperResearch.Configs.BaseConfig.IgnoreCraftingConditions.Tooltip")]
+    [LabelArgs(ItemID.BottledWater)]
+    [DefaultValue(true)]
+    public bool IgnoreCraftingConditions;
 
-        [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.OnlyOneItemNeeded.Label")]
-        [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.OnlyOneItemNeeded.Tooltip")]
-        [LabelArgs(ItemID.AlphabetStatue1)]
-        [DefaultValue(false)]
-        public bool OnlyOneItemNeeded;
+    [LabelKey("$Mods.HyperResearch.Configs.BaseConfig.BalanceShimmerAutoresearch.Label")]
+    [TooltipKey("$Mods.HyperResearch.Configs.BaseConfig.BalanceShimmerAutoresearch.Tooltip")]
+    [LabelArgs(ItemID.Shimmerfly)]
+    [DefaultValue(true)]
+    public bool BalanceShimmerAutoresearch;
 
-        [LabelKey("$Mods.HyperResearch.Configs.HyperConfig.ItemResearchCountOverride.Label")]
-        [TooltipKey("$Mods.HyperResearch.Configs.HyperConfig.ItemResearchCountOverride.Tooltip")]
-        [ReloadRequired]
-        public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
+    [LabelKey("$Mods.HyperResearch.Configs.BaseConfig.BalancePrefixPicker.Label")]
+    [TooltipKey("$Mods.HyperResearch.Configs.BaseConfig.BalancePrefixPicker.Tooltip")]
+    [LabelArgs(ItemID.TinkerersWorkshop)]
+    [DefaultValue(false)]
+    public bool BalancePrefixPicker;
+
+    [LabelKey("$Mods.HyperResearch.Configs.BaseConfig.OnlyOneItemNeeded.Label")]
+    [TooltipKey("$Mods.HyperResearch.Configs.BaseConfig.OnlyOneItemNeeded.Tooltip")]
+    [LabelArgs(ItemID.AlphabetStatue1)]
+    [DefaultValue(false)]
+    public bool OnlyOneItemNeeded;
+
+    [LabelKey("$Mods.HyperResearch.Configs.BaseConfig.ItemResearchCountOverride.Label")]
+    [TooltipKey("$Mods.HyperResearch.Configs.BaseConfig.ItemResearchCountOverride.Tooltip")]
+    [ReloadRequired]
+    public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
     public static ServerConfig Instance { get; private set; } = null!;
 

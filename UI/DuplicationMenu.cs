@@ -41,7 +41,7 @@ internal class DuplicationMenu : UIState
     public override void Update(GameTime gameTime)
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
-        if (!HyperConfig.Instance.ShowTotalResearchedItemsCount)
+        if (!VisualConfig.Instance.ShowTotalResearchedItemsCount)
         {
             if (Children.Any()) RemoveAllChildren();
             return;

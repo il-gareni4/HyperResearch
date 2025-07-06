@@ -238,20 +238,20 @@ public class Researcher
 
     /// <inheritdoc cref="ProcessResearched(bool, bool, bool)"/>
     /// <remarks>
-    /// This method is a shortcut for <see cref="ProcessResearched(bool, bool, bool)"/> with the default values from <see cref="HyperConfig"/>.
+    /// This method is a shortcut for <see cref="ProcessResearched(bool, bool, bool)"/> with the default values from <see cref="BaseConfig"/>.
     /// </remarks>
     public void ProcessResearched()
     {
         ProcessResearched(
-            HyperConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.OnResearch,
-            HyperConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch,
-            HyperConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch
+            BaseConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.OnResearch,
+            BaseConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch,
+            BaseConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch
         );
     }
 
     /// <inheritdoc cref="ProcessResearched(bool, bool, bool)"/>
     /// <remarks>
-    /// This method is a shortcut for <see cref="ProcessResearched(bool, bool, bool)"/> with shimmer corrections (<see cref="HyperConfig.BalanceShimmerAutoresearch"/>).
+    /// This method is a shortcut for <see cref="ProcessResearched(bool, bool, bool)"/> with shimmer corrections (<see cref="BaseConfig.BalanceShimmerAutoresearch"/>).
     /// </remarks>
     public void ProcessResearched(HyperPlayer hyperPlayer)
     {

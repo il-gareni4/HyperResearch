@@ -4,7 +4,6 @@ using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Terraria;
 using Terraria.ModLoader;
@@ -48,7 +47,7 @@ public class HooksSystem : ModSystem
             c.EmitLdloc1(); // item
             c.EmitDelegate((SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Color color, int context, Item item) =>
             {
-                if (HyperConfig.Instance.VisualizeBuffStatus && context == ItemSlot.Context.CreativeInfinite)
+                if (VisualConfig.Instance.VisualizeBuffStatus && context == ItemSlot.Context.CreativeInfinite)
                 {
                     if (ConfigOptions.UseResearchedBannersBuff &&
                         BannerSystem.TryItemToBanner(item.type, out int bannerId) &&

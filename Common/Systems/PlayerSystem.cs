@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using HyperResearch.Common.Configs;
+﻿using HyperResearch.Common.Configs;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
 using Terraria;
@@ -9,7 +8,6 @@ using Terraria.UI;
 
 namespace HyperResearch.Common.Systems;
 
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class PlayerSystem : ModSystem
 {
     private HyperPlayer? HyperPlayer { get; set; }
@@ -21,7 +19,7 @@ public class PlayerSystem : ModSystem
         {
             HyperPlayer = modPlayer;
 
-            HyperConfig.Changed += HyperPlayer.OnClientConfigChanged;
+            BaseConfig.Changed += HyperPlayer.OnClientConfigChanged;
             UISystem uiSystem = ModContent.GetInstance<UISystem>();
 
             uiSystem.InventoryButtons!.ResearchButton.OnLeftMouseDown += OnResearchButtonMouseDown;
@@ -39,7 +37,7 @@ public class PlayerSystem : ModSystem
     {
         if (Main.netMode == NetmodeID.Server || HyperPlayer == null || !Researcher.IsPlayerInJourneyMode) return;
 
-        HyperConfig.Changed -= HyperPlayer.OnClientConfigChanged;
+        BaseConfig.Changed -= HyperPlayer.OnClientConfigChanged;
         UISystem uiSystem = ModContent.GetInstance<UISystem>();
 
         uiSystem.InventoryButtons!.ResearchButton.OnLeftMouseDown -= OnResearchButtonMouseDown;

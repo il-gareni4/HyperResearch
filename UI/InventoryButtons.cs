@@ -139,14 +139,14 @@ public class InventoryButtons : UIState
     {
         Left = StyleDimension.FromPixels(MathF.Floor(BaseMargin +
                                                      (ItemSlotSize + ItemSlotGap) *
-                                                     (HyperConfig.Instance.InventoryButtonsSlotOffset - 1)));
+                                                     (VisualConfig.Instance.InventoryButtonsSlotOffset - 1)));
         Top = StyleDimension.FromPixels(MathF.Floor(BaseMargin + (ItemSlotSize + ItemSlotGap) * 5));
 
         var left = 0f;
         RemoveAllChildren();
-        if (HyperConfig.Instance.ShowResearchInventoryButton &&
-            HyperConfig.Instance.ResearchMode != ResearchMode.None &&
-            HyperConfig.Instance.ResearchMode != ResearchMode.AutoSacrificeAlways)
+        if (VisualConfig.Instance.ShowResearchInventoryButton &&
+            BaseConfig.Instance.ResearchMode != ResearchMode.None &&
+            BaseConfig.Instance.ResearchMode != ResearchMode.AutoSacrificeAlways)
         {
             ResearchButton.MarginTop = BaseTopMargin;
             ResearchButton.MarginLeft = (ItemSlotSize - ResearchButton.Width.Pixels) / 2;
@@ -154,7 +154,7 @@ public class InventoryButtons : UIState
             left += ItemSlotSize + ItemSlotGap;
         }
 
-        if (HyperConfig.Instance.ShowClearInventoryButton)
+        if (VisualConfig.Instance.ShowClearInventoryButton)
         {
             ClearButton.MarginTop = BaseTopMargin;
             ClearButton.MarginLeft = MathF.Floor(left) + (ItemSlotSize - ClearButton.Width.Pixels) / 2;
@@ -162,8 +162,8 @@ public class InventoryButtons : UIState
             left += ItemSlotSize + ItemSlotGap;
         }
 
-        if (HyperConfig.Instance.ShowAutoCraftButton &&
-            HyperConfig.Instance.CraftablesResearchMode != CraftablesResearchMode.None)
+        if (VisualConfig.Instance.ShowAutoCraftButton &&
+            BaseConfig.Instance.CraftablesResearchMode != CraftablesResearchMode.None)
         {
             ResearchCraftableButton.MarginTop = BaseTopMargin;
             ResearchCraftableButton.MarginLeft = MathF.Floor(left) + (ItemSlotSize - ResearchCraftableButton.Width.Pixels) / 2;
@@ -171,8 +171,8 @@ public class InventoryButtons : UIState
             left += ItemSlotSize + ItemSlotGap;
         }
 
-        if (HyperConfig.Instance.ShowShimmerButton &&
-            HyperConfig.Instance.ShimmerResearchMode != ShimmerResearchMode.None)
+        if (VisualConfig.Instance.ShowShimmerButton &&
+            BaseConfig.Instance.ShimmerResearchMode != ShimmerResearchMode.None)
         {
             ShimmerButton.MarginTop = BaseTopMargin;
             ShimmerButton.MarginLeft = MathF.Floor(left) + (ItemSlotSize - ShimmerButton.Width.Pixels) / 2;
@@ -180,8 +180,8 @@ public class InventoryButtons : UIState
             left += ItemSlotSize + ItemSlotGap;
         }
 
-        if (HyperConfig.Instance.ShowShimmerDecraftButton &&
-            HyperConfig.Instance.DecraftsResearchMode != DecraftsResearchMode.None)
+        if (VisualConfig.Instance.ShowShimmerDecraftButton &&
+            BaseConfig.Instance.DecraftsResearchMode != DecraftsResearchMode.None)
         {
             ShimmerDecraftButton.MarginTop = BaseTopMargin;
             ShimmerDecraftButton.MarginLeft = MathF.Floor(left) + (ItemSlotSize - ShimmerDecraftButton.Width.Pixels) / 2;
@@ -189,7 +189,8 @@ public class InventoryButtons : UIState
             left += ItemSlotSize + ItemSlotGap;
         }
 
-        if (HyperConfig.Instance.ShowTeamShareButton && Main.netMode == NetmodeID.MultiplayerClient)
+        if (VisualConfig.Instance.ShowTeamShareButton &&
+            Main.netMode == NetmodeID.MultiplayerClient)
         {
             ShareButton.MarginTop = BaseTopMargin;
             ShareButton.MarginLeft = MathF.Floor(left) + (ItemSlotSize - ShareButton.Width.Pixels) / 2;
@@ -210,12 +211,14 @@ public class InventoryButtons : UIState
     }
 
     private void SetupEvents() {
-        HyperConfig.Changed += RebuildButtons;
+        BaseConfig.Changed += RebuildButtons;
+        VisualConfig.Changed += RebuildButtons;
         Main.LocalPlayer.GetModPlayer<HyperPlayer>().OnTeamChanged += RecolorShareButton;
     }
 
     private void RemoveEvents() {
-        HyperConfig.Changed -= RebuildButtons;
+        BaseConfig.Changed -= RebuildButtons;
+        VisualConfig.Changed -= RebuildButtons;
         Main.LocalPlayer.GetModPlayer<HyperPlayer>().OnTeamChanged -= RecolorShareButton;
     }
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using HyperResearch.Common.Configs;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.Systems;
@@ -12,13 +11,12 @@ using Terraria.UI;
 
 namespace HyperResearch.Common.GlobalItems;
 
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class BuffGlobalItem : GlobalItem
 {
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
         if (!Researcher.IsPlayerInJourneyMode
-            || !HyperConfig.Instance.ShowPotionBuffTooltips
+            || !VisualConfig.Instance.ShowPotionBuffTooltips
             || item.tooltipContext != ItemSlot.Context.CreativeInfinite
             || !ConfigOptions.UseResearchedPotionsBuff
             || !BuffUtils.IsAcceptableBuffItem(item)

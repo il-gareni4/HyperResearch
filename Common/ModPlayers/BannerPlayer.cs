@@ -115,6 +115,6 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
     private void TryAddBanner(int itemId, bool enabled = true)
     {
         if (!BannerSystem.TryItemToBanner(itemId, out int bannerId)) return;
-        ResearchedBanners.TryAdd(bannerId, enabled && HyperConfig.Instance.BannerBuffEnabledByDefault);
+        ResearchedBanners.TryAdd(bannerId, enabled && BaseConfig.Instance.BannerBuffEnabledByDefault);
     }
 }

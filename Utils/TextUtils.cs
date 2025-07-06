@@ -31,7 +31,7 @@ public static class TextUtils
     /// <summary>Displays information about researched items in the game chat</summary>
     public static void MessageResearchedItems(List<int>? items)
     {
-        if (!HyperConfig.Instance.ShowNewlyResearchedItems || items == null || items.Count == 0) return;
+        if (!VisualConfig.Instance.ShowNewlyResearchedItems || items == null || items.Count == 0) return;
         Main.NewText(
             Language.GetTextValue(
                 "Mods.HyperResearch.Messages.ResearchedItems",
@@ -45,7 +45,7 @@ public static class TextUtils
     /// <summary>Displays information about researched crating items in the game chat</summary>
     private static void MessageResearchedCraftableItems(List<int>? items)
     {
-        if (!HyperConfig.Instance.ShowResearchedCraftableItems || items == null || items.Count == 0) return;
+        if (!VisualConfig.Instance.ShowResearchedCraftableItems || items == null || items.Count == 0) return;
         Main.NewText(
             Language.GetTextValue(
                 "Mods.HyperResearch.Messages.CraftResearchedItems",
@@ -59,7 +59,7 @@ public static class TextUtils
     /// <summary>Displays information about researched shimmered items in the game chat</summary>
     private static void MessageResearchedShimmeredItems(List<int>? items)
     {
-        if (!HyperConfig.Instance.ShowResearchedShimmeredItems || items == null || items.Count == 0) return;
+        if (!VisualConfig.Instance.ShowResearchedShimmeredItems || items == null || items.Count == 0) return;
         Main.NewText(
             Language.GetTextValue(
                 "Mods.HyperResearch.Messages.ShimmerResearchedItems",
@@ -72,7 +72,7 @@ public static class TextUtils
 
     private static void MessageDecraftItems(List<int>? items)
     {
-        if (!HyperConfig.Instance.ShowResearchedDecraftItems || items == null || items.Count == 0) return;
+        if (!VisualConfig.Instance.ShowResearchedDecraftItems || items == null || items.Count == 0) return;
         Main.NewText(
             Language.GetTextValue(
                 "Mods.HyperResearch.Messages.DecraftResearchedItems",
@@ -85,7 +85,7 @@ public static class TextUtils
 
     private static void MessageSacrifices(Dictionary<int, int>? sacrifices)
     {
-        if (!HyperConfig.Instance.ShowSacrifices || sacrifices == null || sacrifices.Count == 0) return;
+        if (!VisualConfig.Instance.ShowSacrifices || sacrifices == null || sacrifices.Count == 0) return;
         Main.NewText(
             Language.GetTextValue(
                 "Mods.HyperResearch.Messages.Sacrifices",
@@ -98,7 +98,7 @@ public static class TextUtils
 
     public static void MessageOtherPlayerResearchedItems(List<int>? items, int playerId)
     {
-        if (!HyperConfig.Instance.ShowOtherPlayersResearchedItems || items == null || items.Count == 0) return;
+        if (!VisualConfig.Instance.ShowOtherPlayersResearchedItems || items == null || items.Count == 0) return;
         Main.NewText(
             Language.GetTextValue(
                 "Mods.HyperResearch.Messages.OtherPlayerResearchedItems",
@@ -112,7 +112,7 @@ public static class TextUtils
 
     private static void MessageSharedItems(List<int>? items, int playerId)
     {
-        if (!HyperConfig.Instance.ShowSharedItems || items == null || items.Count == 0) return;
+        if (!VisualConfig.Instance.ShowSharedItems || items == null || items.Count == 0) return;
         Main.NewText(
             Language.GetTextValue(
                 "Mods.HyperResearch.Messages.SharedItems",
@@ -126,7 +126,7 @@ public static class TextUtils
 
     private static void MessageSharedSacrifices(Dictionary<int, int>? sacrifices, int playerId)
     {
-        if (!HyperConfig.Instance.ShowSharedSacrifices || sacrifices == null || sacrifices.Count == 0) return;
+        if (!VisualConfig.Instance.ShowSharedSacrifices || sacrifices == null || sacrifices.Count == 0) return;
         Main.NewText(
             Language.GetTextValue(
                 "Mods.HyperResearch.Messages.SharedSacrifices",

@@ -1,17 +1,14 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using HyperResearch.Common;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
 using HyperResearch.Utils.Extensions;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace HyperResearch;
 
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class HyperResearch : Mod
 {
     public override void HandlePacket(BinaryReader reader, int whoAmI)

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using HyperResearch.UI;
 using HyperResearch.Utils;
 using Microsoft.Xna.Framework;
@@ -12,7 +11,6 @@ using Terraria.UI;
 namespace HyperResearch.Common.Systems;
 
 [Autoload(Side = ModSide.Client)]
-[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 internal class UISystem : ModSystem
 {
     public static Asset<Texture2D>? ResearchButtonTexture;

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using HyperResearch.Common.Configs;
 using HyperResearch.Common.Systems;
@@ -11,13 +10,12 @@ using Terraria.ModLoader;
 
 namespace HyperResearch.Common.GlobalItems;
 
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class LootGlobalItem : GlobalItem
 {
     public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     {
         if (!Researcher.IsPlayerInJourneyMode ||
-            !HyperConfig.Instance.ShowResearchBagTooltip ||
+            !VisualConfig.Instance.ShowResearchBagTooltip ||
             !Researcher.IsResearched(item.type) ||
             !ItemLoader.CanRightClick(item) ||
             !ItemsUtils.IsLootItem(item.type) ||

@@ -42,21 +42,21 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         {
             if (!_wasInAether && value &&
                 ConfigOptions.BalanceShimmerAutoresearch &&
-                (HyperConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch ||
-                 HyperConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch))
+                (BaseConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch ||
+                 BaseConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch))
             {
                 Researcher researcher = new();
                 foreach (int itemId in Researcher.ReseachedItems)
                 {
-                    if (HyperConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch)
+                    if (BaseConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch)
                         researcher.TryResearchShimmerItem(itemId);
-                    if (HyperConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch)
+                    if (BaseConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch)
                         researcher.TryResearchDecraftItems(itemId);
                 }
                 researcher.ProcessResearched(
                     AutoResearchCraftable,
-                    HyperConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch,
-                    HyperConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch
+                    BaseConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch,
+                    BaseConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch
                 );
 
                 AfterLocalResearch(researcher);
@@ -65,10 +65,10 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         }
     }
 
-    public bool AutoResearchCraftable => HyperConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.OnResearch;
+    public bool AutoResearchCraftable => BaseConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.OnResearch;
     public bool CanShimmerResearch => !ConfigOptions.BalanceShimmerAutoresearch || WasInAether;
-    public bool AutoResearchShimmer => HyperConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch && CanShimmerResearch;
-    public bool AutoResearchDecraft => HyperConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch && CanShimmerResearch;
+    public bool AutoResearchShimmer => BaseConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch && CanShimmerResearch;
+    public bool AutoResearchDecraft => BaseConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch && CanShimmerResearch;
 
     public void OnResearch(Item item)
     {
@@ -104,8 +104,6 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             MaxStackAction();
         if (KeybindSystem.ResearchLootBind!.JustPressed)
             ResearchLootAction();
-        if (KeybindSystem.ResearchShopBind!.JustPressed)
-            ResearchShopAction();
     }
 
     public override void ProcessTriggers(TriggersSet triggersSet)
@@ -133,8 +131,6 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             MaxStackAction();
         if (KeybindSystem.ResearchLootBind!.JustPressed)
             ResearchLootAction();
-        if (KeybindSystem.ResearchShopBind!.JustPressed)
-            ResearchShopAction();
         if (KeybindSystem.ShareAllResearched!.JustPressed)
             ShareResearchedItemsAction();
     }
@@ -162,8 +158,8 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     public void SacrificeInventoryAction()
     {
-        if (HyperConfig.Instance.ResearchMode == ResearchMode.None ||
-            HyperConfig.Instance.ResearchMode == ResearchMode.AutoSacrificeAlways)
+        if (BaseConfig.Instance.ResearchMode == ResearchMode.None ||
+            BaseConfig.Instance.ResearchMode == ResearchMode.AutoSacrificeAlways)
             return;
 
         SacrificeInventory();
@@ -171,7 +167,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     public void ResearchCraftableAction()
     {
-        if (HyperConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.None)
+        if (BaseConfig.Instance.CraftablesResearchMode == CraftablesResearchMode.None)
             return;
 
         ResearchCraftable();
@@ -287,13 +283,13 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode || Player != Main.LocalPlayer) return;
 
-        if (HyperConfig.Instance.ResearchMode == ResearchMode.FavouriteSacrifice)
+        if (BaseConfig.Instance.ResearchMode == ResearchMode.FavouriteSacrifice)
             SacrificeInventory(true);
-        if (HyperConfig.Instance.ResearchMode == ResearchMode.Favourite)
+        if (BaseConfig.Instance.ResearchMode == ResearchMode.Favourite)
             ResearchInventory(true);
-        if (HyperConfig.Instance.ResearchMode == ResearchMode.AutoResearch)
+        if (BaseConfig.Instance.ResearchMode == ResearchMode.AutoResearch)
             ResearchInventory();
-        if (HyperConfig.Instance.ResearchMode == ResearchMode.AutoSacrificeAlways)
+        if (BaseConfig.Instance.ResearchMode == ResearchMode.AutoSacrificeAlways)
             SacrificeInventory(silent: true);
 
         if (!WasInAether && Main.LocalPlayer.ZoneShimmer)
@@ -307,8 +303,8 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         if (!Researcher.IsPlayerInJourneyMode)
             return true;
         if (Researcher.IsResearched(item.type))
-            return !HyperConfig.Instance.AutoTrashResearched;
-        if (HyperConfig.Instance.ResearchMode != ResearchMode.AutoSacrificeOnPickup)
+            return !BaseConfig.Instance.AutoTrashResearched;
+        if (BaseConfig.Instance.ResearchMode != ResearchMode.AutoSacrificeOnPickup)
             return true;
 
         Researcher researcher = new();
@@ -418,9 +414,9 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
                 if (!item.favorited)
                     continue;
             else if (item.favorited ||
-                    (!HyperConfig.Instance.SacrificeHotbarSlots && IsHotbarSlot(slot)) ||
-                    (!HyperConfig.Instance.SacrificeCoinsSlots && IsCoinSlot(slot)) ||
-                    (!HyperConfig.Instance.SacrificeAmmoSlots && IsAmmoSlot(slot)))
+                    (!BaseConfig.Instance.SacrificeHotbarSlots && IsHotbarSlot(slot)) ||
+                    (!BaseConfig.Instance.SacrificeCoinsSlots && IsCoinSlot(slot)) ||
+                    (!BaseConfig.Instance.SacrificeAmmoSlots && IsAmmoSlot(slot)))
                 continue;
 
             itemToSacrifice.Add(item);
@@ -441,9 +437,9 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         {
             Item? item = Player.inventory[slot];
             if (item.favorited || item.IsAir || !Researcher.IsResearched(item.type) ||
-                (!HyperConfig.Instance.ClearHotbarSlots && IsHotbarSlot(slot)) ||
-                (!HyperConfig.Instance.ClearCoinsSlots && IsCoinSlot(slot)) ||
-                (!HyperConfig.Instance.ClearAmmoSlots && IsAmmoSlot(slot)))
+                (!BaseConfig.Instance.ClearHotbarSlots && IsHotbarSlot(slot)) ||
+                (!BaseConfig.Instance.ClearCoinsSlots && IsCoinSlot(slot)) ||
+                (!BaseConfig.Instance.ClearAmmoSlots && IsAmmoSlot(slot)))
                 continue;
 
             item.TurnToAir();
@@ -459,9 +455,9 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         {
             Item? item = Player.inventory[slot];
             if (item.IsAir || item.favorited || !Researcher.IsResearched(item.type) ||
-                (!HyperConfig.Instance.ClearHotbarSlots && IsHotbarSlot(slot)) ||
-                (!HyperConfig.Instance.ClearCoinsSlots && IsCoinSlot(slot)) ||
-                (!HyperConfig.Instance.ClearAmmoSlots && IsAmmoSlot(slot)))
+                (!BaseConfig.Instance.ClearHotbarSlots && IsHotbarSlot(slot)) ||
+                (!BaseConfig.Instance.ClearCoinsSlots && IsCoinSlot(slot)) ||
+                (!BaseConfig.Instance.ClearAmmoSlots && IsAmmoSlot(slot)))
                 continue;
             if (items.Contains(item.type)) item.TurnToAir();
         }
@@ -508,8 +504,8 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     public void OnClientConfigChanged()
     {
         if (!ConfigOptions.OnlyOneItemNeeded &&
-            HyperConfig.Instance.ShimmerResearchMode != ShimmerResearchMode.OnResearch &&
-            HyperConfig.Instance.DecraftsResearchMode != DecraftsResearchMode.OnResearch)
+            BaseConfig.Instance.ShimmerResearchMode != ShimmerResearchMode.OnResearch &&
+            BaseConfig.Instance.DecraftsResearchMode != DecraftsResearchMode.OnResearch)
             return;
 
         Researcher researcher = new();
@@ -581,7 +577,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         if (researcher.AnyItemResearched)
         {
             SoundEngine.PlaySound(SoundID.ResearchComplete);
-            if (HyperConfig.Instance.AutoTrashAfterResearching)
+            if (BaseConfig.Instance.AutoTrashAfterResearching)
                 TrashInventoryItems([.. researcher.AllResearchedItems]);
         }
         else if (researcher.DefaultSacrifices is { Count: > 0 } && playSacrificeSounds)

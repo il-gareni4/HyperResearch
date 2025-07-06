@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using HyperResearch.Common.Configs;
+﻿using HyperResearch.Common.Configs;
 using HyperResearch.Common.Configs.Enums;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Utils;
@@ -8,7 +7,6 @@ using Terraria.ModLoader;
 
 namespace HyperResearch.Common;
 
-[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class GlobalTownNPC : GlobalNPC
 {
     public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
@@ -18,7 +16,7 @@ public class GlobalTownNPC : GlobalNPC
             return;
 
         hyperPlayer.CurrentShopItems = items;
-        if (HyperConfig.Instance.ShopResearchMode == ShopResearchMode.OnShopOpen)
+        if (BaseConfig.Instance.ShopResearchMode == ShopResearchMode.OnShopOpen)
             hyperPlayer.ResearchShop(items);
     }
 }

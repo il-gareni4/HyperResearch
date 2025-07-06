@@ -23,7 +23,7 @@ public class ShopButtons : UIState
 
     public override void OnInitialize()
     {
-        HyperConfig.Changed += RebuildButtons;
+        BaseConfig.Changed += RebuildButtons;
 
         ResearchShopButton = new UIAnimatedImageButton(UISystem.ResearchShopButtonTexture!)
         {
@@ -52,7 +52,7 @@ public class ShopButtons : UIState
     private void RebuildButtons()
     {
         RemoveAllChildren();
-        if (HyperConfig.Instance.ShopResearchMode != ShopResearchMode.Manual)
+        if (BaseConfig.Instance.ShopResearchMode != ShopResearchMode.Manual)
             return;
 
         Top = StyleDimension.FromPixels(
