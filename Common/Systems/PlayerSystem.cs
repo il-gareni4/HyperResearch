@@ -55,7 +55,7 @@ public class PlayerSystem : ModSystem
     }
 
     private void OnResearchButtonMouseDown(UIMouseEvent evt, UIElement el) => 
-        HyperPlayer?.SacrificeInventory();
+        HyperPlayer?.SacrificeInventoryAction();
         
     private void OnClearButtonMouseDown(UIMouseEvent evt, UIElement el) => 
         HyperPlayer?.ClearResearched();

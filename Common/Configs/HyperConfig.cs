@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using HyperResearch.Common.Configs.Enums;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
 
@@ -14,12 +15,8 @@ public class HyperConfig : ModConfig
     [Header("AutoResearchSettingsHeader")]
 
     [LabelArgs(ItemID.YoyoBag)]
-    [DefaultValue(true)]
-    public bool ResearchInventory;
-
-    [LabelArgs(ItemID.Toolbelt)]
-    [DefaultValue(false)]
-    public bool AutoSacrifice;
+    [DefaultValue(ResearchMode.AutoResearch)]
+    public ResearchMode ResearchMode;
 
     [LabelArgs(ItemID.WorkBench)]
     [DefaultValue(true)]

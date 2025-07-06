@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using HyperResearch.Common.Configs;
+using HyperResearch.Common.Configs.Enums;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.Systems;
 using HyperResearch.UI.Elements;
@@ -143,7 +144,9 @@ public class InventoryButtons : UIState
 
         var left = 0f;
         RemoveAllChildren();
-        if (HyperConfig.Instance.ShowResearchInventoryButton)
+        if (HyperConfig.Instance.ShowResearchInventoryButton &&
+            HyperConfig.Instance.ResearchMode != ResearchMode.None &&
+            HyperConfig.Instance.ResearchMode != ResearchMode.AutoSacrificeAlways)
         {
             ResearchButton.MarginTop = BaseTopMargin;
             ResearchButton.MarginLeft = (ItemSlotSize - ResearchButton.Width.Pixels) / 2;

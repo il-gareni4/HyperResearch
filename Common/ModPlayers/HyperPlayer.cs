@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HyperResearch.Common.Configs;
+using HyperResearch.Common.Configs.Enums;
 using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
@@ -88,7 +89,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             ForgetAetherAction();
 #endif
         if (KeybindSystem.SacrificeInventoryBind!.JustPressed)
-            SacrificeInventory();
+            SacrificeInventoryAction();
         if (KeybindSystem.ClearResearchedBind!.JustPressed)
             ClearResearched();
         if (KeybindSystem.ResearchCraftableBind!.JustPressed)
@@ -117,7 +118,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             ForgetAetherAction();
 #endif
         if (KeybindSystem.SacrificeInventoryBind!.JustPressed)
-            SacrificeInventory();
+            SacrificeInventoryAction();
         if (KeybindSystem.ClearResearchedBind!.JustPressed)
             ClearResearched();
         if (KeybindSystem.ResearchCraftableBind!.JustPressed)
@@ -156,6 +157,15 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         _wasInAether = false;
     }
 #endif
+
+    public void SacrificeInventoryAction()
+    {
+        if (HyperConfig.Instance.ResearchMode == ResearchMode.None ||
+            HyperConfig.Instance.ResearchMode == ResearchMode.AutoSacrificeAlways)
+            return;
+
+        SacrificeInventory();
+    }
 
     public void ResearchShimmerItemsAction()
     {
@@ -267,12 +277,36 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode || Player != Main.LocalPlayer) return;
 
-        if (HyperConfig.Instance.ResearchInventory) ResearchInventory();
+        if (HyperConfig.Instance.ResearchMode == ResearchMode.FavouriteSacrifice)
+            SacrificeInventory(true);
+        if (HyperConfig.Instance.ResearchMode == ResearchMode.Favourite)
+            ResearchInventory(true);
+        if (HyperConfig.Instance.ResearchMode == ResearchMode.AutoResearch)
+            ResearchInventory();
+        if (HyperConfig.Instance.ResearchMode == ResearchMode.AutoSacrificeAlways)
+            SacrificeInventory(silent: true);
 
         if (!WasInAether && Main.LocalPlayer.ZoneShimmer)
-            WasInAether = true;
+                WasInAether = true;
 
         _previousTeam = Player.team;
+    }
+
+    public override bool OnPickup(Item item)
+    {
+        if (!Researcher.IsPlayerInJourneyMode)
+            return true;
+        if (Researcher.IsResearched(item.type))
+            return !HyperConfig.Instance.AutoTrashResearched;
+        if (HyperConfig.Instance.ResearchMode != ResearchMode.AutoSacrificeOnPickup)
+            return true;
+
+        Researcher researcher = new();
+        researcher.SacrificeItem(item);
+        researcher.ProcessResearched(this);
+        AfterLocalResearch(researcher, false);
+
+        return true;
     }
 
     public override void SaveData(TagCompound tag)
@@ -340,23 +374,19 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         AfterLocalResearch(researcher, playerShared: fromPlayer);
     }
 
-    /// <summary>
-    ///     Automatically research items in the inventory if the total amount is equal to or more than required for research
-    ///     If number of items is not enough then it does nothing
-    /// </summary>
-    private void ResearchInventory()
+    private void ResearchInventory(bool favouriteOnly = false)
     {
-        // Counting every item into a single dictionary
-        // Used so that items of the same type and different slots are counted together
         Dictionary<int, int> items = [];
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
             Item? item = Player.inventory[slot];
             if (item.IsAir) continue;
+            if (favouriteOnly && !item.favorited) continue;
             items[item.type] = items.GetValueOrDefault(item.type, 0) + item.stack;
         }
 
         if (items.Count == 0) return;
+
         Researcher researcher = new();
         researcher.ResearchItemsWithCount(items);
         researcher.ProcessResearched(this);
@@ -366,26 +396,32 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     /// <summary>
     ///     Sacrifices every unresearched item in the inventory
     /// </summary>
-    public void SacrificeInventory()
+    public void SacrificeInventory(bool favouriteOnly = false, bool silent = false)
     {
         List<Item> itemToSacrifice = [];
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
             Item? item = Player.inventory[slot];
-
-            if (item.IsAir || item.favorited ||
-                (!HyperConfig.Instance.SacrificeHotbarSlots && IsHotbarSlot(slot)) ||
-                (!HyperConfig.Instance.SacrificeCoinsSlots && IsCoinSlot(slot)) ||
-                (!HyperConfig.Instance.SacrificeAmmoSlots && IsAmmoSlot(slot)))
+            if (item.IsAir)
+                continue;
+            if (favouriteOnly) 
+                if (!item.favorited)
+                    continue;
+            else if (item.favorited ||
+                    (!HyperConfig.Instance.SacrificeHotbarSlots && IsHotbarSlot(slot)) ||
+                    (!HyperConfig.Instance.SacrificeCoinsSlots && IsCoinSlot(slot)) ||
+                    (!HyperConfig.Instance.SacrificeAmmoSlots && IsAmmoSlot(slot)))
                 continue;
 
             itemToSacrifice.Add(item);
         }
 
+        if (itemToSacrifice.Count == 0) return;
+
         Researcher researcher = new();
         researcher.SacrificeItems(itemToSacrifice);
         researcher.ProcessResearched(this);
-        AfterLocalResearch(researcher);
+        AfterLocalResearch(researcher, !silent);
     }
 
     public void ClearResearched()

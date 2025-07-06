@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using HyperResearch.Common.Configs;
+using HyperResearch.Common.Configs.Enums;
 using HyperResearch.Common.ModPlayers;
 using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Utils;
@@ -16,24 +17,6 @@ namespace HyperResearch.Common.GlobalItems;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public partial class BaseGlobalItem : GlobalItem
 {
-    public override bool OnPickup(Item item, Player player)
-    {
-        if (!Researcher.IsPlayerInJourneyMode) return true;
-        if (Researcher.IsResearched(item.type))
-            return !HyperConfig.Instance.AutoTrashResearched;
-
-        if (!HyperConfig.Instance.AutoSacrifice) return true;
-
-        Researcher researcher = new();
-        researcher.SacrificeItem(item);
-        if (player.TryGetModPlayer(out HyperPlayer hyperPlayer))
-        {
-            researcher.ProcessResearched(hyperPlayer);
-            hyperPlayer.AfterLocalResearch(researcher, false);
-        }
-        return true;
-    }
-
     public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
     {
         if (!Researcher.IsPlayerInJourneyMode) return base.CanConsumeAmmo(weapon, ammo, player);
