@@ -75,6 +75,8 @@ public static class ItemsUtils
     {
         if (ContentSamples.ItemsByType[itemId].createTile == TileID.MusicBoxes)
             return null;
+        if (GetShimmerItemId(itemId) >= 0)
+            return null;
 
         if (ItemID.Sets.ShimmerCountsAsItem.IndexInRange(itemId) && ItemID.Sets.ShimmerCountsAsItem[itemId] > 0)
             itemId = ItemID.Sets.ShimmerCountsAsItem[itemId];

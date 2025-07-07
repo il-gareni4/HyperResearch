@@ -295,17 +295,24 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode || Player != Main.LocalPlayer) return;
 
-        if (BaseConfig.Instance.ResearchMode == ResearchMode.FavouriteSacrifice)
-            SacrificeInventory(true);
-        if (BaseConfig.Instance.ResearchMode == ResearchMode.Favourite)
-            ResearchInventory(true);
-        if (BaseConfig.Instance.ResearchMode == ResearchMode.AutoResearch)
-            ResearchInventory();
-        if (BaseConfig.Instance.ResearchMode == ResearchMode.AutoSacrificeAlways)
-            SacrificeInventory(silent: true);
+        switch (BaseConfig.Instance.ResearchMode)
+        {
+            case ResearchMode.Favourite:
+                ResearchInventory(true);
+                break;
+            case ResearchMode.FavouriteSacrifice:
+                SacrificeInventory(true);
+                break;
+            case ResearchMode.AutoResearch:
+                ResearchInventory();
+                break;
+            case ResearchMode.AutoSacrificeAlways:
+                SacrificeInventory(silent: true);
+                break;
+        }
 
         if (!WasInAether && Main.LocalPlayer.ZoneShimmer)
-                WasInAether = true;
+            WasInAether = true;
 
         _previousTeam = Player.team;
     }
@@ -422,9 +429,11 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             Item item = Player.inventory[slot];
             if (item.IsAir)
                 continue;
-            if (favouriteOnly) 
+            if (favouriteOnly)
+            {
                 if (!item.favorited)
                     continue;
+            }
             else if (item.favorited ||
                     (!BaseConfig.Instance.SacrificeHotbarSlots && IsHotbarSlot(slot)) ||
                     (!BaseConfig.Instance.SacrificeCoinsSlots && IsCoinSlot(slot)) ||
