@@ -11,7 +11,7 @@ public static class InputUtils
     ///     <para>"Not assigned" if keybind is not assigned</para>
     ///     <para>Otherwise assigned key</para>
     /// </returns>
-    public static string GetKeybindString(ModKeybind? keybind)
+    public static string GetKeybindString(ModKeybind keybind)
     {
         if (keybind is null) return "<NULL>";
         List<string> keys = keybind.GetAssignedKeys();

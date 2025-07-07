@@ -22,12 +22,12 @@ public class InventoryButtons : UIState
     private const float BaseTopMargin = 10f;
     public const float ItemSlotSize = 44f;
     public const float ItemSlotGap = 3.5f;
-    public UIAnimatedImageButton ResearchButton { get; private set; } = null!;
-    public UIAnimatedImageButton ClearButton { get; private set; } = null!;
-    public UIAnimatedImageButton ResearchCraftableButton { get; private set; } = null!;
-    public UIAnimatedImageButton ShimmerButton { get; private set; } = null!;
-    public UIAnimatedImageButton ShimmerDecraftButton { get; private set; } = null!;
-    public UIAnimatedImageButton ShareButton { get; private set; } = null!;
+    public UIAnimatedImageButton ResearchButton { get; private set; }
+    public UIAnimatedImageButton ClearButton { get; private set; }
+    public UIAnimatedImageButton ResearchCraftableButton { get; private set; }
+    public UIAnimatedImageButton ShimmerButton { get; private set; }
+    public UIAnimatedImageButton ShimmerDecraftButton { get; private set; }
+    public UIAnimatedImageButton ShareButton { get; private set; }
     private static bool ShowUI() => !Main.CreativeMenu.Blocked && Main.playerInventory;
 
     public override void OnInitialize()
@@ -36,7 +36,7 @@ public class InventoryButtons : UIState
         HooksSystem.WorldLoaded += SetupEvents;
         HooksSystem.WorldUnloaded += RemoveEvents;
 
-        ResearchButton = new UIAnimatedImageButton(UISystem.ResearchButtonTexture!)
+        ResearchButton = new UIAnimatedImageButton(UISystem.ResearchButtonTexture)
         {
             Width = StyleDimension.FromPixels(32),
             Height = StyleDimension.FromPixels(32),
@@ -46,7 +46,7 @@ public class InventoryButtons : UIState
             AnimationFramesCount = 6,
             CanInteract = ShowUI
         };
-        ClearButton = new UIAnimatedImageButton(UISystem.ClearButtonTexture!)
+        ClearButton = new UIAnimatedImageButton(UISystem.ClearButtonTexture)
         {
             Width = StyleDimension.FromPixels(32),
             Height = StyleDimension.FromPixels(32),
@@ -56,7 +56,7 @@ public class InventoryButtons : UIState
             AnimationFramesCount = 8,
             CanInteract = ShowUI
         };
-        ResearchCraftableButton = new UIAnimatedImageButton(UISystem.AutoCraftButtonTexture!)
+        ResearchCraftableButton = new UIAnimatedImageButton(UISystem.AutoCraftButtonTexture)
         {
             Width = StyleDimension.FromPixels(32),
             Height = StyleDimension.FromPixels(32),
@@ -66,7 +66,7 @@ public class InventoryButtons : UIState
             AnimationFramesCount = 8,
             CanInteract = ShowUI
         };
-        ShimmerButton = new UIAnimatedImageButton(UISystem.ShimmerButtonTexture!)
+        ShimmerButton = new UIAnimatedImageButton(UISystem.ShimmerButtonTexture)
         {
             Width = StyleDimension.FromPixels(32),
             Height = StyleDimension.FromPixels(32),
@@ -76,7 +76,7 @@ public class InventoryButtons : UIState
             AnimationFramesCount = 12,
             CanInteract = ShowUI
         };
-        ShimmerDecraftButton = new UIAnimatedImageButton(UISystem.ShimmerDecraftButtonTexture!)
+        ShimmerDecraftButton = new UIAnimatedImageButton(UISystem.ShimmerDecraftButtonTexture)
         {
             Width = StyleDimension.FromPixels(32),
             Height = StyleDimension.FromPixels(32),
@@ -86,7 +86,7 @@ public class InventoryButtons : UIState
             AnimationFramesCount = 13,
             CanInteract = ShowUI
         };
-        ShareButton = new UIAnimatedImageButton(UISystem.RedShareButtonTexture!)
+        ShareButton = new UIAnimatedImageButton(UISystem.RedShareButtonTexture)
         {
             Width = StyleDimension.FromPixels(32),
             Height = StyleDimension.FromPixels(32),
@@ -202,11 +202,11 @@ public class InventoryButtons : UIState
     {
         return team switch
         {
-            2 => UISystem.GreenShareButtonTexture!,
-            3 => UISystem.BlueShareButtonTexture!,
-            4 => UISystem.YellowShareButtonTexture!,
-            5 => UISystem.PinkShareButtonTexture!,
-            _ => UISystem.RedShareButtonTexture!,
+            2 => UISystem.GreenShareButtonTexture,
+            3 => UISystem.BlueShareButtonTexture,
+            4 => UISystem.YellowShareButtonTexture,
+            5 => UISystem.PinkShareButtonTexture,
+            _ => UISystem.RedShareButtonTexture,
         };
     }
 

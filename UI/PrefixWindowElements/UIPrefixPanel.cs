@@ -37,7 +37,7 @@ public class UIPrefixPanel : UIPanel
 
     private string PrefixString => Lang.prefix[_item.prefix].Value;
 
-    public override int CompareTo(object? obj)
+    public override int CompareTo(object obj)
     {
         if (obj is UIPrefixPanel prefixPanel)
             return -_item.value.CompareTo(prefixPanel._item.value);

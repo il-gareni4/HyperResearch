@@ -20,7 +20,7 @@ namespace HyperResearch.Common.ModPlayers;
 
 public class HyperPlayer : ModPlayer, IResearchPlayer
 {
-    public event Action? OnTeamChanged;
+    public event Action OnTeamChanged;
 
     /// <summary>Dictionary of researched tiles (contains <c>TileId</c> as Keys)</summary>
     public readonly Dictionary<int, bool> ResearchedTiles = [];
@@ -83,26 +83,28 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             return;
 
 #if DEBUG
-        if (KeybindSystem.ForgetAllBind!.JustPressed)
+        if (KeybindSystem.ForgetAllBind.JustPressed)
             ForgetAllAction();
-        if (KeybindSystem.ResearchAllBind!.JustPressed)
+        if (KeybindSystem.ResearchAllBind.JustPressed)
             ResearchAllAction();
-        if (KeybindSystem.ForgetAetherBind!.JustPressed)
+        if (KeybindSystem.ForgetAetherBind.JustPressed)
             ForgetAetherAction();
 #endif
-        if (KeybindSystem.SacrificeInventoryBind!.JustPressed)
+        if (KeybindSystem.SacrificeInventoryBind.JustPressed)
             SacrificeInventoryAction();
-        if (KeybindSystem.ClearResearchedBind!.JustPressed)
+        if (KeybindSystem.ClearResearchedBind.JustPressed)
             ClearResearched();
-        if (KeybindSystem.ResearchCraftableBind!.JustPressed)
+        if (KeybindSystem.ResearchCraftableBind.JustPressed)
             ResearchCraftableAction();
-        if (KeybindSystem.ResearchShimmerBind!.JustPressed)
+        if (KeybindSystem.ResearchShimmerBind.JustPressed)
             ResearchShimmerItemsAction();
-        if (KeybindSystem.ResearchDecraftsBind!.JustPressed)
+        if (KeybindSystem.ResearchDecraftsBind.JustPressed)
             ResearchDecraftItemsAction();
-        if (KeybindSystem.MaxStackBind!.JustPressed)
+        if (KeybindSystem.MaxStackBind.JustPressed)
             MaxStackAction();
-        if (KeybindSystem.ResearchLootBind!.JustPressed)
+        if (KeybindSystem.SelectModifierBind.JustPressed)
+            SelectModifierAction();
+        if (KeybindSystem.ResearchLootBind.JustPressed)
             ResearchLootAction();
     }
 
@@ -110,28 +112,30 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 #if DEBUG
-        if (KeybindSystem.ForgetAllBind!.JustPressed)
+        if (KeybindSystem.ForgetAllBind.JustPressed)
             ForgetAllAction();
-        if (KeybindSystem.ResearchAllBind!.JustPressed)
+        if (KeybindSystem.ResearchAllBind.JustPressed)
             ResearchAllAction();
-        if (KeybindSystem.ForgetAetherBind!.JustPressed)
+        if (KeybindSystem.ForgetAetherBind.JustPressed)
             ForgetAetherAction();
 #endif
-        if (KeybindSystem.SacrificeInventoryBind!.JustPressed)
+        if (KeybindSystem.SacrificeInventoryBind.JustPressed)
             SacrificeInventoryAction();
-        if (KeybindSystem.ClearResearchedBind!.JustPressed)
+        if (KeybindSystem.ClearResearchedBind.JustPressed)
             ClearResearched();
-        if (KeybindSystem.ResearchCraftableBind!.JustPressed)
+        if (KeybindSystem.ResearchCraftableBind.JustPressed)
             ResearchCraftableAction();
-        if (KeybindSystem.ResearchShimmerBind!.JustPressed)
+        if (KeybindSystem.ResearchShimmerBind.JustPressed)
             ResearchShimmerItemsAction();
-        if (KeybindSystem.ResearchDecraftsBind!.JustPressed)
+        if (KeybindSystem.ResearchDecraftsBind.JustPressed)
             ResearchDecraftItemsAction();
-        if (KeybindSystem.MaxStackBind!.JustPressed)
+        if (KeybindSystem.MaxStackBind.JustPressed)
             MaxStackAction();
-        if (KeybindSystem.ResearchLootBind!.JustPressed)
+        if (KeybindSystem.SelectModifierBind.JustPressed)
+            SelectModifierAction();
+        if (KeybindSystem.ResearchLootBind.JustPressed)
             ResearchLootAction();
-        if (KeybindSystem.ShareAllResearched!.JustPressed)
+        if (KeybindSystem.ShareAllResearched.JustPressed)
             ShareResearchedItemsAction();
     }
 
@@ -198,6 +202,14 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
         _hoverItem.stack = Main.HoverItem.maxStack;
         SoundEngine.PlaySound(SoundID.Grab);
+    }
+
+    public void SelectModifierAction()
+    {
+        if (Main.HoverItem.IsAir || Main.HoverItem.tooltipContext != ItemSlot.Context.CreativeInfinite)
+            return;
+
+        ModContent.GetInstance<UISystem>().PrefixWindow.TrySetPrefixes(Main.HoverItem);
     }
 
     public void ResearchLootAction()
@@ -371,7 +383,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     public void SharedItems(int fromPlayer, int[] items, Dictionary<int, int> sacrifices)
     {
-        TextUtils.MessageOtherPlayerResearchedItems(items.ToList(), fromPlayer);
+        TextUtils.MessageOtherPlayerResearchedItems([.. items], fromPlayer);
         Researcher researcher = new();
         researcher.SacrificeItems(sacrifices, SacrificeSource.Shared);
         researcher.ResearchItems(items, ResearchSource.Shared);
@@ -385,7 +397,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         Dictionary<int, int> items = [];
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
-            Item? item = Player.inventory[slot];
+            Item item = Player.inventory[slot];
             if (item.IsAir) continue;
             if (favouriteOnly && !item.favorited) continue;
             items[item.type] = items.GetValueOrDefault(item.type, 0) + item.stack;
@@ -407,7 +419,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         List<Item> itemToSacrifice = [];
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
-            Item? item = Player.inventory[slot];
+            Item item = Player.inventory[slot];
             if (item.IsAir)
                 continue;
             if (favouriteOnly) 
@@ -435,7 +447,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         var anyItemCleaned = false;
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
-            Item? item = Player.inventory[slot];
+            Item item = Player.inventory[slot];
             if (item.favorited || item.IsAir || !Researcher.IsResearched(item.type) ||
                 (!BaseConfig.Instance.ClearHotbarSlots && IsHotbarSlot(slot)) ||
                 (!BaseConfig.Instance.ClearCoinsSlots && IsCoinSlot(slot)) ||
@@ -453,7 +465,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     {
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
-            Item? item = Player.inventory[slot];
+            Item item = Player.inventory[slot];
             if (item.IsAir || item.favorited || !Researcher.IsResearched(item.type) ||
                 (!BaseConfig.Instance.ClearHotbarSlots && IsHotbarSlot(slot)) ||
                 (!BaseConfig.Instance.ClearCoinsSlots && IsCoinSlot(slot)) ||
@@ -470,7 +482,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     /// <returns>Has any tile been added to the <see cref="ResearchedTiles" /></returns>
     private void TryAddToResearchedTiles(int itemId)
     {
-        if (!ContentSamples.ItemsByType.TryGetValue(itemId, out Item? item)
+        if (!ContentSamples.ItemsByType.TryGetValue(itemId, out Item item)
             || item.createTile < TileID.Dirt
             || !Researcher.IsResearched(itemId))
             return;

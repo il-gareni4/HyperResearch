@@ -29,7 +29,7 @@ public static class TextUtils
     }
 
     /// <summary>Displays information about researched items in the game chat</summary>
-    public static void MessageResearchedItems(List<int>? items)
+    public static void MessageResearchedItems(List<int> items)
     {
         if (!VisualConfig.Instance.ShowNewlyResearchedItems || items == null || items.Count == 0) return;
         Main.NewText(
@@ -43,7 +43,7 @@ public static class TextUtils
     }
 
     /// <summary>Displays information about researched crating items in the game chat</summary>
-    private static void MessageResearchedCraftableItems(List<int>? items)
+    private static void MessageResearchedCraftableItems(List<int> items)
     {
         if (!VisualConfig.Instance.ShowResearchedCraftableItems || items == null || items.Count == 0) return;
         Main.NewText(
@@ -57,7 +57,7 @@ public static class TextUtils
     }
 
     /// <summary>Displays information about researched shimmered items in the game chat</summary>
-    private static void MessageResearchedShimmeredItems(List<int>? items)
+    private static void MessageResearchedShimmeredItems(List<int> items)
     {
         if (!VisualConfig.Instance.ShowResearchedShimmeredItems || items == null || items.Count == 0) return;
         Main.NewText(
@@ -70,7 +70,7 @@ public static class TextUtils
         );
     }
 
-    private static void MessageDecraftItems(List<int>? items)
+    private static void MessageDecraftItems(List<int> items)
     {
         if (!VisualConfig.Instance.ShowResearchedDecraftItems || items == null || items.Count == 0) return;
         Main.NewText(
@@ -83,7 +83,7 @@ public static class TextUtils
         );
     }
 
-    private static void MessageSacrifices(Dictionary<int, int>? sacrifices)
+    private static void MessageSacrifices(Dictionary<int, int> sacrifices)
     {
         if (!VisualConfig.Instance.ShowSacrifices || sacrifices == null || sacrifices.Count == 0) return;
         Main.NewText(
@@ -96,7 +96,7 @@ public static class TextUtils
         );
     }
 
-    public static void MessageOtherPlayerResearchedItems(List<int>? items, int playerId)
+    public static void MessageOtherPlayerResearchedItems(List<int> items, int playerId)
     {
         if (!VisualConfig.Instance.ShowOtherPlayersResearchedItems || items == null || items.Count == 0) return;
         Main.NewText(
@@ -110,7 +110,7 @@ public static class TextUtils
         );
     }
 
-    private static void MessageSharedItems(List<int>? items, int playerId)
+    private static void MessageSharedItems(List<int> items, int playerId)
     {
         if (!VisualConfig.Instance.ShowSharedItems || items == null || items.Count == 0) return;
         Main.NewText(
@@ -124,7 +124,7 @@ public static class TextUtils
         );
     }
 
-    private static void MessageSharedSacrifices(Dictionary<int, int>? sacrifices, int playerId)
+    private static void MessageSharedSacrifices(Dictionary<int, int> sacrifices, int playerId)
     {
         if (!VisualConfig.Instance.ShowSharedSacrifices || sacrifices == null || sacrifices.Count == 0) return;
         Main.NewText(

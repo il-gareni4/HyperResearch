@@ -13,26 +13,26 @@ namespace HyperResearch.Common.Systems;
 [Autoload(Side = ModSide.Client)]
 internal class UISystem : ModSystem
 {
-    public static Asset<Texture2D>? ResearchButtonTexture;
-    public static Asset<Texture2D>? ClearButtonTexture;
-    public static Asset<Texture2D>? AutoCraftButtonTexture;
-    public static Asset<Texture2D>? ResearchShopButtonTexture;
-    public static Asset<Texture2D>? ShimmerButtonTexture;
-    public static Asset<Texture2D>? ShimmerDecraftButtonTexture;
-    public static Asset<Texture2D>? RedShareButtonTexture;
-    public static Asset<Texture2D>? GreenShareButtonTexture;
-    public static Asset<Texture2D>? BlueShareButtonTexture;
-    public static Asset<Texture2D>? YellowShareButtonTexture;
-    public static Asset<Texture2D>? PinkShareButtonTexture;
-    private UserInterface? _duplicationMenu;
-    private UserInterface? _inventoryButtons;
-    private UserInterface? _prefixWindow;
-    private UserInterface? _shopButtons;
+    public static Asset<Texture2D> ResearchButtonTexture;
+    public static Asset<Texture2D> ClearButtonTexture;
+    public static Asset<Texture2D> AutoCraftButtonTexture;
+    public static Asset<Texture2D> ResearchShopButtonTexture;
+    public static Asset<Texture2D> ShimmerButtonTexture;
+    public static Asset<Texture2D> ShimmerDecraftButtonTexture;
+    public static Asset<Texture2D> RedShareButtonTexture;
+    public static Asset<Texture2D> GreenShareButtonTexture;
+    public static Asset<Texture2D> BlueShareButtonTexture;
+    public static Asset<Texture2D> YellowShareButtonTexture;
+    public static Asset<Texture2D> PinkShareButtonTexture;
+    private UserInterface _duplicationMenu;
+    private UserInterface _inventoryButtons;
+    private UserInterface _prefixWindow;
+    private UserInterface _shopButtons;
 
-    internal DuplicationMenu? DuplicationMenu;
-    internal InventoryButtons? InventoryButtons;
-    internal PrefixWindow? PrefixWindow;
-    internal ShopButtons? ShopButtons;
+    internal DuplicationMenu DuplicationMenu;
+    internal InventoryButtons InventoryButtons;
+    internal PrefixWindow PrefixWindow;
+    internal ShopButtons ShopButtons;
 
     public override void Load()
     {
@@ -75,10 +75,10 @@ internal class UISystem : ModSystem
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
         
-        _duplicationMenu?.Update(gameTime);
-        _inventoryButtons?.Update(gameTime);
-        _shopButtons?.Update(gameTime);
-        _prefixWindow?.Update(gameTime);
+        _duplicationMenu.Update(gameTime);
+        _inventoryButtons.Update(gameTime);
+        _shopButtons.Update(gameTime);
+        _prefixWindow.Update(gameTime);
     }
 
     public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -93,7 +93,7 @@ internal class UISystem : ModSystem
             delegate
             {
                 if (PrefixWindow is { Enabled: true })
-                    _prefixWindow!.Draw(Main.spriteBatch, new GameTime());
+                    _prefixWindow.Draw(Main.spriteBatch, new GameTime());
                 return true;
             },
             InterfaceScaleType.UI)
@@ -102,7 +102,7 @@ internal class UISystem : ModSystem
             "HyperResearch: Duplication Menu Text",
             delegate
             {
-                _duplicationMenu!.Draw(Main.spriteBatch, new GameTime());
+                _duplicationMenu.Draw(Main.spriteBatch, new GameTime());
                 return true;
             },
             InterfaceScaleType.UI)
@@ -111,7 +111,7 @@ internal class UISystem : ModSystem
             "HyperResearch: Inventory Buttons",
             delegate
             {
-                _inventoryButtons!.Draw(Main.spriteBatch, new GameTime());
+                _inventoryButtons.Draw(Main.spriteBatch, new GameTime());
                 return true;
             },
             InterfaceScaleType.UI)
@@ -120,7 +120,7 @@ internal class UISystem : ModSystem
             "HyperResearch: Shop Buttons",
             delegate
             {
-                _shopButtons!.Draw(Main.spriteBatch, new GameTime());
+                _shopButtons.Draw(Main.spriteBatch, new GameTime());
                 return true;
             },
             InterfaceScaleType.UI)

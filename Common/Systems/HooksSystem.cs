@@ -13,8 +13,8 @@ namespace HyperResearch.Common.Systems;
 
 public class HooksSystem : ModSystem
 {
-    internal static event Action? WorldLoaded;
-    internal static event Action? WorldUnloaded;
+    internal static event Action WorldLoaded;
+    internal static event Action WorldUnloaded;
 
     public override void Load()
     {
@@ -36,7 +36,7 @@ public class HooksSystem : ModSystem
         {
             ILCursor c = new(il);
             c.FindNext(out ILCursor[] m1, i => i.MatchLdcI4(-1)); // int num9 = -1;
-            c.GotoNext(MoveType.After, i => i.MatchBrtrue(m1[0].Next!)); // if (!flag2)
+            c.GotoNext(MoveType.After, i => i.MatchBrtrue(m1[0].Next)); // if (!flag2)
             
             c.RemoveRange(15);
             c.EmitLdarg0(); // spriteBatch

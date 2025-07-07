@@ -21,7 +21,7 @@ public class UIAnimatedImageButton(Asset<Texture2D> spriteSheet) : UIElement
     public required int StopFrame { get; init; }
     public required int AnimationFramesCount { get; init; }
     public required float OneFrameCount { get; init; } = 1;
-    public LocalizedText? HoverText { get; set; }
+    public LocalizedText HoverText { get; set; }
     public Asset<Texture2D> SpriteSheet { get; set; } = spriteSheet;
     public required Func<bool> CanInteract { get; init; }
     public bool Disabled { get; set; } = false;

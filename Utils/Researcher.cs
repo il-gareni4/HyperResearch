@@ -134,29 +134,29 @@ public class Researcher
     public static bool IsPlayerInJourneyMode => Main.CurrentPlayer.difficulty == 3;
     public static IEnumerable<int> ReseachedItems => Enumerable.Range(1, ItemLoader.ItemCount - 1).Where(IsResearched);
 
-    private Queue<int>? _researchedQueue;
+    private Queue<int> _researchedQueue;
     private Queue<int> ResearchedQueue => _researchedQueue ??= new Queue<int>();
 
-    private List<int>?[] ResearchedItems { get; } = new List<int>?[ResearchedItemGroups];
-    public List<int>? DefaultResearchedItems => ResearchedItems[(int)ResearchSource.Default];
-    public List<int>? CraftResearchedItems => ResearchedItems[(int)ResearchSource.Craft];
-    public List<int>? ShimmerResearchedItems => ResearchedItems[(int)ResearchSource.Shimmer];
-    public List<int>? DecraftResearchedItems => ResearchedItems[(int)ResearchSource.ShimmerDecraft];
-    public List<int>? SharedItems => ResearchedItems[(int)ResearchSource.Shared];
+    private List<int>[] ResearchedItems { get; } = new List<int>[ResearchedItemGroups];
+    public List<int> DefaultResearchedItems => ResearchedItems[(int)ResearchSource.Default];
+    public List<int> CraftResearchedItems => ResearchedItems[(int)ResearchSource.Craft];
+    public List<int> ShimmerResearchedItems => ResearchedItems[(int)ResearchSource.Shimmer];
+    public List<int> DecraftResearchedItems => ResearchedItems[(int)ResearchSource.ShimmerDecraft];
+    public List<int> SharedItems => ResearchedItems[(int)ResearchSource.Shared];
 
-    public Dictionary<int, int>?[] SacrificedItems { get; } = new Dictionary<int, int>?[SacrificeGroups];
-    public Dictionary<int, int>? DefaultSacrifices => SacrificedItems[(int)SacrificeSource.Default];
-    public Dictionary<int, int>? SharedSacrifices => SacrificedItems[(int)SacrificeSource.Shared];
+    public Dictionary<int, int>[] SacrificedItems { get; } = new Dictionary<int, int>[SacrificeGroups];
+    public Dictionary<int, int> DefaultSacrifices => SacrificedItems[(int)SacrificeSource.Default];
+    public Dictionary<int, int> SharedSacrifices => SacrificedItems[(int)SacrificeSource.Shared];
 
     public IEnumerable<int> AllResearchedItems =>
         ResearchedItems.Where(list => list is { Count: > 0 })
-            .SelectMany(list => list!)
+            .SelectMany(list => list)
             .Distinct();
 
     public IEnumerable<int> AllNonSharedItems =>
         ResearchedItems.Take((int)ResearchSource.Shared)
             .Where(list => list is { Count: > 0 })
-            .SelectMany(list => list!)
+            .SelectMany(list => list)
             .Distinct();
 
     public bool AnyItemResearched => ResearchedItems.Any(list => list is { Count: > 0 });
@@ -203,7 +203,7 @@ public class Researcher
         }
     }
 
-    public void ResearchItems(IEnumerable<int>? items, ResearchSource source = default)
+    public void ResearchItems(IEnumerable<int> items, ResearchSource source = default)
     {
         if (items == null) return;
         foreach (int itemId in items)
@@ -317,7 +317,7 @@ public class Researcher
 
     private void ResearchItemRecipesOccurrences(Item item)
     {
-        if (!RecipesSystem.ItemRecipesOccurrences.TryGetValue(item.type, out List<int>? itemRecipeIds))
+        if (!RecipesSystem.ItemRecipesOccurrences.TryGetValue(item.type, out List<int> itemRecipeIds))
             return;
 
         foreach (Recipe recipe in itemRecipeIds
@@ -333,7 +333,7 @@ public class Researcher
 
         foreach (int adjTile in ItemsUtils.GetAllAdjTiles(item.createTile))
         {
-            if (!RecipesSystem.TileRecipesOccurrences.TryGetValue(adjTile, out List<int>? tileRecipeIds))
+            if (!RecipesSystem.TileRecipesOccurrences.TryGetValue(adjTile, out List<int> tileRecipeIds))
                 continue;
 
             foreach (Recipe recipe in tileRecipeIds
@@ -347,14 +347,14 @@ public class Researcher
     {
         if (!IsResearchable(recipe.createItem.type) || IsResearched(recipe.createItem.type)) return false;
 
-        Dictionary<int, IEnumerable<int>?> iconicAndOthers = [];
+        Dictionary<int, IEnumerable<int>> iconicAndOthers = [];
         foreach (RecipeGroup recipeGroup in recipe.acceptedGroups
                      .Select(recipeGroupId => RecipeGroup.recipeGroups[recipeGroupId]))
             iconicAndOthers[recipeGroup.IconicItemId] = recipeGroup.ValidItems;
 
         bool allItemsResearched = recipe.requiredItem.All(item =>
         {
-            if (iconicAndOthers.TryGetValue(item.type, out IEnumerable<int>? validItems) && validItems != null)
+            if (iconicAndOthers.TryGetValue(item.type, out IEnumerable<int> validItems) && validItems != null)
                 return validItems.Any(IsResearched);
             return IsResearched(item.type);
         });
@@ -423,7 +423,7 @@ public class Researcher
     }
 
     private static bool IsValidResearchItem(int itemId) =>
-        ContentSamples.ItemsByType.TryGetValue(itemId, out Item? item)
+        ContentSamples.ItemsByType.TryGetValue(itemId, out Item item)
         && item is { IsAir: false }
         && item.type == itemId;
 

@@ -71,7 +71,7 @@ public static class ItemsUtils
             return -1;
     }
 
-    private static Recipe? GetDecraftRecipe(int itemId)
+    private static Recipe GetDecraftRecipe(int itemId)
     {
         if (ContentSamples.ItemsByType[itemId].createTile == TileID.MusicBoxes)
             return null;
@@ -87,20 +87,20 @@ public static class ItemsUtils
 
     public static List<int> GetDecraftItemIds(int itemId) => GetDecraftItemIds(GetDecraftRecipe(itemId));
 
-    private static List<int> GetDecraftItemIds(Recipe? recipe)
+    private static List<int> GetDecraftItemIds(Recipe recipe)
     {
         if (recipe is null) return [];
         return [.. (recipe.customShimmerResults ?? recipe.requiredItem).Select(r => r.type)];
     }
 
-    public static Dictionary<int, int>? GetCurrencyItemsAndValues(int currencyId)
+    public static Dictionary<int, int> GetCurrencyItemsAndValues(int currencyId)
     {
         if (currencyId == -1)
             return CoinsCurrency;
 
         if (CustomCurrencyManager.TryGetCurrencySystem(currencyId, out CustomCurrencySystem system))
         {
-            return (Dictionary<int, int>?)system.GetType()
+            return (Dictionary<int, int>)system.GetType()
                 .GetField("_valuePerUnit", BindingFlags.NonPublic | BindingFlags.Instance)
                 ?.GetValue(system);
         }

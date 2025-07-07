@@ -69,7 +69,7 @@ public class ServerConfig : ModConfig
     [ReloadRequired]
     public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
-    public static ServerConfig Instance { get; private set; } = null!;
+    public static ServerConfig Instance { get; private set; }
 
     public override ConfigScope Mode => ConfigScope.ServerSide;
 

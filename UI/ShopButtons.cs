@@ -19,13 +19,13 @@ public class ShopButtons : UIState
     private const float ShopSlotGap = 3f;
 
     //public static bool 
-    public UIAnimatedImageButton ResearchShopButton = null!;
+    public UIAnimatedImageButton ResearchShopButton;
 
     public override void OnInitialize()
     {
         BaseConfig.Changed += RebuildButtons;
 
-        ResearchShopButton = new UIAnimatedImageButton(UISystem.ResearchShopButtonTexture!)
+        ResearchShopButton = new UIAnimatedImageButton(UISystem.ResearchShopButtonTexture)
         {
             Width = StyleDimension.FromPixels(32),
             Height = StyleDimension.FromPixels(32),

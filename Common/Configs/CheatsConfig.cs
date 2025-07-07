@@ -15,7 +15,7 @@ public class CheatsConfig : ModConfig
     [ReloadRequired]
     public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
 
-    public static CheatsConfig Instance { get; private set; } = null!;
+    public static CheatsConfig Instance { get; private set; }
 
     public override ConfigScope Mode => ConfigScope.ClientSide;
 

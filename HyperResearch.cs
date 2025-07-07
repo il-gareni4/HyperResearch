@@ -45,7 +45,7 @@ public class HyperResearch : Mod
             uint extraBuffs = 0;
             for (int i = 0; i < BuffLoader.BuffCount; i++)
             {
-                ModBuff? modBuff = BuffLoader.GetBuff(i);
+                ModBuff modBuff = BuffLoader.GetBuff(i);
                 if (modBuff != null &&
                     modBuff.Mod.Side != ModSide.Both &&
                     modBuff.Mod.Side != ModSide.Server)

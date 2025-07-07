@@ -26,21 +26,21 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
-        if (KeybindSystem.EnableDisableBuffBind!.JustReleased)
+        if (KeybindSystem.EnableDisableBuffBind.JustReleased)
             CurrentSetState = null;
 
         if (ConfigOptions.UseResearchedPotionsBuff &&
             Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite &&
             Buffs.TryGetValue(Main.HoverItem.buffType, out bool enabled))
         {
-            if (KeybindSystem.EnableDisableBuffBind!.JustPressed)
+            if (KeybindSystem.EnableDisableBuffBind.JustPressed)
                 CurrentSetState = !enabled;
 
-            if (KeybindSystem.EnableDisableBuffBind!.Current && CurrentSetState.HasValue)
+            if (KeybindSystem.EnableDisableBuffBind.Current && CurrentSetState.HasValue)
                 SetBuff(Main.HoverItem, CurrentSetState.Value);
         }
 #if DEBUG
-        if (KeybindSystem.ForgetAllBind!.JustPressed)
+        if (KeybindSystem.ForgetAllBind.JustPressed)
             Buffs.Clear();
 #endif
     }

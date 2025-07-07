@@ -36,10 +36,10 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
     {
         if (!Researcher.IsPlayerInJourneyMode) return;
 
-        if (KeybindSystem.EnableDisableBuffBind!.JustReleased)
+        if (KeybindSystem.EnableDisableBuffBind.JustReleased)
             CurrentSetState = null;
 #if DEBUG
-        if (KeybindSystem.ForgetAllBind!.JustPressed)
+        if (KeybindSystem.ForgetAllBind.JustPressed)
             ResearchedBanners.Clear();
 #endif 
         if (Main.HoverItem.tooltipContext == ItemSlot.Context.CreativeInfinite &&
@@ -47,10 +47,10 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
             BannerSystem.TryItemToBanner(Main.HoverItem.type, out int bannerId) &&
             ResearchedBanners.TryGetValue(bannerId, out bool enabled))
         {
-            if (KeybindSystem.EnableDisableBuffBind!.JustPressed)
+            if (KeybindSystem.EnableDisableBuffBind.JustPressed)
                 CurrentSetState = !enabled;
 
-            if (KeybindSystem.EnableDisableBuffBind!.Current && CurrentSetState.HasValue)
+            if (KeybindSystem.EnableDisableBuffBind.Current && CurrentSetState.HasValue)
                 ResearchedBanners[bannerId] = CurrentSetState.Value;
         }
     }

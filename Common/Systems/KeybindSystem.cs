@@ -5,15 +5,21 @@ namespace HyperResearch.Common.Systems;
 
 public class KeybindSystem : ModSystem
 {
-    public static ModKeybind? SacrificeInventoryBind { get; private set; }
-    public static ModKeybind? ClearResearchedBind { get; private set; }
-    public static ModKeybind? ResearchCraftableBind { get; private set; }
-    public static ModKeybind? ResearchShimmerBind { get; private set; }
-    public static ModKeybind? ResearchDecraftsBind { get; private set; }
-    public static ModKeybind? ShareAllResearched { get; private set; }
-    public static ModKeybind? MaxStackBind { get; private set; }
-    public static ModKeybind? EnableDisableBuffBind { get; private set; }
-    public static ModKeybind? ResearchLootBind { get; private set; }
+#if DEBUG
+    public static ModKeybind ForgetAllBind { get; private set; }
+    public static ModKeybind ResearchAllBind { get; private set; }
+    public static ModKeybind ForgetAetherBind { get; private set; }
+#endif
+    public static ModKeybind SacrificeInventoryBind { get; private set; }
+    public static ModKeybind ClearResearchedBind { get; private set; }
+    public static ModKeybind ResearchCraftableBind { get; private set; }
+    public static ModKeybind ResearchShimmerBind { get; private set; }
+    public static ModKeybind ResearchDecraftsBind { get; private set; }
+    public static ModKeybind ShareAllResearched { get; private set; }
+    public static ModKeybind MaxStackBind { get; private set; }
+    public static ModKeybind EnableDisableBuffBind { get; private set; }
+    public static ModKeybind SelectModifierBind { get; private set; }
+    public static ModKeybind ResearchLootBind { get; private set; }
 
     public override void Load()
     {
@@ -30,6 +36,7 @@ public class KeybindSystem : ModSystem
         ShareAllResearched = KeybindLoader.RegisterKeybind(Mod, "ShareAllResearched", Keys.PageUp);
         MaxStackBind = KeybindLoader.RegisterKeybind(Mod, "MaxStack", Keys.OemTilde);
         EnableDisableBuffBind = KeybindLoader.RegisterKeybind(Mod, "EnableDisableBuff", "Mouse3");
+        SelectModifierBind = KeybindLoader.RegisterKeybind(Mod, "SelectModifierBind", "Mouse3");
         ResearchLootBind = KeybindLoader.RegisterKeybind(Mod, "ResearchBagContents", Keys.OemQuotes);
     }
 
@@ -48,11 +55,8 @@ public class KeybindSystem : ModSystem
         ShareAllResearched = null;
         MaxStackBind = null;
         EnableDisableBuffBind = null;
+        SelectModifierBind = null;
         ResearchLootBind = null;
     }
-#if DEBUG
-    public static ModKeybind? ForgetAllBind { get; private set; }
-    public static ModKeybind? ResearchAllBind { get; private set; }
-    public static ModKeybind? ForgetAetherBind { get; private set; }
-#endif
+
 }

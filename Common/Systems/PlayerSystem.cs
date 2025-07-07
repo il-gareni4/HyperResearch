@@ -10,7 +10,7 @@ namespace HyperResearch.Common.Systems;
 
 public class PlayerSystem : ModSystem
 {
-    private HyperPlayer? HyperPlayer { get; set; }
+    private HyperPlayer HyperPlayer { get; set; }
 
     public override void OnWorldLoad()
     {
@@ -22,14 +22,14 @@ public class PlayerSystem : ModSystem
             BaseConfig.Changed += HyperPlayer.OnClientConfigChanged;
             UISystem uiSystem = ModContent.GetInstance<UISystem>();
 
-            uiSystem.InventoryButtons!.ResearchButton.OnLeftMouseDown += OnResearchButtonMouseDown;
-            uiSystem.InventoryButtons!.ClearButton.OnLeftMouseDown += OnClearButtonMouseDown;
-            uiSystem.InventoryButtons!.ResearchCraftableButton.OnLeftMouseDown += OnAutoCraftButtonMouseDown;
-            uiSystem.InventoryButtons!.ShimmerButton.OnLeftMouseDown += OnShimmerButtonMouseDown;
-            uiSystem.InventoryButtons!.ShimmerDecraftButton.OnLeftMouseDown += OnShimmerDecraftButtonMouseDown;
-            uiSystem.InventoryButtons!.ShareButton.OnLeftMouseDown += OnShareButtonMouseDown;
+            uiSystem.InventoryButtons.ResearchButton.OnLeftMouseDown += OnResearchButtonMouseDown;
+            uiSystem.InventoryButtons.ClearButton.OnLeftMouseDown += OnClearButtonMouseDown;
+            uiSystem.InventoryButtons.ResearchCraftableButton.OnLeftMouseDown += OnAutoCraftButtonMouseDown;
+            uiSystem.InventoryButtons.ShimmerButton.OnLeftMouseDown += OnShimmerButtonMouseDown;
+            uiSystem.InventoryButtons.ShimmerDecraftButton.OnLeftMouseDown += OnShimmerDecraftButtonMouseDown;
+            uiSystem.InventoryButtons.ShareButton.OnLeftMouseDown += OnShareButtonMouseDown;
 
-            uiSystem.ShopButtons!.ResearchShopButton.OnLeftMouseDown += OnShopButtonMouseDown;
+            uiSystem.ShopButtons.ResearchShopButton.OnLeftMouseDown += OnShopButtonMouseDown;
         }
     }
 
@@ -40,14 +40,14 @@ public class PlayerSystem : ModSystem
         BaseConfig.Changed -= HyperPlayer.OnClientConfigChanged;
         UISystem uiSystem = ModContent.GetInstance<UISystem>();
 
-        uiSystem.InventoryButtons!.ResearchButton.OnLeftMouseDown -= OnResearchButtonMouseDown;
-        uiSystem.InventoryButtons!.ClearButton.OnLeftMouseDown -= OnClearButtonMouseDown;
-        uiSystem.InventoryButtons!.ResearchCraftableButton.OnLeftMouseDown -= OnAutoCraftButtonMouseDown;
-        uiSystem.InventoryButtons!.ShimmerButton.OnLeftMouseDown -= OnShimmerButtonMouseDown;
-        uiSystem.InventoryButtons!.ShimmerDecraftButton.OnLeftMouseDown -= OnShimmerDecraftButtonMouseDown;
-        uiSystem.InventoryButtons!.ShareButton.OnLeftMouseDown -= OnShareButtonMouseDown;
+        uiSystem.InventoryButtons.ResearchButton.OnLeftMouseDown -= OnResearchButtonMouseDown;
+        uiSystem.InventoryButtons.ClearButton.OnLeftMouseDown -= OnClearButtonMouseDown;
+        uiSystem.InventoryButtons.ResearchCraftableButton.OnLeftMouseDown -= OnAutoCraftButtonMouseDown;
+        uiSystem.InventoryButtons.ShimmerButton.OnLeftMouseDown -= OnShimmerButtonMouseDown;
+        uiSystem.InventoryButtons.ShimmerDecraftButton.OnLeftMouseDown -= OnShimmerDecraftButtonMouseDown;
+        uiSystem.InventoryButtons.ShareButton.OnLeftMouseDown -= OnShareButtonMouseDown;
 
-        uiSystem.ShopButtons!.ResearchShopButton.OnLeftMouseDown -= OnShopButtonMouseDown;
+        uiSystem.ShopButtons.ResearchShopButton.OnLeftMouseDown -= OnShopButtonMouseDown;
 
         HyperPlayer = null;
     }

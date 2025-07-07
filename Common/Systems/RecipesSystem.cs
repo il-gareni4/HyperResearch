@@ -17,14 +17,14 @@ public class RecipesSystem : ModSystem
         {
             if (!Researcher.IsResearchable(recipe.createItem.type)) return;
 
-            Dictionary<int, IEnumerable<int>?> iconicAndOthers = [];
+            Dictionary<int, IEnumerable<int>> iconicAndOthers = [];
             foreach (RecipeGroup recipeGroup in recipe.acceptedGroups
                          .Select(recipeGroupId => RecipeGroup.recipeGroups[recipeGroupId]))
                 iconicAndOthers[recipeGroup.IconicItemId] = recipeGroup.ValidItems;
 
             foreach (Item item in recipe.requiredItem)
             {
-                if (iconicAndOthers.TryGetValue(item.type, out IEnumerable<int>? validItems) && validItems != null)
+                if (iconicAndOthers.TryGetValue(item.type, out IEnumerable<int> validItems) && validItems != null)
                 {
                     foreach (int validItemId in validItems)
                         AddToItemOccurrences(validItemId, recipe.RecipeIndex);
@@ -34,7 +34,7 @@ public class RecipesSystem : ModSystem
 
             foreach (int tileId in recipe.requiredTile)
             {
-                if (TileRecipesOccurrences.TryGetValue(tileId, out List<int>? recipeIds))
+                if (TileRecipesOccurrences.TryGetValue(tileId, out List<int> recipeIds))
                     recipeIds.Add(recipe.RecipeIndex);
                 else TileRecipesOccurrences[tileId] = [recipe.RecipeIndex];
             }
@@ -44,7 +44,7 @@ public class RecipesSystem : ModSystem
 
         void AddToItemOccurrences(int itemId, int recipeId)
         {
-            if (ItemRecipesOccurrences.TryGetValue(itemId, out List<int>? recipeIds))
+            if (ItemRecipesOccurrences.TryGetValue(itemId, out List<int> recipeIds))
                 recipeIds.Add(recipeId);
             else ItemRecipesOccurrences[itemId] = [recipeId];
         }

@@ -13,9 +13,9 @@ namespace HyperResearch.UI;
 
 public class PrefixWindow : UIState
 {
-    private UIPanel _mainPanel = null!;
-    private UIList _prefixesList = null!;
-    private UIScrollbar _scrollBar = null!;
+    private UIPanel _mainPanel;
+    private UIList _prefixesList;
+    private UIScrollbar _scrollBar;
 
     public static bool CanBeShown =>
         (!ConfigOptions.BalancePrefixPicker || Condition.DownedGoblinArmy.IsMet())
@@ -57,6 +57,20 @@ public class PrefixWindow : UIState
         Append(_mainPanel);
     }
 
+    public void TrySetPrefixes(Item item)
+    {
+        if (!CanBeShown || !ItemsUtils.CanHavePrefixes(Main.HoverItem) ||
+            Main.HoverItem.tooltipContext != ItemSlot.Context.CreativeInfinite) return;
+
+        _mainPanel.MaxHeight.Pixels = MathHelper.Clamp(Main.screenHeight - 352f - 64f, 150f, 300f);
+        CalculatedStyle dim = _mainPanel.GetDimensions();
+        _mainPanel.Top.Pixels =
+            MathHelper.Clamp(Main.mouseY - dim.Height / 2, 352f, Main.screenHeight - dim.Height - 64f);
+
+        SetPrefixes(Main.HoverItem.Clone());
+        SoundEngine.PlaySound(SoundID.MenuTick);
+    }
+
     private void SetPrefixes(Item item)
     {
         _prefixesList.Clear();
@@ -91,21 +105,5 @@ public class PrefixWindow : UIState
         if (Enabled && (evt.Target == this || evt.Target is UIPrefixPanel || evt.Target.Parent is UIPrefixPanel))
             _prefixesList.Clear();
         base.LeftMouseDown(evt);
-    }
-
-    public override void MiddleClick(UIMouseEvent evt)
-    {
-        if (!CanBeShown
-            || !ItemsUtils.CanHavePrefixes(Main.HoverItem)
-            || Main.HoverItem.tooltipContext != ItemSlot.Context.CreativeInfinite) return;
-
-        _mainPanel.MaxHeight.Pixels = MathHelper.Clamp(Main.screenHeight - 352f - 64f, 150f, 300f);
-        CalculatedStyle dim = _mainPanel.GetDimensions();
-        _mainPanel.Top.Pixels =
-            MathHelper.Clamp(evt.MousePosition.Y - dim.Height / 2, 352f, Main.screenHeight - dim.Height - 64f);
-
-        SetPrefixes(Main.HoverItem.Clone());
-        SoundEngine.PlaySound(SoundID.MenuTick);
-        base.MiddleClick(evt);
     }
 }

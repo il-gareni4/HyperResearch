@@ -17,11 +17,11 @@ namespace HyperResearch.UI;
 internal class DuplicationMenu : UIState
 {
     private int _creativePowerSelected;
-    private HyperPlayer? _hyperPlayer;
+    private HyperPlayer _hyperPlayer;
     private int _lastItemsResearchedCount;
     private int _lastResearchableItemsCount;
-    private LocalizedText _totalResearchedText = null!;
-    private UIText _uiTotalResearchedText = null!;
+    private LocalizedText _totalResearchedText;
+    private UIText _uiTotalResearchedText;
 
     public override void OnInitialize()
     {
@@ -95,13 +95,13 @@ internal class DuplicationMenu : UIState
     private void OnCreativePowerMenuCategoryChanged(On_UICreativePowersMenu.orig_MainCategoryButtonClick orig,
         UICreativePowersMenu menu, UIMouseEvent evt, UIElement el)
     {
-        orig.Invoke(menu, evt, el);
-        FieldInfo? mainCategoryField =
+        orig(menu, evt, el);
+        FieldInfo mainCategoryField =
             menu.GetType().GetField("_mainCategory", BindingFlags.NonPublic | BindingFlags.Instance);
         if (mainCategoryField is null) return;
 
-        object? menuTree = mainCategoryField.GetValue(menu);
-        FieldInfo? currentOptionField = menuTree?.GetType().GetField("CurrentOption");
+        object menuTree = mainCategoryField.GetValue(menu);
+        FieldInfo currentOptionField = menuTree?.GetType().GetField("CurrentOption");
         if (currentOptionField is null) return;
 
         _uiTotalResearchedText.Left = StyleDimension.FromPixels(88f);

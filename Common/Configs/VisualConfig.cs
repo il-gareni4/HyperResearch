@@ -93,10 +93,10 @@ public class VisualConfig : ModConfig
 
 
 
-    public static VisualConfig Instance { get; private set; } = null!;
+    public static VisualConfig Instance { get; private set; }
 
     public override ConfigScope Mode => ConfigScope.ClientSide;
-    public static event Action? Changed;
+    public static event Action Changed;
 
     public override void OnLoaded() => Instance = this;
 
