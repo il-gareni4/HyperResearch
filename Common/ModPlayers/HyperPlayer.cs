@@ -297,12 +297,6 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
         switch (BaseConfig.Instance.ResearchMode)
         {
-            case ResearchMode.Favourite:
-                ResearchInventory(true);
-                break;
-            case ResearchMode.FavouriteSacrifice:
-                SacrificeInventory(true);
-                break;
             case ResearchMode.AutoResearch:
                 ResearchInventory();
                 break;
@@ -399,14 +393,13 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         AfterLocalResearch(researcher, playerShared: fromPlayer);
     }
 
-    private void ResearchInventory(bool favouriteOnly = false)
+    private void ResearchInventory()
     {
         Dictionary<int, int> items = [];
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
             Item item = Player.inventory[slot];
             if (item.IsAir) continue;
-            if (favouriteOnly && !item.favorited) continue;
             items[item.type] = items.GetValueOrDefault(item.type, 0) + item.stack;
         }
 
@@ -421,23 +414,16 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     /// <summary>
     ///     Sacrifices every unresearched item in the inventory
     /// </summary>
-    public void SacrificeInventory(bool favouriteOnly = false, bool silent = false)
+    public void SacrificeInventory(bool silent = false)
     {
         List<Item> itemToSacrifice = [];
         for (var slot = 0; slot < Main.InventorySlotsTotal; slot++)
         {
             Item item = Player.inventory[slot];
-            if (item.IsAir)
-                continue;
-            if (favouriteOnly)
-            {
-                if (!item.favorited)
-                    continue;
-            }
-            else if (item.favorited ||
-                    (!BaseConfig.Instance.SacrificeHotbarSlots && IsHotbarSlot(slot)) ||
-                    (!BaseConfig.Instance.SacrificeCoinsSlots && IsCoinSlot(slot)) ||
-                    (!BaseConfig.Instance.SacrificeAmmoSlots && IsAmmoSlot(slot)))
+            if (item.IsAir || item.favorited ||
+                (!BaseConfig.Instance.SacrificeHotbarSlots && IsHotbarSlot(slot)) ||
+                (!BaseConfig.Instance.SacrificeCoinsSlots && IsCoinSlot(slot)) ||
+                (!BaseConfig.Instance.SacrificeAmmoSlots && IsAmmoSlot(slot)))
                 continue;
 
             itemToSacrifice.Add(item);

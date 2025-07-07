@@ -4,8 +4,6 @@ public enum ResearchMode
 {
     None,
     Manual,
-    FavouriteSacrifice,
-    Favourite,
     AutoSacrificeOnPickup,
     AutoSacrificeAlways,
     AutoResearch,
