@@ -90,7 +90,8 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     {
         Researcher researcher = new();
         researcher.ResearchItems(Enumerable.Range(1, ItemLoader.ItemCount - 1));
-        TextUtils.MessageResearchedItems(researcher.DefaultResearchedItems);
+        if (researcher.ResearchedItems.TryGetValue(ResearchSource.Default, out List<int> defaultItems))
+            ChatMessenger.MessageResearchedItems(defaultItems);
     }
 
     public void ForgetAetherAction()
@@ -352,7 +353,10 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     private void SyncItemsWithTeam(Researcher researcher)
     {
-        SyncItemsWithTeam(researcher.AllNonSharedItems.ToArray(), researcher.DefaultSacrifices?.ToDictionary() ?? []);
+        SyncItemsWithTeam(
+            [.. researcher.AllNonSharedItems],
+            researcher.SacrificedItems.GetValueOrDefault(SacrificeSource.Default, [])
+        );
     }
 
     private void SyncItemsWithTeam(int[] items, Dictionary<int, int> sacrifices)
@@ -386,7 +390,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     public void SharedItems(int fromPlayer, int[] items, Dictionary<int, int> sacrifices)
     {
-        TextUtils.MessageOtherPlayerResearchedItems([.. items], fromPlayer);
+        ChatMessenger.MessageOtherPlayerResearchedItems([.. items], fromPlayer);
         Researcher researcher = new();
         researcher.SacrificeItems(sacrifices, SacrificeSource.Shared);
         researcher.ResearchItems(items, ResearchSource.Shared);
@@ -575,19 +579,19 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     {
         if (researcher is { AnyItemResearched: false, AnyItemSacrificed: false }) return;
 
-        TextUtils.MessageResearcherResults(researcher, playerShared);
+        ChatMessenger.MessageResearcherResults(researcher, playerShared);
         if (researcher.AnyItemResearched)
         {
             SoundEngine.PlaySound(SoundID.ResearchComplete);
             if (BaseConfig.Instance.AutoTrashAfterResearching)
                 TrashInventoryItems([.. researcher.AllResearchedItems]);
         }
-        else if (researcher.DefaultSacrifices is { Count: > 0 } && playSacrificeSounds)
+        else if (researcher.SacrificedItems.GetValueOrDefault(SacrificeSource.Default, []).Count > 0 && playSacrificeSounds)
             SoundEngine.PlaySound(SoundID.Research);
-        else if (researcher.SharedSacrifices is { Count: > 0 })
+        else if (researcher.SacrificedItems.GetValueOrDefault(SacrificeSource.Shared, []).Count > 0)
         {
             SoundEngine.PlaySound(SoundID.MenuTick);
-            researcher.SacrificedItems[(int)SacrificeSource.Shared] = null;
+            researcher.SacrificedItems.Remove(SacrificeSource.Shared);
         }
 
         SyncItemsWithTeam(researcher);

@@ -9,7 +9,7 @@ using Terraria.Localization;
 namespace HyperResearch.Utils;
 
 /// <summary>Utility class whose functions are related to text formatting and its output</summary>
-public static class TextUtils
+public static class ChatMessenger
 {
     public static void MessageResearcherResults(Researcher researcher, int playerShared = -1)
     {
@@ -17,18 +17,24 @@ public static class TextUtils
 
         if (playerShared >= 0)
         {
-            MessageSharedSacrifices(researcher.SharedSacrifices, playerShared);
-            MessageSharedItems(researcher.SharedItems, playerShared);
+            if (researcher.SacrificedItems.TryGetValue(SacrificeSource.Shared, out Dictionary<int, int> sharedSacrifices))
+                MessageSharedSacrifices(sharedSacrifices, playerShared);
+            if (researcher.ResearchedItems.TryGetValue(ResearchSource.Shared, out List<int> sharedItems))
+                MessageSharedItems(sharedItems, playerShared);
         }
 
-        MessageSacrifices(researcher.DefaultSacrifices);
-        MessageResearchedItems(researcher.DefaultResearchedItems);
-        MessageDecraftItems(researcher.DecraftResearchedItems);
-        MessageResearchedShimmeredItems(researcher.ShimmerResearchedItems);
-        MessageResearchedCraftableItems(researcher.CraftResearchedItems);
+        if (researcher.SacrificedItems.TryGetValue(SacrificeSource.Default, out Dictionary<int, int> defaultSacrifices))
+            MessageSacrifices(defaultSacrifices);
+        if (researcher.ResearchedItems.TryGetValue(ResearchSource.Default, out List<int> defaultItems))
+            MessageResearchedItems(defaultItems);
+        if (researcher.ResearchedItems.TryGetValue(ResearchSource.ShimmerDecraft, out List<int> decraftsItems))
+            MessageDecraftItems(decraftsItems);
+        if (researcher.ResearchedItems.TryGetValue(ResearchSource.Shimmer, out List<int> shimmerItems))
+            MessageResearchedShimmeredItems(shimmerItems);
+        if (researcher.ResearchedItems.TryGetValue(ResearchSource.Craft, out List<int> craftItems))
+            MessageResearchedCraftableItems(craftItems);
     }
 
-    /// <summary>Displays information about researched items in the game chat</summary>
     public static void MessageResearchedItems(List<int> items)
     {
         if (!VisualConfig.Instance.ShowNewlyResearchedItems || items == null || items.Count == 0) return;

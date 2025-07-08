@@ -129,38 +129,28 @@ public class Researcher
 
     #endregion
 
-    private static readonly int ResearchedItemGroups = Enum.GetValues(typeof(ResearchSource)).Length;
-    private static readonly int SacrificeGroups = Enum.GetValues(typeof(SacrificeSource)).Length;
     public static bool IsPlayerInJourneyMode => Main.CurrentPlayer.difficulty == 3;
     public static IEnumerable<int> ReseachedItems => Enumerable.Range(1, ItemLoader.ItemCount - 1).Where(IsResearched);
 
     private Queue<int> _researchedQueue;
     private Queue<int> ResearchedQueue => _researchedQueue ??= new Queue<int>();
 
-    private List<int>[] ResearchedItems { get; } = new List<int>[ResearchedItemGroups];
-    public List<int> DefaultResearchedItems => ResearchedItems[(int)ResearchSource.Default];
-    public List<int> CraftResearchedItems => ResearchedItems[(int)ResearchSource.Craft];
-    public List<int> ShimmerResearchedItems => ResearchedItems[(int)ResearchSource.Shimmer];
-    public List<int> DecraftResearchedItems => ResearchedItems[(int)ResearchSource.ShimmerDecraft];
-    public List<int> SharedItems => ResearchedItems[(int)ResearchSource.Shared];
-
-    public Dictionary<int, int>[] SacrificedItems { get; } = new Dictionary<int, int>[SacrificeGroups];
-    public Dictionary<int, int> DefaultSacrifices => SacrificedItems[(int)SacrificeSource.Default];
-    public Dictionary<int, int> SharedSacrifices => SacrificedItems[(int)SacrificeSource.Shared];
+    public Dictionary<ResearchSource, List<int>> ResearchedItems { get; } = [];
+    public Dictionary<SacrificeSource, Dictionary<int, int>> SacrificedItems { get; } = [];
 
     public IEnumerable<int> AllResearchedItems =>
-        ResearchedItems.Where(list => list is { Count: > 0 })
+        ResearchedItems.Values.Where(list => list is { Count: > 0 })
             .SelectMany(list => list)
             .Distinct();
 
     public IEnumerable<int> AllNonSharedItems =>
-        ResearchedItems.Take((int)ResearchSource.Shared)
+        ResearchedItems.Values.Take((int)ResearchSource.Shared)
             .Where(list => list is { Count: > 0 })
             .SelectMany(list => list)
             .Distinct();
 
-    public bool AnyItemResearched => ResearchedItems.Any(list => list is { Count: > 0 });
-    public bool AnyItemSacrificed => SacrificedItems.Any(list => list is { Count: > 0 });
+    public bool AnyItemResearched => ResearchedItems.Values.Any(list => list is { Count: > 0 });
+    public bool AnyItemSacrificed => SacrificedItems.Values.Any(dict => dict is { Count: > 0 });
 
     public void SacrificeItems(IDictionary<int, int> itemCount, SacrificeSource sacrificeSource = default)
     {
@@ -363,23 +353,28 @@ public class Researcher
 
     private void AddToResearched(int itemId, ResearchSource source)
     {
-        (ResearchedItems[(int)source] ??= []).Add(itemId);
+        if (!ResearchedItems.ContainsKey(source))
+            ResearchedItems[source] = [];
+        ResearchedItems[source].Add(itemId);
     }
 
     private void AddToSacrificed(int itemId, int amount, SacrificeSource source)
     {
-        (SacrificedItems[(int)source] ??= [])[itemId] = amount;
+        if (!SacrificedItems.ContainsKey(source))
+            SacrificedItems[source] = [];
+        SacrificedItems[source][itemId] = amount;
     }
 
     private void RemoveFromSacrificed(int itemId, SacrificeSource source)
     {
-        SacrificedItems[(int)source]?.Remove(itemId);
+        if (SacrificedItems.TryGetValue(source, out Dictionary<int, int> sacrifices))
+            sacrifices.Remove(itemId);
     }
 
     private void RemoveFromSacrificed(int itemId)
     {
-        for (int i = 0; i < SacrificeGroups; i++)
-            SacrificedItems[i]?.Remove(itemId);
+        foreach (SacrificeSource source in Enum.GetValues<SacrificeSource>())
+            RemoveFromSacrificed(itemId, source);
     }
 
     #region StaticMethods
