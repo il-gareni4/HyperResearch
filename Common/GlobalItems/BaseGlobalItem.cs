@@ -61,18 +61,10 @@ public partial class BaseGlobalItem : GlobalItem
         }
         else if (!Researcher.IsResearched(item.type))
         {
-            int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
             if (!VisualConfig.Instance.UseCustomResearchTooltip)
-            {
-                if (!ConfigOptions.OnlyOneItemNeeded || vanillaTooltipIndex == -1) return;
+                return;
 
-                tooltips[vanillaTooltipIndex].Text = Regex.Replace(
-                    tooltips[vanillaTooltipIndex].Text,
-                    @"\d+",
-                    "1"
-                );
-            }
-
+            int vanillaTooltipIndex = tooltips.FindIndex(tooltip => tooltip.Name == "JourneyResearch");
             LocalizedText tooltipText = Language.GetText("Mods.HyperResearch.Tooltips.NeededToResearch");
             TooltipLine hyperResearch = new(Mod, "HyperResearch",
                 tooltipText.Format(Researcher.GetRemaining(item.type), Researcher.GetResearchedCount(item.type),

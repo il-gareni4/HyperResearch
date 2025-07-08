@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Terraria.ID;
 using Terraria.Localization;
@@ -66,14 +67,17 @@ public class ServerConfig : ModConfig
 
     [LabelKey("$Mods.HyperResearch.Configs.BaseConfig.ItemResearchCountOverride.Label")]
     [TooltipKey("$Mods.HyperResearch.Configs.BaseConfig.ItemResearchCountOverride.Tooltip")]
-    [ReloadRequired]
     public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
+
+    public event Action Changed;
 
     public static ServerConfig Instance { get; private set; }
 
     public override ConfigScope Mode => ConfigScope.ServerSide;
 
     public override void OnLoaded() => Instance = this;
+
+    public override void OnChanged() => Changed?.Invoke();
 
     public override bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref NetworkText message)
     {

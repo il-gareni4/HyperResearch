@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using HyperResearch.Common.Configs;
 using HyperResearch.Utils;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
@@ -8,20 +10,37 @@ namespace HyperResearch.Common.Systems;
 
 public class ResearchSystem : ModSystem
 {
-    private Dictionary<int, int> CountOverride { get; } = [];
     public static int ResearchableItemsCount { get; private set; }
 
-    public override void OnWorldLoad()
+    public override void OnModLoad()
     {
-        if (!Researcher.IsPlayerInJourneyMode) return;
-        
+        CheatsConfig.Instance.Changed += ResetOverridesAndRecalculate;
+        ServerConfig.Instance.Changed += ResetOverridesAndRecalculate;
+        ResetOverridesAndRecalculate();
+    }
+
+    public override void OnModUnload()
+    {
+        CheatsConfig.Instance.Changed -= ResetOverridesAndRecalculate;
+        ServerConfig.Instance.Changed -= ResetOverridesAndRecalculate;
+    }
+
+    private void ResetOverridesAndRecalculate()
+    {
+        CreativeItemSacrificesCatalog.Instance.Initialize();
         OverrideDefaultResearchCount();
         CalculateResearchable();
     }
 
     private void OverrideDefaultResearchCount()
     {
-        CountOverride.Clear();
+        if (ConfigOptions.OnlyOneItemNeeded)
+        {
+            foreach (int itemId in CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId.Keys)
+                if (CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[itemId] > 1)
+                    CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[itemId] = 1;
+        }
+
         foreach ((ItemDefinition def, uint count) in ConfigOptions.ItemResearchCountOverride)
         {
             if (def.Type == 0 || def.IsUnloaded) continue;
@@ -30,21 +49,16 @@ public class ResearchSystem : ModSystem
                 CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[def.Type] = (int)count;
             else
                 CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId.Remove(def.Type, out int _);
-            CountOverride[def.Type] = (int)count;
         }
     }
 
     private void CalculateResearchable()
     {
-        var totalResearchable = 0;
-        for (var itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
-        {
-            if (Researcher.GetSharedValue(itemId) != -1) continue;
-            if (Researcher.IsResearchable(itemId)
-                || (!CountOverride.TryGetValue(itemId, out int count) && count > 0))
-                totalResearchable++;
-        }
-
-        ResearchableItemsCount = totalResearchable;
+        ResearchableItemsCount = CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId
+            .Count(pair =>
+            {
+                if (Researcher.GetSharedValue(pair.Key) >= 0) return false;
+                return Researcher.IsValidResearchItem(pair.Key) && pair.Value >= 1;
+            });
     }
 }

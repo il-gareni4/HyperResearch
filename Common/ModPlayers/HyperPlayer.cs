@@ -270,23 +270,17 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             researcher.ResearchCraftable();
         for (var itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
         {
-            if (Researcher.IsResearched(itemId))
-            {
-                TryAddToResearchedTiles(itemId);
-                if (AutoResearchShimmer)
-                    researcher.TryResearchShimmerItem(itemId);
-                if (AutoResearchDecraft)
-                    researcher.TryResearchDecraftItems(itemId);
+            if (!Researcher.IsResearched(itemId))
+                continue;
 
-                if (Researcher.GetSharedValue(itemId) == -1)
-                    ItemsResearchedCount++;
-            }
-            else if (ConfigOptions.OnlyOneItemNeeded &&
-                Researcher.IsResearchable(itemId) &&
-                Researcher.GetResearchedCount(itemId) >= 1)
-            {
-                researcher.ResearchItem(itemId);
-            }
+            TryAddToResearchedTiles(itemId);
+            if (AutoResearchShimmer)
+                researcher.TryResearchShimmerItem(itemId);
+            if (AutoResearchDecraft)
+                researcher.TryResearchDecraftItems(itemId);
+
+            if (Researcher.GetSharedValue(itemId) == -1)
+                ItemsResearchedCount++;
         }
         researcher.ProcessResearched(this);
 
@@ -521,8 +515,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
 
     public void OnClientConfigChanged()
     {
-        if (!ConfigOptions.OnlyOneItemNeeded &&
-            BaseConfig.Instance.ShimmerResearchMode != ShimmerResearchMode.OnResearch &&
+        if (BaseConfig.Instance.ShimmerResearchMode != ShimmerResearchMode.OnResearch &&
             BaseConfig.Instance.DecraftsResearchMode != DecraftsResearchMode.OnResearch)
             return;
 
@@ -531,19 +524,13 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
             researcher.ResearchCraftable();
         for (var itemId = 1; itemId < ItemLoader.ItemCount; itemId++)
         {
-            if (Researcher.IsResearched(itemId))
-            {
-                if (AutoResearchShimmer)
-                    researcher.TryResearchShimmerItem(itemId);
-                if (AutoResearchDecraft)
-                    researcher.TryResearchDecraftItems(itemId);
-            }
-            else if (ConfigOptions.OnlyOneItemNeeded &&
-                Researcher.IsResearchable(itemId) &&
-                Researcher.GetResearchedCount(itemId) >= 1)
-            {
-                researcher.ResearchItem(itemId);
-            }
+            if (!Researcher.IsResearched(itemId))
+                continue;
+
+            if (AutoResearchShimmer)
+                researcher.TryResearchShimmerItem(itemId);
+            if (AutoResearchDecraft)
+                researcher.TryResearchDecraftItems(itemId);
         }
         researcher.ProcessResearched(this);
 

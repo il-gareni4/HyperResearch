@@ -11,13 +11,15 @@ public class CheatsConfig : ModConfig
     [LabelArgs(ItemID.AlphabetStatue1)]
     [DefaultValue(false)]
     public bool OnlyOneItemNeeded;
-
-    [ReloadRequired]
     public Dictionary<ItemDefinition, uint> ItemResearchCountOverride = [];
+
+    public event Action Changed;
 
     public static CheatsConfig Instance { get; private set; }
 
     public override ConfigScope Mode => ConfigScope.ClientSide;
 
     public override void OnLoaded() => Instance = this;
+
+    public override void OnChanged() => Changed?.Invoke();
 }

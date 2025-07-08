@@ -181,26 +181,16 @@ public class Researcher
         int itemId = item.type; // Save the ID because sacrifice can turn item into air
         ResearchSource researchSource = source == SacrificeSource.Shared ? ResearchSource.Shared : default;
 
-        if (ConfigOptions.OnlyOneItemNeeded && ResearchItem(itemId, researchSource) && item.stack == 1)
+        CreativeUI.ItemSacrificeResult result = CreativeUI.SacrificeItem(item, out int amountSacrificed);
+        if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone)
         {
-            item.TurnToAir();
-            return CreativeUI.ItemSacrificeResult.SacrificedAndDone;
+            RemoveFromSacrificed(itemId, source);
+            AddToResearched(itemId, researchSource);
+            ResearchedQueue.Enqueue(itemId);
         }
-        else
-        {
-            CreativeUI.ItemSacrificeResult result = CreativeUI.SacrificeItem(item, out int amountSacrificed);
-            if (result == CreativeUI.ItemSacrificeResult.SacrificedAndDone)
-            {
-                RemoveFromSacrificed(itemId, source);
-                AddToResearched(itemId, researchSource);
-                ResearchedQueue.Enqueue(itemId);
-            }
-            else if (result == CreativeUI.ItemSacrificeResult.SacrificedButNotDone)
-            {
-                AddToSacrificed(itemId, amountSacrificed, source);
-            }
-            return result;
-        }
+        else if (result == CreativeUI.ItemSacrificeResult.SacrificedButNotDone)
+            AddToSacrificed(itemId, amountSacrificed, source);
+        return result;
     }
 
     public void ResearchItems(IEnumerable<int> items, ResearchSource source = default)
@@ -401,7 +391,7 @@ public class Researcher
     {
         if (CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(itemId,
                 out int amountNeeded))
-            return ConfigOptions.OnlyOneItemNeeded ? 1 : amountNeeded;
+            return amountNeeded;
         return 0;
     }
 
@@ -422,7 +412,10 @@ public class Researcher
         return false;
     }
 
-    private static bool IsValidResearchItem(int itemId) =>
+    /// <summary>
+    /// Checks if <see cref="Item"/> by <paramref name="itemId"/> is unique item and not clone of item with other <see cref="Item.type"/> 
+    /// </summary>
+    internal static bool IsValidResearchItem(int itemId) =>
         ContentSamples.ItemsByType.TryGetValue(itemId, out Item item)
         && item is { IsAir: false }
         && item.type == itemId;
