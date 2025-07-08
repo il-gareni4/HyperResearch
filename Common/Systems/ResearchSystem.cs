@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using HyperResearch.Common.Configs;
 using HyperResearch.Utils;
 using Terraria.GameContent.Creative;
@@ -9,13 +10,18 @@ namespace HyperResearch.Common.Systems;
 
 public class ResearchSystem : ModSystem
 {
+    public Dictionary<int, int> DefaultSacrificeCountNeededByItemId;
     public static int ResearchableItemsCount { get; private set; }
 
-    public override void OnModLoad()
+    public override void PostSetupContent()
     {
+        DefaultSacrificeCountNeededByItemId = new(CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId);
+
         CheatsConfig.Instance.Changed += ResetOverridesAndRecalculate;
         ServerConfig.Instance.Changed += ResetOverridesAndRecalculate;
-        ResetOverridesAndRecalculate();
+
+        OverrideDefaultResearchCount();
+        CalculateResearchable();
     }
 
     public override void OnModUnload()
@@ -26,9 +32,16 @@ public class ResearchSystem : ModSystem
 
     private void ResetOverridesAndRecalculate()
     {
-        CreativeItemSacrificesCatalog.Instance.Initialize();
+        ResetSacrificeCountToDefault();
         OverrideDefaultResearchCount();
         CalculateResearchable();
+    }
+
+    private void ResetSacrificeCountToDefault()
+    {
+        CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId.Clear();
+        foreach (int itemId in DefaultSacrificeCountNeededByItemId.Keys)
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[itemId] = DefaultSacrificeCountNeededByItemId[itemId];
     }
 
     private void OverrideDefaultResearchCount()
