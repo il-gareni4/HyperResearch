@@ -26,13 +26,11 @@ public static class BuffUtils
         BuffID.Sets.BasicMountData[buffType] == null &&
         !Main.vanityPet[buffType] &&
         !Main.lightPet[buffType] &&
-        !Main.debuff[buffType] &&
-        !Main.pvpBuff[buffType];
+        !Main.debuff[buffType];
 
     public static bool IsAcceptableBuff(int buffType) =>
         BuffID.Sets.BasicMountData[buffType] == null &&
         !Main.vanityPet[buffType] &&
         !Main.lightPet[buffType] &&
-        !Main.debuff[buffType] &&
-        !Main.pvpBuff[buffType]; 
+        !Main.debuff[buffType]; 
 }

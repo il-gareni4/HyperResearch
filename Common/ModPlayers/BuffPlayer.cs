@@ -109,7 +109,7 @@ public class BuffPlayer : ModPlayer, IResearchPlayer
                     string[] buffFullNameSplit = buffFullName.Split('/');
                     if (buffFullNameSplit.Length == 2 &&
                         !ModLoader.HasMod(buffFullNameSplit[0]) &&
-                        _buffsOfDisabledMods.Count < 128) // To prevent save file to be too big
+                        _buffsOfDisabledMods.Count < 256) // To prevent save file to be too big
                     {
                         _buffsOfDisabledMods.Add(buffFullName);
                     }

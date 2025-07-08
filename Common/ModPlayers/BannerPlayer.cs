@@ -104,7 +104,7 @@ public class BannerPlayer : ModPlayer, IResearchPlayer
                     string[] npcFullNameSplit = npcFullName.Split('/');
                     if (npcFullNameSplit.Length == 2 &&
                         !ModLoader.HasMod(npcFullNameSplit[0]) &&
-                        _bannersOfDisabledMods.Count < 128) // To prevent save file to be too big
+                        _bannersOfDisabledMods.Count < 256) // To prevent save file to be too big
                     {
                         _bannersOfDisabledMods.Add(npcFullName);
                     }
