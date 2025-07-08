@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using HyperResearch.Common.Configs;
 using HyperResearch.Common.Configs.Enums;
@@ -7,8 +8,10 @@ using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using HyperResearch.Utils.Extensions;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Achievements;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -70,75 +73,14 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
     public bool AutoResearchShimmer => BaseConfig.Instance.ShimmerResearchMode == ShimmerResearchMode.OnResearch && CanShimmerResearch;
     public bool AutoResearchDecraft => BaseConfig.Instance.DecraftsResearchMode == DecraftsResearchMode.OnResearch && CanShimmerResearch;
 
+    #region Implementations
     public void OnResearch(Item item)
     {
         TryAddToResearchedTiles(item.type);
         ItemsResearchedCount++;
     }
-
-    public override void UpdateAutopause()
-    {
-        if (!Researcher.IsPlayerInJourneyMode) return;
-        if (Main.drawingPlayerChat || Main.editSign || Main.editChest || Main.blockInput)
-            return;
-
-#if DEBUG
-        if (KeybindSystem.ForgetAllBind.JustPressed)
-            ForgetAllAction();
-        if (KeybindSystem.ResearchAllBind.JustPressed)
-            ResearchAllAction();
-        if (KeybindSystem.ForgetAetherBind.JustPressed)
-            ForgetAetherAction();
-#endif
-        if (KeybindSystem.SacrificeInventoryBind.JustPressed)
-            SacrificeInventoryAction();
-        if (KeybindSystem.ClearResearchedBind.JustPressed)
-            ClearResearched();
-        if (KeybindSystem.ResearchCraftableBind.JustPressed)
-            ResearchCraftableAction();
-        if (KeybindSystem.ResearchShimmerBind.JustPressed)
-            ResearchShimmerItemsAction();
-        if (KeybindSystem.ResearchDecraftsBind.JustPressed)
-            ResearchDecraftItemsAction();
-        if (KeybindSystem.MaxStackBind.JustPressed)
-            MaxStackAction();
-        if (KeybindSystem.SelectModifierBind.JustPressed)
-            SelectModifierAction();
-        if (KeybindSystem.ResearchLootBind.JustPressed)
-            ResearchLootAction();
-    }
-
-    public override void ProcessTriggers(TriggersSet triggersSet)
-    {
-        if (!Researcher.IsPlayerInJourneyMode) return;
-#if DEBUG
-        if (KeybindSystem.ForgetAllBind.JustPressed)
-            ForgetAllAction();
-        if (KeybindSystem.ResearchAllBind.JustPressed)
-            ResearchAllAction();
-        if (KeybindSystem.ForgetAetherBind.JustPressed)
-            ForgetAetherAction();
-#endif
-        if (KeybindSystem.SacrificeInventoryBind.JustPressed)
-            SacrificeInventoryAction();
-        if (KeybindSystem.ClearResearchedBind.JustPressed)
-            ClearResearched();
-        if (KeybindSystem.ResearchCraftableBind.JustPressed)
-            ResearchCraftableAction();
-        if (KeybindSystem.ResearchShimmerBind.JustPressed)
-            ResearchShimmerItemsAction();
-        if (KeybindSystem.ResearchDecraftsBind.JustPressed)
-            ResearchDecraftItemsAction();
-        if (KeybindSystem.MaxStackBind.JustPressed)
-            MaxStackAction();
-        if (KeybindSystem.SelectModifierBind.JustPressed)
-            SelectModifierAction();
-        if (KeybindSystem.ResearchLootBind.JustPressed)
-            ResearchLootAction();
-        if (KeybindSystem.ShareAllResearched.JustPressed)
-            ShareResearchedItemsAction();
-    }
-
+    #endregion
+    #region Actions
 #if DEBUG
     public void ForgetAllAction()
     {
@@ -249,10 +191,78 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         if (Main.LocalPlayer.team >= 1)
             Main.NewText(Language.GetTextValue("Mods.HyperResearch.Messages.SharedAllItems", itemsToShare.Length));
     }
+    #endregion
+    #region Overrides and custom hooks
+    public override void UpdateAutopause()
+    {
+        if (!Researcher.IsPlayerInJourneyMode) return;
+        if (Main.drawingPlayerChat || Main.editSign || Main.editChest || Main.blockInput)
+            return;
+
+#if DEBUG
+        if (KeybindSystem.ForgetAllBind.JustPressed)
+            ForgetAllAction();
+        if (KeybindSystem.ResearchAllBind.JustPressed)
+            ResearchAllAction();
+        if (KeybindSystem.ForgetAetherBind.JustPressed)
+            ForgetAetherAction();
+#endif
+        if (KeybindSystem.SacrificeInventoryBind.JustPressed)
+            SacrificeInventoryAction();
+        if (KeybindSystem.ClearResearchedBind.JustPressed)
+            ClearResearched();
+        if (KeybindSystem.ResearchCraftableBind.JustPressed)
+            ResearchCraftableAction();
+        if (KeybindSystem.ResearchShimmerBind.JustPressed)
+            ResearchShimmerItemsAction();
+        if (KeybindSystem.ResearchDecraftsBind.JustPressed)
+            ResearchDecraftItemsAction();
+        if (KeybindSystem.MaxStackBind.JustPressed)
+            MaxStackAction();
+        if (KeybindSystem.SelectModifierBind.JustPressed)
+            SelectModifierAction();
+        if (KeybindSystem.ResearchLootBind.JustPressed)
+            ResearchLootAction();
+    }
+
+    public override void ProcessTriggers(TriggersSet triggersSet)
+    {
+        if (!Researcher.IsPlayerInJourneyMode) return;
+#if DEBUG
+        if (KeybindSystem.ForgetAllBind.JustPressed)
+            ForgetAllAction();
+        if (KeybindSystem.ResearchAllBind.JustPressed)
+            ResearchAllAction();
+        if (KeybindSystem.ForgetAetherBind.JustPressed)
+            ForgetAetherAction();
+#endif
+        if (KeybindSystem.SacrificeInventoryBind.JustPressed)
+            SacrificeInventoryAction();
+        if (KeybindSystem.ClearResearchedBind.JustPressed)
+            ClearResearched();
+        if (KeybindSystem.ResearchCraftableBind.JustPressed)
+            ResearchCraftableAction();
+        if (KeybindSystem.ResearchShimmerBind.JustPressed)
+            ResearchShimmerItemsAction();
+        if (KeybindSystem.ResearchDecraftsBind.JustPressed)
+            ResearchDecraftItemsAction();
+        if (KeybindSystem.MaxStackBind.JustPressed)
+            MaxStackAction();
+        if (KeybindSystem.SelectModifierBind.JustPressed)
+            SelectModifierAction();
+        if (KeybindSystem.ResearchLootBind.JustPressed)
+            ResearchLootAction();
+        if (KeybindSystem.ShareAllResearched.JustPressed)
+            ShareResearchedItemsAction();
+    }
 
     public override void OnEnterWorld()
     {
-        if (!Researcher.IsPlayerInJourneyMode) return;
+        if (!Researcher.IsPlayerInJourneyMode)
+        {
+            Main.NewText($"Your character is not in Journey mode: {Mod.Name} has no effect and is recommended to be disabled", Colors.RarityRed);
+            return;
+        }
 
         ItemsResearchedCount = 0;
         Researcher researcher = new();
@@ -347,6 +357,7 @@ public class HyperPlayer : ModPlayer, IResearchPlayer
         _hoverItem = inventory[slot];
         return base.HoverSlot(inventory, context, slot);
     }
+    #endregion
 
     private void SyncItemsWithTeam(Researcher researcher)
     {

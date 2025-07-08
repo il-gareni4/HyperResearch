@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 using Terraria;
+using Terraria.GameContent.ObjectInteractions;
+using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -15,20 +17,40 @@ public class HooksSystem : ModSystem
 {
     internal static event Action WorldLoaded;
     internal static event Action WorldUnloaded;
+    internal static event Action PreWorldExit;
+    internal static event Action PostWorldExit;
 
     public override void Load()
     {
+        On_WorldGen.JustQuit += JustQuitHandler;
+        On_WorldGen.SaveAndQuitCallBack += SaveAndQuitHandler;
         IL_ItemSlot.Draw_SpriteBatch_ItemArray_int_int_Vector2_Color += EditItemSlotDraw;
     }
 
     public override void Unload()
     {
+        On_WorldGen.JustQuit -= JustQuitHandler;
+        On_WorldGen.SaveAndQuitCallBack -= SaveAndQuitHandler;
         IL_ItemSlot.Draw_SpriteBatch_ItemArray_int_int_Vector2_Color -= EditItemSlotDraw;
     }
 
     public override void OnWorldLoad() => WorldLoaded?.Invoke();
 
     public override void OnWorldUnload() => WorldUnloaded?.Invoke();
+
+    private void JustQuitHandler(On_WorldGen.orig_JustQuit orig)
+    {
+        PreWorldExit?.Invoke();
+        orig();
+        PostWorldExit?.Invoke();
+    }
+
+    private void SaveAndQuitHandler(On_WorldGen.orig_SaveAndQuitCallBack orig, object threadContext)
+    {
+        PreWorldExit?.Invoke();
+        orig(threadContext);
+        PostWorldExit?.Invoke();
+    }
 
     private void EditItemSlotDraw(ILContext il)
     {
@@ -37,7 +59,7 @@ public class HooksSystem : ModSystem
             ILCursor c = new(il);
             c.FindNext(out ILCursor[] m1, i => i.MatchLdcI4(-1)); // int num9 = -1;
             c.GotoNext(MoveType.After, i => i.MatchBrtrue(m1[0].Next)); // if (!flag2)
-            
+
             c.RemoveRange(15);
             c.EmitLdarg0(); // spriteBatch
             c.EmitLdloc(7); // texture
