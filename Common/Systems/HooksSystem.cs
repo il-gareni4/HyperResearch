@@ -6,8 +6,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 using Terraria;
-using Terraria.GameContent.ObjectInteractions;
-using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.UI;
 

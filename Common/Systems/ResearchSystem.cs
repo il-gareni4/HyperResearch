@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using HyperResearch.Common.Configs;
 using HyperResearch.Utils;
 using Terraria.GameContent.Creative;

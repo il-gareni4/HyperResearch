@@ -39,24 +39,4 @@ public class KeybindSystem : ModSystem
         SelectModifierBind = KeybindLoader.RegisterKeybind(Mod, "SelectModifierBind", "Mouse3");
         ResearchLootBind = KeybindLoader.RegisterKeybind(Mod, "ResearchBagContents", Keys.OemQuotes);
     }
-
-    public override void Unload()
-    {
-#if DEBUG
-        ForgetAllBind = null;
-        ResearchAllBind = null;
-        ForgetAetherBind = null;
-#endif
-        SacrificeInventoryBind = null;
-        ClearResearchedBind = null;
-        ResearchCraftableBind = null;
-        ResearchShimmerBind = null;
-        ResearchDecraftsBind = null;
-        ShareAllResearched = null;
-        MaxStackBind = null;
-        EnableDisableBuffBind = null;
-        SelectModifierBind = null;
-        ResearchLootBind = null;
-    }
-
 }

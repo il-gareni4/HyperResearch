@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using HyperResearch.Common.Configs;
 using HyperResearch.Common.Configs.Enums;
@@ -8,10 +7,8 @@ using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Common.Systems;
 using HyperResearch.Utils;
 using HyperResearch.Utils.Extensions;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.Achievements;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;

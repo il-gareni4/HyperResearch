@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using HyperResearch.Common.Configs;
 using HyperResearch.Common.ModPlayers.Interfaces;
 using HyperResearch.Utils;
