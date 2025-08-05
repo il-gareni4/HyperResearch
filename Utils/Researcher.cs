@@ -272,7 +272,7 @@ public class Researcher
 
     public void TryResearchShimmerItem(int itemId)
     {
-        int shimmerItemId = ItemsUtils.GetShimmerItemId(itemId);
+        int shimmerItemId = ItemsUtils.GetShimmerItemId_CanShimmer(itemId);
         if (shimmerItemId > 0)
             ResearchItem(shimmerItemId, ResearchSource.Shimmer);
     }

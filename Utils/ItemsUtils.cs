@@ -71,8 +71,18 @@ public static class ItemsUtils
             return -1;
     }
 
+    public static int GetShimmerItemId_CanShimmer(int itemId)
+    {
+        int shimmerId = GetShimmerItemId(itemId);
+        if (shimmerId > 0 && ContentSamples.ItemsByType[itemId].CanShimmer())
+            return shimmerId;
+        return -1;
+    }
+
     private static Recipe GetDecraftRecipe(int itemId)
     {
+        if (GetShimmerItemId(itemId) >= 0)
+            return null;
         if (ContentSamples.ItemsByType[itemId].createTile == TileID.MusicBoxes)
             return null;
         if (GetShimmerItemId(itemId) >= 0)
