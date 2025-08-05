@@ -2,7 +2,5 @@ Hyper Research v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVe
 
 [h1]Fixes[/h1]
 [list]
-[*] "Auto-decraft" decrafts item that should be transmutated instead
-[*] Calamity (and probably other mods) buff potions disabling after entering a world
-[*] Potentially fixed Player.MaxBuffs error
+[*] Added a check if an item can be transmuted in the current game progress
 [/list]
